@@ -13,11 +13,13 @@
   Population size variable
   Reproduction chance related to both pop-size (carrying capacity) and phenotype frequency, NFDS
   Assume dominant/recessive is fixed unlike Kagawa et al.
+  Dominance levels: A > I > O
   Environmental effects of phenotype on fitness
 
 # Full population:
   Allele Frequency --> Phenotype frequency is dependent??
   Reproduction isn't random, a given percentage survives
+  Both single and multiple-deme model, migration possibilities
 
 # Individual:
   Each female has 2 alleles that determine phenotype
@@ -25,6 +27,7 @@
   Reproduction is actual random chance
   One male can reproduce multiple times, females only once but produce multiple offspring
   Innate preference for certain phenotype?
+  Single population, no migration effects
 
 ##Stuff to test
   Effects of lower fecundity of andromorphs

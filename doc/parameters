@@ -1,0 +1,23 @@
+#Individual Model
+Individual level variables:
+  A-morph fecundity: FA
+  I-morph fecundity: FI
+  O-morph fecundity: FO
+  Male A-preference: MA --> dependent on morph frequencies
+  Male I-preference: MI --> dependent on morph frequencies
+  Male O-preference: MO --> dependent on morph frequencies
+
+
+Population level variables:
+  Carrying capacity
+  Allele frequencies --> Morph frequencies
+
+
+
+
+#Population Model
+  Allele frequencies --> Morph frequencies
+  Carrying capacity
+  Fecundities
+  Male preferences --> dependent on morph frequencies
+  
