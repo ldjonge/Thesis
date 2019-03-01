@@ -39,3 +39,4 @@
 #Possible but unlikely inclusions:
   mutation
   Male choice affected by genotype
+  More andromorph mating harassment when male frequency is high?
