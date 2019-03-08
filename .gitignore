@@ -1,1 +1,5 @@
 backgroundLit/
+scripts/__pycache__
+scripts/.Rhistory
+scripts/outTable
+scripts/Rplots.pdf

@@ -27,7 +27,7 @@ def alleleFreq(A,I,O):  #Floats only
     d = 4*(q+r)**2+4*A
     p = (-2*(q+r)+math.sqrt(d))/2
 
-    return((p,q,r))
+    return({"p":p,"q":q,"r":r})
 
 def phenoFreq(p,q,r):
     try:
@@ -49,4 +49,4 @@ def phenoFreq(p,q,r):
     A = p**2 + 2*p*q + 2*p*r
     I = q**2 + 2*q*r
     O = r**2
-    return((A,I,O))
+    return({"A":A,"I":I,"O":O})

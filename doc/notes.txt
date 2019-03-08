@@ -1,19 +1,17 @@
 2 Models: Full population and individual-based.
 
 ##Biological background needed:
-    How many generations per season
-    How many eggs per generation
-    50% sex split?
-
-
+    How many generations per season --> Usually 1 but sometimes multiple, depends on environment
+    How many eggs per generation --> Incorporate in fecundity?
+   ~50% sex split?
 
 ##Baseline fixed stuff:
 
 #Shared effects:
   Population size variable
   Reproduction chance related to both pop-size (carrying capacity) and phenotype frequency, NFDS
-  Assume dominant/recessive is fixed unlike Kagawa et al.
-  Dominance levels: A > I > O
+ ~Assume dominant/recessive is fixed unlike Kagawa et al.
+ ~Dominance levels: A > I > O
   Environmental effects of phenotype on fitness
 
 # Full population:
@@ -22,12 +20,12 @@
   Both single and multiple-deme model, migration possibilities
 
 # Individual:
-  Each female has 2 alleles that determine phenotype
-  Males have same alleles but are carriers, no effect
-  Reproduction is actual random chance
+ ~Each female has 2 alleles that determine phenotype
+ ~Males have same alleles but are carriers, no effect
+ ~Reproduction is actual random chance
   One male can reproduce multiple times, females only once but produce multiple offspring
   Innate preference for certain phenotype?
-  Single population, no migration effects
+ ~Single population, no migration effects
 
 ##Stuff to test
   Effects of lower fecundity of andromorphs
