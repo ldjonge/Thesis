@@ -8,15 +8,15 @@ import sys
 phenoDict = {"pp":"A", "pq":"A", "pr":"A", "qp":"A", "rp":"A", "qq":"I", "qr":"I", "rq":"I", "rr":"O"}
 
 #Starting parameters
-N=100 #Population size, should be possible to keep small
+N=2000 #Population size, should be possible to keep small
 p=2/6 #Allele frequency
 q=2/6 #Allele frequency
 r=1/3 #Allele frequency
-nGen = 100 #Number of generations
+nGen = 10 #Number of generations
 
-s = -2 #Selection Pressure
-equilA = 0.6 #Equilibrium frequency for andromorphs
-equilI = 0.15 #Equilibrium frequency for infuscans
+s = -5 #Selection Pressure
+equilA = 0.33 #Equilibrium frequency for andromorphs
+equilI = 0.33 #Equilibrium frequency for infuscans
 
 class Male:
     def __init__(self, pAll, mAll):
@@ -105,10 +105,6 @@ def calcPhenoFreq(pop):
         freqDict[ind.phenotype] += 1
     for ind in pop[1]:
         freqDict[ind.phenotype] += 1
-    '''
-    for phen in ["M", "A", "I", "O"]:
-        print("{}:\t{}\t{}%".format(phen, freqDict[phen], 100*freqDict[phen]/sum(freqDict.values())))
-    '''
     phenoDist = {}
     for phen in "AIO":
         phenoDist[phen] = freqDict[phen]/sum([freqDict["A"], freqDict["I"], freqDict["O"]])
@@ -131,13 +127,6 @@ def calcGenoFreq(pop):
             freqDict[ind.genotype] = 1
         for allele in ind.genotype:
             alleleDict[allele] += 1
-    '''
-    for gen in freqDict.keys():
-        print("{}:\t{}\t{}%".format(gen, freqDict[gen], 200*freqDict[gen]/sum(freqDict.values())))
-
-    for allele in "pqr":
-        print("{}:\t{}\t{}%".format(allele, alleleDict[allele], 100*alleleDict[allele]/sum(alleleDict.values())))
-    '''
     return (freqDict, alleleDict)
 
 def calcNFDF(phenotype, phenoFreq):
