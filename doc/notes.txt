@@ -2,7 +2,13 @@
 
 ##Biological background needed:
     How many generations per season --> Usually 1 but sometimes multiple, depends on environment
-    How many eggs per generation --> Incorporate in fecundity?
+    Presumably many eggs/larvae per 'succesful' female, where is most population limitation?
+        If eggs --> drift
+        If larvae --> drift
+        If pre-mature adults --> drift+selection
+        If mature adults --> selection
+    #All the above purely considering colour morphs
+
    ~50% sex split?
 
 ##Baseline fixed stuff:
