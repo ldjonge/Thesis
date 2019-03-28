@@ -4,17 +4,19 @@ from standardFunctions import *
 from numpy.random import choice
 from numpy import exp
 import sys
+from math import log
 
 phenoDict = {"pp":"A", "pq":"A", "pr":"A", "qp":"A", "rp":"A", "qq":"I", "qr":"I", "rq":"I", "rr":"O"}
 
 #Starting parameters
-N=2000 #Population size, should be possible to keep small
-p=2/6 #Allele frequency
-q=2/6 #Allele frequency
-r=1/3 #Allele frequency
-nGen = 10 #Number of generations
+N=100 #Population size, should be possible to keep small
+K=1000 #Carrying capacity
+p=0.33 #Allele frequency
+q=0.33 #Allele frequency
+r=0.34 #Allele frequency
+nGen = 100 #Number of generations
 
-s = -5 #Selection Pressure
+s = -1 #Selection Pressure
 equilA = 0.33 #Equilibrium frequency for andromorphs
 equilI = 0.33 #Equilibrium frequency for infuscans
 
@@ -37,6 +39,7 @@ class Female:
             self.fecundity = exp(s*(phenoFreq["I"] - equilI))
         elif self.phenotype == "A":
             self.fecundity = exp(s*(phenoFreq["A"] - equilA))
+
 
 def randomAllele(p,q,r):
     newRand = random.random()
@@ -82,6 +85,37 @@ def reproduce(male, female):
     else:
         return Female(pAll, mAll)
 
+def repVarPop(pop, K):
+    newMalePop = []
+    newFemalePop = []
+    phenoFreq = calcPhenoFreq(pop)
+    maleFec = [ind.fecundity for ind in pop[0]]
+    maleFecSum = sum(maleFec)
+    maleFec = [i*(log(K/maleFecSum)+1) for i in maleFec]
+    femaleFec = [ind.fecundity for ind in pop[1]]
+    femaleFecSum = sum(femaleFec)
+
+    for i in pop[1]:
+        i.fullFec = i.fecundity*(1+log(K/femaleFecSum))
+        while i.fullFec > 1:
+            pat = choice(pop[0], 1, maleFec)[0]
+            offspring = reproduce(pat, i)
+            if type(offspring) == Male:
+                newMalePop.append(offspring)
+            else:
+                newFemalePop.append(offspring)
+            i.fullFec -= 1
+        if random.random() <= i.fullFec:
+            pat = choice(pop[0], 1, maleFec)[0]
+            offspring = reproduce(pat, i)
+            if type(offspring) == Male:
+                newMalePop.append(offspring)
+            else:
+                newFemalePop.append(offspring)
+
+    newPop = (newMalePop, newFemalePop)
+    return(newPop)
+
 def newGen(pop):
     newMalePop = []
     newFemalePop = []
@@ -107,7 +141,10 @@ def calcPhenoFreq(pop):
         freqDict[ind.phenotype] += 1
     phenoDist = {}
     for phen in "AIO":
-        phenoDist[phen] = freqDict[phen]/sum([freqDict["A"], freqDict["I"], freqDict["O"]])
+        try:
+            phenoDist[phen] = freqDict[phen]/sum([freqDict["A"], freqDict["I"], freqDict["O"]])
+        except ZeroDivisionError:
+            phenoDist[phen] = 0
     return phenoDist
 
 def calcGenoFreq(pop):
@@ -145,16 +182,18 @@ if __name__ == "__main__":
     for ind in femalePop:
         ind.calcFec(phenFreq)
     pop = (malePop, femalePop)
-    freqTable = [["A", "I", "O"]]
+    freqTable = [["A", "I", "O", "Males", "Females"]]
+    freqTable.append([str(phenFreq["A"]), str(phenFreq["I"]), str(phenFreq["O"]), str(len(pop[0])), str(len(pop[1]))])
     for gen in range(nGen):
-        pop = newGen(pop)
+        pop = repVarPop(pop, K)
         phenFreq = calcPhenoFreq(pop)
         for ind in pop[0]:
             ind.calcFec(phenFreq)
         for ind in pop[1]:
             ind.calcFec(phenFreq)
-        freqTable.append([str(phenFreq["A"]), str(phenFreq["I"]), str(phenFreq["O"])])
-    genoFreq = calcGenoFreq(pop)
+        #print([str(phenFreq["A"]), str(phenFreq["I"]), str(phenFreq["O"]), str(len(pop[0])), str(len(pop[1]))])
+        freqTable.append([str(phenFreq["A"]), str(phenFreq["I"]), str(phenFreq["O"]), str(len(pop[0])), str(len(pop[1]))])
+    #genoFreq = calcGenoFreq(pop)
     if len(sys.argv) > 1:
         with open(sys.argv[1], 'w') as outfile:
             for line in freqTable:
