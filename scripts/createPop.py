@@ -9,16 +9,16 @@ from math import log
 phenoDict = {"pp":"A", "pq":"A", "pr":"A", "qp":"A", "rp":"A", "qq":"I", "qr":"I", "rq":"I", "rr":"O"}
 
 #Starting parameters
-N=100 #Population size, should be possible to keep small
-K=1000 #Carrying capacity
+N=500 #Population size, should be possible to keep small
+K=200 #Carrying capacity
 p=0.33 #Allele frequency
 q=0.33 #Allele frequency
 r=0.34 #Allele frequency
-nGen = 100 #Number of generations
+nGen = 10000 #Number of generations
 
-s = -1 #Selection Pressure
-equilA = 0.33 #Equilibrium frequency for andromorphs
-equilI = 0.33 #Equilibrium frequency for infuscans
+s = -3 #Selection Pressure
+equilA = 0.5 #Equilibrium frequency for andromorphs
+equilI = 0.3 #Equilibrium frequency for infuscans
 
 class Male:
     def __init__(self, pAll, mAll):

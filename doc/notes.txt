@@ -29,7 +29,7 @@
  ~Each female has 2 alleles that determine phenotype
  ~Males have same alleles but are carriers, no effect
  ~Reproduction is actual random chance
-  One male can reproduce multiple times, females only once but produce multiple offspring
+  NO LONGER TRUE One male can reproduce multiple times, females only once but produce multiple offspring
   Innate preference for certain phenotype?
  ~Single population, no migration effects
 
