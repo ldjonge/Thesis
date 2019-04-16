@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[backend=biber, style=nature, citestyle=nature, maxnames=7, minnames=7, maxcitenames=2, mincitenames=1]{biblatex}
+\usepackage[colorlinks=true,  urlcolor=blue]{hyperref}
+
+\addbibresource{thesis.bib}
+
+\title{The Effects of Geographical Location on Maintained Variation Within Populations}
+\date{\vspace{-5ex}}
+\begin{document}
+\maketitle
+\noindent Student: Lorenzo de Jonge (\href{mailto:lo7105de-s@student.lu.se}{lo7105de-s@student.lu.se})\\
+Supervisor: Dr. Erik Svensson (\href{mailto:erik.svensson@biol.lu.se}{erik.svensson@biol.lu.se})\\
+Topic: Using computer simulations to evaluate effects of sexual selection\\
+Credits: 45\\
+
+\section{Introduction}
+While sexual selection as an evolutionary force has been described extensively, the main focus has generally been on change over time, and especially effects such as Fisherian runaways \cite{Fisher1915}. It was however shown using a modeling approach that unidirectional adaptation is not the only possible outcome of sexual selection \cite{Gavrilets2002}, with the alternative possibility of multiple female phenotypes evolving. Two different 'responses' from males were predicted, either having a single phenotype which is forced to choose a female morph for mating, or evolving the same number of different phenotypes adapted to an individual female morph. Since then evidence for this type of sexual selection has been found in various species \cite{Hardling2006,Kagawa2016,Svensson2007}. In the blue-tailed damselfly (\textit{Ischnura elegans}) for example, three different colour variations are found in females. No adaptation from males in response has been detected so far. In a study investigating populations throughout Europe, all three morphs were found in over 80\% of populations, with not a single populations being monomorphic \cite{Gosden2011}.  As monomorphic populations would be expected to exist due to drift, other reasons for this variation must exist.
+
+A common explanation for sustained variation such as this is negative frequency dependent selection (NFDS), which means fitness of a certain phenotype decreases as the proportion of the population with that same phenotype increases. This has been found to be a relatively common effect of sexual selection in species with large effects of mating harassment on females, such as \textit{I. elegans}. In many of these species a female colour variation exists that looks similar to males, functioning as a male mimic. The effectiveness of such mimicry is reduced when male mimics are common, as the males will develop a search image for this phenotype. If however male mimics are uncommon, the individuals with that colouration are more likely to be successful. These effects of sexual selection have been shown both theoretically and empirically to explain the stability of phenotype frequency despite genetic drift (e.g. \cite{Hardling2006,LeRouzic2015,Svensson2005}).
+
+Morph frequencies were found to be highly variable over the range in which \textit{I. elegans} is found, with androchrome females being significantly more common at higher latitudes \cite{Gosden2011}. In addition, even at the same latitude large variations in frequency distributions were found. While evidence has been found that different colour variations adapt to temperature changes in different ways \cite{Lancaster2017}, the mechanisms leading to these differences are unknown. Colour variations in \textit{I. elegans} are the result of three alleles in a single locus \cite{Sanchez2005}. While this could be a multi-trait locus, it is also possible that correlational selection occurs, leading to combinations of trait being more successful when combined.
+
+A second factor that has been suggested as a possible cause of the absence of monomorphic populations is the potential reduced fitness of populations with only one phenotype. This could be the result of reduced individual fitness of females in these populations, caused by high mating harassment \cite{Takahashi2014}. If monomorphic populations have reduced evolutionary success, this could explain why all remaining populations have multiple colour morphs.
+
+A final factor that could play a role in the frequency distributions varying between population is a differential dispersal rate. Evidence of differential dispersal between other species of damselflies has been found \cite{mcpeek1989}, and considering that other phenotypical effects are correlated with the colour polymorphisms, it is possible that different colour morphs are more or less likely to migrate and start new populations. This could explain why the populations at the edges of the range distribution often have a large frequency of a single phenotype \cite{Gosden2011}.
+
+\section{Aim}
+The aim of this project will be to further investigate the effects of different geographical factor both directly on the colour variation in females of \textit{I. elegans} and specifically on the interaction between those effects and sexual selection pressures. This should provide insight not only into \textit{I. elegans} specifically, but also into the evolutionary processes involved in general. Three main factors will be explored:
+\begin{itemize}
+    \item Different selection pressures on different phenotypes due to environmental factors
+    \item Different extinction risks of populations depending on the variation in phenotypes
+    \item Differential dispersion rates depending on phenotype
+\end{itemize}
+
+
+\section{Methods}
+The research will be performed through computer modelling, using individual based models and possibly population genetics models to simulate real populations with selection pressures built in both based on the environment and frequency dependent mating harassment. Throughout the duration of the project, results will be compared to both previous and current field data to validate the models. Ideally parameter values will be determined through machine learning with field data as a learning set.
+
+\section{Time Plan}
+Start Date: 2019-04-01\\
+End Date: 2019-12-20\\
+Total Duration: 30 weeks\\
+Literature Research: 4 weeks\\
+Preliminary Model Design: 4 weeks\\
+Incorporating Geographical Variation: 4 weeks\\
+Investigating Population Extinction Risk: 2 weeks\\
+Incorporating Migration and Variable Dispersal Rates: 4 weeks\\
+Determining Accurate Parameter Values Through Machine Learning: 7 weeks\\
+Writing Final Report: 4 weeks\\
+Preparing Presentation: 1 week\\
+
+\printbibliography
+
+\end{document}

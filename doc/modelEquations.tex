@@ -1,0 +1,86 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[backend=biber, style=nature, citestyle=nature, maxnames=7, minnames=7, maxcitenames=2, mincitenames=1]{biblatex}
+\usepackage[colorlinks=true,  urlcolor=blue]{hyperref}
+
+\addbibresource{thesis.bib}
+\title{Model options and ideas}
+\date{\vspace{-5ex}}
+
+\begin{document}
+\maketitle
+
+\section{Mating success}
+Experiments have shown that identifying a female as a sexual partner only rarely leads to a successful mating. This could reasonably be accounted for in the model by having a male select a partner, which will then only result in actual mating in a percentage of the time based on lab/field results.
+
+\section{Mating system}
+Each male will have a certain number of attempts at reproducing. This will presumably be the same for each male, with their success determined by both their own fecundity as well as the fecundity of the female they choose. This leads to a potential two-fold system of female fecundity, one based on the probability of them 'surviving' to the point where they have mating interactions, and one based on the probability of mating being successful and leading to egg-laying. With the change in shape in androchrome females, the survival portion would presumably be identical to the other female morphs, however either the probability of successful intercourse or the number of eggs laid could be lower.
+
+The chances of a male finding a potential partner would depend firstly on their own capability, which could potentially be reduced when mated by another male. Subsequently there may be a different probability of a match leading to copulation, which could differ both between males and between females.
+
+Multiple nested for-loops will probably be used, with the outermost one representing one generation for each cycle. Within this cycle there are multiple stages, starting from the egg stage. At this point the number of individuals is well above the actual noted population size, and the first step in the cycle is to randomly sample a portion of the individuals which will go into the reproduction cycle. As colours are not yet expressed at this stage, and sex is not expected to have an effect here, individuals will be sampled fully randomly, this will obviously be done without replacement. At this point the population distribution will be measured, noting the sex distribution as well as the female morph distribution. Based on the female morph distribution, each male will then go through the 'learning' process to determine their sexual preference. At this stage a potential migration step could be added. With sexual preference determined and other fecundity values being solely dependent on colour, sex, and potentially location, the population is then ready to go through the reproduction process. The reproduction process will be another multi-step process. It will consist of a loop that is run a number of times representing the 'searching' attempts of each male. Each of these runs will loop through the male population. Each male will search for a female, with a chance of complete failure depending on his own fecundity as well as the prevalence of his favoured phenotype. On a successful find, the male will attempt to mate, with the potential mate determined through weighted random sampling of the (female?) population. This has a relatively low chance of success, but will always reduce the female's fecundity. On a success, the female is effectively taken out of the female pool for the rest of this run and potentially one or two future runs. A successful mating session will produce a number of offspring that is either fixed or depending on fecundity. These will be taken into the next generation to start the cycle again.
+
+Due to this searching process early on in the generation cycle the most common phenotype will be assaulted the most, which should lead to more successful matings, but also to reduced fecundity as a consequence of all the harassment. This way the model should account for both the potential of having no mating throughout a season as a result of not being recognised as a potential partner, but also reducing the fitness of an overly common phenotype due to mating harassment.
+
+\section{Potential model 1: Learning frequencies}
+One would assume that the preference frequency for a specific female morph is directly dependent on the frequency of said morph. It is however unlikely that this relationship is linear, with a population containing 80\% of one morph probably having an even higher frequency of preference for that morph. Frequencies should add up to 1 nonetheless. Perhaps some form of power/exponential/ logarithmic function, adjusted to get to a total preference frequency of 1?. It should however be noted that the way this will be implemented in the model is not to result in a fixed frequency of preferences, but rather have the preference of each male be determined randomly with the probabilities so that in a large enough population such frequencies would occur. As a result it should also be relatively doable to adjust this model to account for the possible genetic inheritance of morph preference, whether that be on the same locus or a different one.
+If we call the morphs \(A\), \(I\) and \(O\); and the preferences \(a\), \(i\), and \(o\) respectively, mating could perhaps follow the following equations, inspired by \cite{Hardling2006}:
+\begin{equation}\Psi = Aa + Ii + Oo + k(Ai + Ao + Ia + Io + Oa + Oi) \end{equation}
+\begin{equation}P(A,a) = \frac{Aa}{\Psi} \end{equation}
+\begin{equation}P(A,i) = \frac{kAi}{\Psi} \end{equation}
+\begin{equation}P(A,o) = \frac{kAo}{\Psi} \end{equation}
+\begin{equation}P(I,i) = \frac{Ii}{\Psi} \end{equation}
+\begin{equation}P(I,a) = \frac{kIa}{\Psi} \end{equation}
+\begin{equation}P(I,o) = \frac{kIo}{\Psi} \end{equation}
+\begin{equation}P(O,o) = \frac{Oo}{\Psi} \end{equation}
+\begin{equation}P(O,i) = \frac{kOi}{\Psi} \end{equation}
+\begin{equation}P(O,a) = \frac{kOa}{\Psi} \end{equation}
+
+\noindent This assumes males gain a preference for a single morph and make no real distinction between the other two morphs. This makes \(k\) equal to the probability of going for an "off-type" female.
+
+\noindent These values however may not be super useful, with more use in the model for the following, which give the probability for each type of male to pick a specific type of female:
+
+\begin{equation}P(A,a) = \frac{Aa}{Aa+kIa+kOa} \end{equation}
+\begin{equation}P(A,i) = \frac{kAi}{kAi+Ii+kOi} \end{equation}
+\begin{equation}P(A,o) = \frac{kAo}{kAo+kIo+Oo} \end{equation}
+\begin{equation}P(I,i) = \frac{Ii}{kAi+Ii+kOi} \end{equation}
+\begin{equation}P(I,a) = \frac{kIa}{Aa+kIa+kOa} \end{equation}
+\begin{equation}P(I,o) = \frac{kIo}{kAo+kIo+Oo} \end{equation}
+\begin{equation}P(O,o) = \frac{Oo}{kAo+kIo+Oo} \end{equation}
+\begin{equation}P(O,i) = \frac{kOi}{kAi+Ii+kOi} \end{equation}
+\begin{equation}P(O,a) = \frac{kOa}{Aa+kIa+kOa} \end{equation}
+
+The results of these equations will then be used to sample a specific female from the population. This should probably lead to weighted sampling, where the frequency of the relevant female phenotype is taken out of the numerator of the equation (11-19) to provide the relative weight. The frequency is then directly accounted for due to these females being more common and having a higher probability of being mated due to that.
+
+\noindent Subsequently female fitness will then be directly dependent on the total probability of her being mated (e.g. equations 11-13 for A females), with fitness being low both if she is not being mated at all and if she is being mated too much. This means that fitness based on the frequency distribution no longer needs to be calculated directly and instead the fecundity will only be dependent on other (abiotic) factors.
+
+\section{Potential Model 2: Migration}
+Instead of a single population, multiple populations could be produced at the same time. These populations would be connected via migration. To start this could be a simple model with only two populations, and each individual having a fixed chance to migrate. This should however be expanded to have different migration probabilities for different individuals based on sex and phenotype, as well as potentially some environmental factors and population density. There should also be an expansion to produce more than 2 populations, which would be connected at different rates based on a geographical layout, potentially representing Sk{\aa}ne. Migration presumably happens after the larval stage but before the mating stage.
+
+\section{Potential Model 3: New population}
+To expand on the model with migration, populations at the edges of the range may have the possibility to migrate into new areas with no \textit{I. elegans} present, where they could potentially start a new population. Of course these populations will start out small and many may go extinct right away, but that also makes for a realistic way of reducing population size. The exact mechanisms of migration should presumably be dependant on the areas, making a realistic geographical layout such as using the real layout of Sk{\aa}ne a sensible solution. I don't yet want to think about the work that will be required for this.
+
+\section{Model addition 1: Multiple eggs per mating}
+Instead of a mating producing a single offspring with a random genotype, no randomness will be involved in the production of offspring. Rather, a single mating will result in \(\pm\)100 offspring, 25\% of each potential genotype combination. The first step to occur in each generation will then be the selection of \(\pm\)1\% of this offspring being randomly selected to survive and be part of the actual reproduction model. This number may be varied based on carrying capacity although that may not be required at the start to instead have a bigger effect on population size from the selective pressures.
+
+\section{Model addition 2: Reduced andromorph fecundity}
+In the same way that environmental factors will have an effect on fecundity of all females, the andromorph's baseline fecundity can be lowered a bit.
+
+
+\section{Model addition 3: Mating success depending on mate choice}
+Factor in a possibility of not finding a mate if said mate is too uncommon, prior to the mating attempt even happening. This is probably irrelevant unless a genetic basis for preference is included, as there will be no selection working over multiple generations to make mate choice into a relevant evolutionary factor.
+
+\section{Model addition 4: Genetic basis for preference}
+There may or may not be a genetic basis for preference. While it is certain that learning plays a role, it is not proven to be the only factor. We could therefore incorporate genetics into the model. Assuming preference to be linked closely to the genes affecting the different female morphs is the easiest to model, and will merely require a baseline preference for a specific phenotype to be added before accounting for learning. It should however be noted there is no sensible ground for this assumption, and it is much more likely that if there is a genetic basis for preference, this would be the result of variation in a different gene. This would require adding in additional alleles, with a possible dominance hierarchy, or different values for the heterozygotes. While this would make the model more realistic and certainly be an interesting thing to model, it may be better to leave it out for the time being and focus on other research questions instead.
+
+\section{Model addition 5: Homosexuality}
+As androchrome females are supposed to function as male mimics, and in fact are so good at it that in Southern Europe researchers were unaware of their presence mistaking them for males, it would make sense that males are capable of making the same mistake. This could lead to a male that 'assumes' to be mating with an androchrome female harassing another male instead. This would obviously lead to a failed mating attempt, reducing the fitness of both males. This is also the main reason for choosing a male first, which then tries to mate with a female. While failure is always an option, it could reasonably be assumed failure is a bigger risk when androchrome females are common. It should however be assumed that males are not completely blind, and as such would  still be more likely to identify females as such than mistaking males for females. Due to frequency not being accounted for in the weights, the weight given to androchrome females can simply be multiplied by a factor \(h\). While mating with females has a chance to succeed, of course if mating another male this probability will be 0. Should be discussed  with the lab group if this has ever been seen in reality, and how big of a detrimental effect it could have on the affected male. Presumably the effect would be similar to the effect on females.
+
+\section{Model addition 6: Harassment}
+It is well known that mating attempts affect females negatively. Since the model will account for failed mating attempts, it would be reasonable to have either each mating attempt reduce the female's fecundity, or alternatively have a probability to reduce the fecundity. This could be achieved either by having an increasing chance of death or equivalent, or by reducing the female's fecundity in the weights for being chosen to mate again.
+
+\section{Model addition 7: Male population affects preference}
+Depending on the results from experiments with males growing up in sausage fests or all alone, it may be relevant to increase the probability of developing a preference for androchrome females in populations with a high density of males. This could also be another explanation for the low frequencies of androchrome females in most populations in Europe, as presumably male frequency on average is at least 50\%, which would result in a high preference for androchrome females.
+
+\printbibliography
+\end{document}
