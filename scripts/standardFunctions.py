@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import math
+import random
 
 def alleleFreq(A,I,O):  #Floats only
     try:
@@ -50,3 +51,9 @@ def phenoFreq(p,q,r):
     I = q**2 + 2*q*r
     O = r**2
     return({"A":A,"I":I,"O":O})
+
+def randomRound(num):
+    if random.random() >= num-math.floor(num):
+        return(math.floor(num))
+    else:
+        return(math.ceil(num))

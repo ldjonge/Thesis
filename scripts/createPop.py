@@ -4,18 +4,29 @@ from standardFunctions import *
 from numpy.random import choice
 from numpy import exp
 import sys
-from math import log
+import math
 
 phenoDict = {"pp":"A", "pq":"A", "pr":"A", "qp":"A", "rp":"A", "qq":"I", "qr":"I", "rq":"I", "rr":"O"}
 
 #Starting parameters
+def readParams():
+    with open("scripts/parameters.ini", "r") as infile:
+        paramDict = {}
+        for line in infile:
+            line = line.strip()
+            line = line.split(" ")
+            try:
+                paramDict[line[0]] = float(line[1])
+            except ValueError:
+                paramDict[line[0]] = line[1]
+    return(paramDict)
+
 N=500 #Population size, should be possible to keep small
 K=200 #Carrying capacity
 p=0.33 #Allele frequency
 q=0.33 #Allele frequency
 r=0.34 #Allele frequency
-nGen = 10000 #Number of generations
-
+nGen = 100 #Number of generations
 s = -3 #Selection Pressure
 equilA = 0.5 #Equilibrium frequency for andromorphs
 equilI = 0.3 #Equilibrium frequency for infuscans
@@ -26,11 +37,21 @@ class Male:
         self.phenotype = "M"
     def calcFec(self, phenoFreq):
         self.fecundity = 1
+    def learning(self, phenoFreq):
+        self.aPref = phenoFreq["A"]
+        self.iPref = phenoFreq["I"]
+        self.oPref = phenoFreq["O"]
+    def __str__(self):
+        return self.phenotype
 
 class Female:
     def __init__(self,pAll,mAll):
         self.genotype = pAll+mAll
         self.phenotype = phenoDict[self.genotype]
+        self.taken = 0
+
+    def __str__(self):
+        return self.phenotype
 
     def calcFec(self, phenoFreq): #As per Le Rouzic 2015
         if self.phenotype == "O":
@@ -39,6 +60,9 @@ class Female:
             self.fecundity = exp(s*(phenoFreq["I"] - equilI))
         elif self.phenotype == "A":
             self.fecundity = exp(s*(phenoFreq["A"] - equilA))
+
+    def mate(self):
+        self.taken += 1
 
 
 def randomAllele(p,q,r):
@@ -91,12 +115,12 @@ def repVarPop(pop, K):
     phenoFreq = calcPhenoFreq(pop)
     maleFec = [ind.fecundity for ind in pop[0]]
     maleFecSum = sum(maleFec)
-    maleFec = [i*(log(K/maleFecSum)+1) for i in maleFec]
+    maleFec = [i*(math.log(K/maleFecSum)+1) for i in maleFec]
     femaleFec = [ind.fecundity for ind in pop[1]]
     femaleFecSum = sum(femaleFec)
 
     for i in pop[1]:
-        i.fullFec = i.fecundity*(1+log(K/femaleFecSum))
+        i.fullFec = i.fecundity*(1+math.log(K/femaleFecSum))
         while i.fullFec > 1:
             pat = choice(pop[0], 1, maleFec)[0]
             offspring = reproduce(pat, i)
@@ -173,15 +197,21 @@ def calcNFDF(phenotype, phenoFreq):
         fecundity = N/3
     return fecundity
 
-if __name__ == "__main__":
+def startingPop(N, p, q, r):
     malePop = createMalePop(N//2, p,q,r)
     femalePop = createFemalePop(N//2, p,q,r)
     phenFreq = calcPhenoFreq((malePop, femalePop))
+    print(phenFreq)
     for ind in malePop:
         ind.calcFec(phenFreq)
+        ind.learning(phenFreq)
     for ind in femalePop:
         ind.calcFec(phenFreq)
     pop = (malePop, femalePop)
+    return pop
+
+if __name__ == "__main__":
+    pop = startingPop(N,p,q,r)
     freqTable = [["A", "I", "O", "Males", "Females"]]
     freqTable.append([str(phenFreq["A"]), str(phenFreq["I"]), str(phenFreq["O"]), str(len(pop[0])), str(len(pop[1]))])
     for gen in range(nGen):
