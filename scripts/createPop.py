@@ -23,9 +23,9 @@ def readParams():
 
 N=500 #Population size, should be possible to keep small
 K=200 #Carrying capacity
-p=0.33 #Allele frequency
-q=0.33 #Allele frequency
-r=0.34 #Allele frequency
+p=0.23 #Allele frequency
+q=0.23 #Allele frequency
+r=0.54 #Allele frequency
 nGen = 100 #Number of generations
 s = -3 #Selection Pressure
 equilA = 0.5 #Equilibrium frequency for andromorphs
@@ -55,11 +55,11 @@ class Female:
 
     def calcFec(self, phenoFreq): #As per Le Rouzic 2015
         if self.phenotype == "O":
-            self.fecundity = exp(0)
+            self.fecundity = 1
         elif self.phenotype == "I":
-            self.fecundity = exp(s*(phenoFreq["I"] - equilI))
+            self.fecundity = 1
         elif self.phenotype == "A":
-            self.fecundity = exp(s*(phenoFreq["A"] - equilA))
+            self.fecundity = 0.85
 
     def mate(self):
         self.taken += 1
@@ -201,7 +201,7 @@ def startingPop(N, p, q, r):
     malePop = createMalePop(N//2, p,q,r)
     femalePop = createFemalePop(N//2, p,q,r)
     phenFreq = calcPhenoFreq((malePop, femalePop))
-    print(phenFreq)
+    #print(phenFreq)
     for ind in malePop:
         ind.calcFec(phenFreq)
         ind.learning(phenFreq)
