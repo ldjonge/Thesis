@@ -3,3 +3,6 @@ scripts/__pycache__
 scripts/.Rhistory
 scripts/outTable
 scripts/Rplots.pdf
+output/
+*.png
+outTable

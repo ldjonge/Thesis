@@ -59,7 +59,7 @@ class Female:
         elif self.phenotype == "I":
             self.fecundity = 1
         elif self.phenotype == "A":
-            self.fecundity = 0.85
+            self.fecundity = 0.9
 
     def mate(self):
         self.taken += 1

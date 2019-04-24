@@ -8,35 +8,42 @@ from createPop import *
 
 nEggs = 208
 
-def matingSearch(pop, nEggs, successRate, newPop):
+def matingSearch(pop, nEggs, successRate, newPop, K):
     if len(pop[1])!=0:
         for male in pop[0]:
             hitChance = []
+            for ind in pop[0]:
+                hitChance.append(max(0.5*male.aPref, 0))
             for fem in pop[1]:
                 if fem.taken != 0:
                     hitChance.append(0)
                 elif fem.phenotype == "A":
-                    hitChance.append(max(male.aPref*fem.fecundity, 0))
+                    hitChance.append(max(male.aPref, 0))
                 elif fem.phenotype == "I":
-                    hitChance.append(max(male.iPref*fem.fecundity, 0))
+                    hitChance.append(max(male.iPref, 0))
                 elif fem.phenotype == "O":
-                    hitChance.append(max(male.oPref*fem.fecundity, 0))
+                    hitChance.append(max(male.oPref, 0))
+            while len(hitChance)<K:
+                hitChance.append(0.2)
+            totalPop = pop[0] + pop[1]
+            while len(totalPop)<K:
+                totalPop.append(None)
             totalW = sum(hitChance)
             if totalW != 0:
                 for i in range(len(hitChance)):
                     hitChance[i] = hitChance[i]/totalW
-                mate = choice(pop[1], p=hitChance)
-
-                if random.random() <= successRate:
-                    eggLay(newPop, male, mate, math.ceil(nEggs*mate.fecundity))
-                    mate.mate()
-                else:
-                    mate.fecundity *=0.92
-                    if mate.fecundity <0.5:
-                        if random.random()**2>mate.fecundity:
+                mate = choice(totalPop, p=hitChance)
+                if type(mate)==Female:
+                    if random.random() <= successRate*mate.fecundity:
+                        eggLay(newPop, male, mate, math.ceil(nEggs*mate.fecundity))
+                        mate.mate()
+                    else:
+                        mate.fecundity *=0.8
+                        #if mate.fecundity <0.5:
+                        #    if random.random()**2>mate.fecundity:
+                        #        mate.fecundity = 0
+                        if mate.fecundity <= 0:
                             mate.fecundity = 0
-                    if mate.fecundity <= 0:
-                        mate.fecundity = 0
     else:
         pass
 
@@ -72,14 +79,19 @@ def popControl(pop, size):
     newPop = (malePop, femalePop)
     return(newPop)
 
-def main():
+
+
+def runSim(length):
     paramDict = readParams()
     pop = startingPop(int(paramDict["N"]), paramDict["p"], paramDict["q"], paramDict["r"])
-    freqTable = [["A", "I", "O", "Males", "Females"]]
-    for gen in range(nGen):
+    if length=="short":
+        freqTable = [["Gen", "A", "I", "O", "Males", "Females"]]
+    elif length=="long":
+        freqTable = [["Gen", "Pheno", "Value"]]
+    for gen in range(1, nGen+1):
         nextGen = []
         for i in range(20):
-            matingSearch(pop, nEggs, paramDict["successRate"], nextGen)
+            matingSearch(pop, nEggs, paramDict["successRate"], nextGen, paramDict["K"])
             for fem in pop[1]:
                 if fem.taken != 0:
                     fem.taken -= 1
@@ -104,10 +116,23 @@ def main():
         for ind in pop[1]:
             ind.calcFec(phenFreq)
         #print([str(phenFreq["A"]), str(phenFreq["I"]), str(phenFreq["O"]), str(len(pop[0])), str(len(pop[1]))])
-        freqTable.append([str(phenFreq["A"]), str(phenFreq["I"]), str(phenFreq["O"]), str(len(pop[0])), str(len(pop[1]))])
-        if (gen+1)%10 == 0:
-            print("Generation {} complete, population size {}".format(str(gen+1), str(len(pop[0])+len(pop[1]))))
+        if length == "short":
+            freqTable.append([str(gen), str(phenFreq["A"]), str(phenFreq["I"]), str(phenFreq["O"]), str(len(pop[0])), str(len(pop[1]))])
+        elif length == "long":
+            freqTable.append([gen, "A", phenFreq["A"]])
+            freqTable.append([gen, "I", phenFreq["I"]])
+            freqTable.append([gen, "O", phenFreq["O"]])
+            freqTable.append([gen, "M", len(pop[0])])
+            freqTable.append([gen, "F", len(pop[1])])
 
+        else:
+            print("failure")
+        if (gen)%10 == 0:
+            print("Generation {} complete, population size {}".format(str(gen), str(len(pop[0])+len(pop[1]))))
+    return freqTable
+
+def main():
+    freqTable = runSim("long")
     if len(sys.argv) > 1:
         with open(sys.argv[1], 'w') as outfile:
             for line in freqTable:
