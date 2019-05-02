@@ -3,6 +3,9 @@ scripts/__pycache__
 scripts/.Rhistory
 scripts/outTable
 scripts/Rplots.pdf
-output/
+output/*.png
+output/freqs/
+output/popSize/
+output/raw/
 *.png
 outTable

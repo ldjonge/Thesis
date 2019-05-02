@@ -38,9 +38,9 @@ class Male:
     def calcFec(self, phenoFreq):
         self.fecundity = 1
     def learning(self, phenoFreq):
-        self.aPref = phenoFreq["A"]
-        self.iPref = phenoFreq["I"]
-        self.oPref = phenoFreq["O"]
+        self.aPref = (exp(5*phenoFreq["A"]-2))/(exp(5*phenoFreq["A"]-2)+1)
+        self.iPref = (exp(5*phenoFreq["I"]-2))/(exp(5*phenoFreq["I"]-2.4)+1)+0.2
+        self.oPref = (exp(5*phenoFreq["O"]-2))/(exp(5*phenoFreq["O"]-2.4)+1)+0.2
     def __str__(self):
         return self.phenotype
 
@@ -59,7 +59,7 @@ class Female:
         elif self.phenotype == "I":
             self.fecundity = 1
         elif self.phenotype == "A":
-            self.fecundity = 0.9
+            self.fecundity = 1
 
     def mate(self):
         self.taken += 1

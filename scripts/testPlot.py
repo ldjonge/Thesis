@@ -21,6 +21,7 @@ with open("output/paramValues.tsv", "a") as paramFile:
             valueList.append(str(paramValues[i]))
         except KeyError:
             print(i)
+            valueList.append(" ")
     valueList = "\t".join(valueList)
     print(valueList, file=paramFile)
 
@@ -46,6 +47,14 @@ plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["A
 sns.despine()
 plot.savefig("output/freqs/sim{}.png".format(newFile))
 
-plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["M", "F"], palette =["blue", "red"], data=table)
+plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["M", "F", "T"], palette =["blue", "red", "black"], data=table)
 sns.despine()
 plot.savefig("output/popSize/sim{}.png".format(newFile))
+
+plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["MalF", "FemF"], palette=["blue", "red"], data=table)
+sns.despine()
+plot.savefig("output/fecundity/sim{}.png".format(newFile))
+
+plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["APref", "IPref", "OPref"], palette = ["blue", "green", "red"], data=table)
+sns.despine()
+plot.savefig("output/prefs/sim{}.png".format(newFile))
