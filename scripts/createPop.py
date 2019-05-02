@@ -39,8 +39,18 @@ class Male:
         self.fecundity = 1
     def learning(self, phenoFreq):
         self.aPref = (exp(5*phenoFreq["A"]-2))/(exp(5*phenoFreq["A"]-2)+1)
-        self.iPref = (exp(5*phenoFreq["I"]-2))/(exp(5*phenoFreq["I"]-2.4)+1)+0.2
-        self.oPref = (exp(5*phenoFreq["O"]-2))/(exp(5*phenoFreq["O"]-2.4)+1)+0.2
+        self.iPref = (exp(5*phenoFreq["I"]-2))/(exp(5*phenoFreq["I"]-2)+1)
+        self.oPref = (exp(5*phenoFreq["O"]-2))/(exp(5*phenoFreq["O"]-2)+1)
+
+    def complexLearning(self, pop):
+        if len(pop) >= 50:
+            selected = choice(pop, size=50, replace=False)
+        else:
+            selected = pop
+        prefDict = calcPhenoFreqM(selected)
+        self.aPref = 0.25*prefDict["M"]+1.75*prefDict["A"]
+        self.iPref = 2*prefDict["I"]+0.2
+        self.oPref = 2*prefDict["O"]+0.2
     def __str__(self):
         return self.phenotype
 
@@ -171,6 +181,18 @@ def calcPhenoFreq(pop):
             phenoDist[phen] = 0
     return phenoDist
 
+def calcPhenoFreqM(pop):
+    freqDict = {"M":0, "A":0, "I":0, "O":0}
+    for ind in pop:
+        freqDict[ind.phenotype] += 1
+    phenoDist = {}
+    for phen in "MAIO":
+        try:
+            phenoDist[phen] = freqDict[phen]/sum([freqDict["A"], freqDict["I"], freqDict["O"], freqDict["M"]])
+        except ZeroDivisionError:
+            phenoDist[phen] = 0
+    return phenoDist
+
 def calcGenoFreq(pop):
     freqDict = {}
     alleleDict = {"p":0, "q":0, "r":0}
@@ -202,9 +224,10 @@ def startingPop(N, p, q, r):
     femalePop = createFemalePop(N//2, p,q,r)
     phenFreq = calcPhenoFreq((malePop, femalePop))
     #print(phenFreq)
+    totalPop = malePop+femalePop
     for ind in malePop:
         ind.calcFec(phenFreq)
-        ind.learning(phenFreq)
+        ind.complexLearning(totalPop)
     for ind in femalePop:
         ind.calcFec(phenFreq)
     pop = (malePop, femalePop)

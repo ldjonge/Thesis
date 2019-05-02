@@ -45,6 +45,7 @@ sns.set_style("white")
 
 plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["A", "I", "O"], palette=["blue", "green", "red"], data=table)
 sns.despine()
+plot.set(ylim=(None,1.01))
 plot.savefig("output/freqs/sim{}.png".format(newFile))
 
 plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["M", "F", "T"], palette =["blue", "red", "black"], data=table)
@@ -53,8 +54,14 @@ plot.savefig("output/popSize/sim{}.png".format(newFile))
 
 plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["MalF", "FemF"], palette=["blue", "red"], data=table)
 sns.despine()
+plot.set(ylim=(None,1.01))
 plot.savefig("output/fecundity/sim{}.png".format(newFile))
 
 plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["APref", "IPref", "OPref"], palette = ["blue", "green", "red"], data=table)
 sns.despine()
+plot.set(ylim=(None,1.01))
 plot.savefig("output/prefs/sim{}.png".format(newFile))
+
+plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["Contacts", "Matings", "MMContacts"], palette = ["red", "green", "blue"], data=table)
+sns.despine()
+plot.savefig("output/contact/sim{}.png".format(newFile))
