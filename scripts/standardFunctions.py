@@ -57,3 +57,6 @@ def randomRound(num):
         return(math.floor(num))
     else:
         return(math.ceil(num))
+
+if __name__ == "__main__":
+    print(alleleFreq(1/3,1/3,1/3))

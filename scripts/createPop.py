@@ -51,6 +51,17 @@ class Male:
         self.aPref = 0.25*prefDict["M"]+1.75*prefDict["A"]
         self.iPref = 2*prefDict["I"]+0.2
         self.oPref = 2*prefDict["O"]+0.2
+
+    def genAlgLearning(self, pop, genVars):
+        if len(pop) >= 50:
+            selected = choice(pop, size=50, replace=False)
+        else:
+            selected = pop
+        prefDict = calcPhenoFreqM(selected)
+        self.aPref = genVars[4]*prefDict["M"]+genVars[1]*prefDict["A"]
+        self.iPref = genVars[2]*prefDict["I"]+genVars[5]
+        self.oPref = genVars[3]*prefDict["O"]+genVars[5]
+
     def __str__(self):
         return self.phenotype
 
@@ -228,6 +239,20 @@ def startingPop(N, p, q, r):
     for ind in malePop:
         ind.calcFec(phenFreq)
         ind.complexLearning(totalPop)
+    for ind in femalePop:
+        ind.calcFec(phenFreq)
+    pop = (malePop, femalePop)
+    return pop
+
+def genAlgStartingPop(N,p,q,r, genVars):
+    malePop = createMalePop(N//2, p,q,r)
+    femalePop = createFemalePop(N//2, p,q,r)
+    phenFreq = calcPhenoFreq((malePop, femalePop))
+    #print(phenFreq)
+    totalPop = malePop+femalePop
+    for ind in malePop:
+        ind.calcFec(phenFreq)
+        ind.genAlgLearning(totalPop, genVars)
     for ind in femalePop:
         ind.calcFec(phenFreq)
     pop = (malePop, femalePop)
