@@ -127,18 +127,18 @@ def genAlgGeneration(genVars):
 def controlVars(genVars):
     for gene in genVars:
         if gene[0] < 0:
-            numpy.put(gene,0, 0-gene[i])
+            numpy.put(gene,0, 0-gene[0])
         if gene[0] > 0.5:
-            numpy.put(gene,0, 1-gene[i])
+            numpy.put(gene,0, 1-gene[0])
         for i in range(1,5):
             if gene[i] < 0:
                 numpy.put(gene,i, 0-gene[i])
             if gene[i] > 2:
                 numpy.put(gene,i, 4-gene[i])
         if gene[5] < -0.5:
-            numpy.put(gene,5, -1-gene[i])
+            numpy.put(gene,5, -1-gene[5])
         if gene[5] > 0.5:
-            numpy.put(gene,5, 1-gene[i])
+            numpy.put(gene,5, 1-gene[5])
         for i in range(6,11):
             if gene[i] < 0.5:
                 numpy.put(gene,i, 1-gene[i])
@@ -166,4 +166,4 @@ if __name__ == "__main__":
     for line in output:
         if len(sys.argv) > 1:
             with open(sys.argv[1], "w") as outfile:
-                print(line, outfile)
+                print(line, file=outfile)
