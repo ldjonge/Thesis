@@ -3,6 +3,7 @@ import numpy
 from createPop import *
 from mating import eggLay, newPopSize, popControl
 from genAlg import *
+import sys
 
 """
 Starting frequencies can be fixed at 1/3 for these sims
@@ -97,7 +98,7 @@ def runSim(genVars):
     pop = genAlgStartingPop(200, 0.18, 0.24, 0.58, genVars)
     for gen in range(50):
         nextGen = []
-        for i in range(20):
+        for i in range(30):
             matingSearch(pop, nextGen, genVars)
             for fem in pop[1]:
                 if fem.taken !=0:
@@ -152,7 +153,7 @@ def controlVars(genVars):
 if __name__ == "__main__":
     genePop = createGenes()
     output = []
-    for gen in range(5):
+    for gen in range(20):
         results = genAlgGeneration(genePop)
         fitnessFrame = fitnessSort(results)
         parents = selectMating(genePop, fitnessFrame,32)
@@ -163,4 +164,6 @@ if __name__ == "__main__":
         genePop = controlVars(offspring)
         #print("Wow")
     for line in output:
-        print(line)
+        if len(sys.argv) > 1:
+            with open(sys.argv[1], "w") as outfile:
+                print(line, outfile)
