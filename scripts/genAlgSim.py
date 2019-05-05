@@ -11,10 +11,10 @@ Parameters to vary:
 0   successRate: range(0,0.5)
 1:4 learning parameters:    aPref, iPref, oPref, mPref, range(0,2)
 5   Heterochrome Bonus preference, range(-0.5,0.5)
-6   female affected by mating, range(0.5,1)
-7   female affected by failed mating, range(0.5,1)
-8   male affected by mating, range(0.5,1)
-9   male affected by failed mating, range(0.5,1)
+6   female affected by mating, range(0.8,1)
+7   female affected by failed mating, range(0.8,1)
+8   male affected by mating, range(0.8,1)
+9   male affected by failed mating, range(0.8,1)
 10  pref effect failed mating, range(0.5,1)
 11  pref effect successful mating, range(1,2)
 
@@ -25,9 +25,10 @@ def createGenes():
     succesVars = numpy.random.uniform(low=0, high=0.5, size=(48,1))
     learningVars = numpy.random.uniform(low=0, high=2, size=(48,4))
     femBonus = numpy.random.uniform(low=-0.5, high=0.5, size=(48,1))
-    matingVars = numpy.random.uniform(low=0.5, high=1, size=(48,5))
+    matingVars = numpy.random.uniform(low=0.8, high=1, size=(48,4))
+    mateFailEff = numpy.random.uniform(low=0.5, high=1, size=(48,1))
     mateSuccEff = numpy.random.uniform(low=1, high=2, size=(48,1))
-    varPop = numpy.concatenate((succesVars, learningVars, femBonus, matingVars, mateSuccEff), axis=1)
+    varPop = numpy.concatenate((succesVars, learningVars, femBonus, matingVars, mateFailEff, mateSuccEff), axis=1)
     return varPop
 
 def matingSearch(pop, newPop, genVars):
@@ -139,11 +140,15 @@ def controlVars(genVars):
             numpy.put(gene,5, -1-gene[5])
         if gene[5] > 0.5:
             numpy.put(gene,5, 1-gene[5])
-        for i in range(6,11):
-            if gene[i] < 0.5:
-                numpy.put(gene,i, 1-gene[i])
+        for i in range(6,10):
+            if gene[i] < 0.8:
+                numpy.put(gene,i, 1.6-gene[i])
             if gene[i] > 1:
                 numpy.put(gene,i, 2-gene[i])
+        if gene[10] < 0.5:
+            numpy.put(gene,11, 1-gene[10])
+        if gene[10] > 1:
+            numpy.put(gene,11, 2-gene[10])
         if gene[11] < 1:
             numpy.put(gene,11, 2-gene[11])
         if gene[11] > 2:
@@ -153,17 +158,21 @@ def controlVars(genVars):
 if __name__ == "__main__":
     genePop = createGenes()
     output = []
-    for gen in range(20):
+    for gen in range(10):
         results = genAlgGeneration(genePop)
         fitnessFrame = fitnessSort(results)
         parents = selectMating(genePop, fitnessFrame,32)
-        output.append(parents[0])
-        output.append(fitnessFrame.iloc[0])
+        for ind in range(5):
+            output.append(parents[ind])
+            output.append(results[fitnessFrame.iloc[ind,0]])
         offspring = crossover(parents, 12)
-        offspring = mutate(offspring)
+        #offspring = mutate(offspring)
         genePop = controlVars(offspring)
         #print("Wow")
-    for line in output:
-        if len(sys.argv) > 1:
-            with open(sys.argv[1], "w") as outfile:
+    if len(sys.argv) > 1:
+        with open(sys.argv[1], "w") as outfile:
+            for line in output:
                 print(line, file=outfile)
+    else:
+        for line in output:
+            print(line)
