@@ -14,7 +14,7 @@ def matingSearch(pop, nEggs, successRate, newPop, K):
         for male in pop[0]:
             hitChance = []
             for ind in pop[0]:
-                hitChance.append(max(0.5*male.aPref, 0))
+                hitChance.append(max(0.204*male.aPref, 0))
             for fem in pop[1]:
                 if fem.taken != 0:
                     hitChance.append(0)
@@ -41,44 +41,46 @@ def matingSearch(pop, nEggs, successRate, newPop, K):
                     contacts += 1
                     if random.random() <= successRate:
                         matings += 1
-                        eggLay(newPop, male, mate, math.ceil(nEggs))
-                        mate.mate()
-                        mate.fecundity *= 0.99
-                        male.fecundity *= 0.87
+                        mate.mate(male)
+                        #eggLay(newPop, male, mate, math.ceil(nEggs))
+                        #mate.mate()
+                        mate.fecundity *= 0.934
+                        male.fecundity *= 0.912
                         if mate.phenotype == "A":
-                            male.aPref *=1.4
+                            male.aPref *=1.226
                         elif mate.phenotype == "I":
-                            male.iPref *=1.4
+                            male.iPref *=1.226
                         elif mate.phenotype == "O":
-                            male.oPref *=1.4
+                            male.oPref *=1.226
                     else:
-                        mate.fecundity *=0.84
+                        mate.fecundity *=0.881
                         if mate.fecundity <0.5:
                             if random.random()**2>mate.fecundity:
                                 mate.fecundity = 0
                         if mate.fecundity <= 0:
                             pop[1].remove(mate)
                         if mate.phenotype == "A":
-                            male.aPref *=0.8
+                            male.aPref *=0.729
                         elif mate.phenotype == "I":
-                            male.iPref *=0.8
+                            male.iPref *=0.729
                         elif mate.phenotype == "O":
-                            male.oPref *=0.8
+                            male.oPref *=0.729
                 elif type(mate) == Male:
                     MMcontacts += 1
-                    mate.fecundity *= 0.84
+                    mate.fecundity *= 0.954
                     if mate.fecundity < 0.5:
                         if random.random()**2>mate.fecundity:
                             mate.fecundity = 0
                     if mate.fecundity <= 0:
                         pop[0].remove(mate)
-                    male.aPref *=0.8
+                    male.aPref *=0.608
     else:
         pass
     return [matings, contacts, MMcontacts]
 
+
 def eggLay(pop, male, female, nEggs):
-    female.mate()
+    female.mate(male)
     for i in range(nEggs//8):
         pop.append(Male(male.genotype[0], female.genotype[0]))
         pop.append(Male(male.genotype[0], female.genotype[1]))
@@ -91,8 +93,10 @@ def eggLay(pop, male, female, nEggs):
 
 def newPopSize(nEggs, pop, K):
     oldPopSize = len(pop)
-    avgPop = oldPopSize/nEggs
+    avgPop = 4*oldPopSize/nEggs
     newPopSize = randomRound(avgPop*(exp(0.5*(K-avgPop)/K)))
+    if avgPop > K:
+        newPopSize = max(K, newPopSize)
     return(newPopSize)
 
 def popControl(pop, size):
@@ -158,7 +162,7 @@ def runSim(length):
         matings = 0
         contacts = 0
         MMcontacts = 0
-        for i in range(30):
+        for i in range(10):
             results = matingSearch(pop, nEggs, paramDict["successRate"], nextGen, paramDict["K"])
             matings += results[0]
             contacts += results[1]
@@ -166,7 +170,9 @@ def runSim(length):
             for fem in pop[1]:
                 if fem.taken != 0:
                     fem.taken -= 1
-        size = newPopSize(nEggs, nextGen, paramDict["K"])
+        for fem in pop[1]:
+            fem.eggLay(nextGen, nEggs)
+        size = newPopSize(nEggs, nextGen, int(paramDict["K"]))
         avgFecs = recordFec(pop)
         prefs = recordPref(pop)
 

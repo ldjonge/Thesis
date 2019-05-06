@@ -48,9 +48,9 @@ class Male:
         else:
             selected = pop
         prefDict = calcPhenoFreqM(selected)
-        self.aPref = 0.41*prefDict["M"]+0.7*prefDict["A"]
-        self.iPref = 1.1*prefDict["I"]+0.43
-        self.oPref = 0.066*prefDict["O"]+0.43
+        self.aPref = 0.378*prefDict["M"]+0.596*prefDict["A"]
+        self.iPref = 0.949*prefDict["I"]+0.0753
+        self.oPref = 1.450*prefDict["O"]+0.0753
 
     def genAlgLearning(self, pop, genVars):
         if len(pop) >= 50:
@@ -70,6 +70,7 @@ class Female:
         self.genotype = pAll+mAll
         self.phenotype = phenoDict[self.genotype]
         self.taken = 0
+        self.mates = []
 
     def __str__(self):
         return self.phenotype
@@ -82,9 +83,83 @@ class Female:
         elif self.phenotype == "A":
             self.fecundity = 1
 
-    def mate(self):
-        self.taken += 1
+    def mate(self, male):
+        self.taken += 2
+        self.mates.append(male)
 
+    def eggLay(self, pop, nEggs):
+        nMates = len(self.mates)
+        if nMates > 0:
+            for male in self.mates[:-1]:
+                for i in range(int(0.161/(nMates-1)*nEggs)//8):
+                    pop.append(Male(male.genotype[0], self.genotype[0]))
+                    pop.append(Male(male.genotype[0], self.genotype[1]))
+                    pop.append(Male(male.genotype[1], self.genotype[0]))
+                    pop.append(Male(male.genotype[1], self.genotype[1]))
+                    pop.append(Female(male.genotype[0], self.genotype[0]))
+                    pop.append(Female(male.genotype[0], self.genotype[1]))
+                    pop.append(Female(male.genotype[1], self.genotype[0]))
+                    pop.append(Female(male.genotype[1], self.genotype[1]))
+            male = self.mates[-1]
+            for i in range(int(0.839*nEggs)//8):
+                pop.append(Male(male.genotype[0], self.genotype[0]))
+                pop.append(Male(male.genotype[0], self.genotype[1]))
+                pop.append(Male(male.genotype[1], self.genotype[0]))
+                pop.append(Male(male.genotype[1], self.genotype[1]))
+                pop.append(Female(male.genotype[0], self.genotype[0]))
+                pop.append(Female(male.genotype[0], self.genotype[1]))
+                pop.append(Female(male.genotype[1], self.genotype[0]))
+                pop.append(Female(male.genotype[1], self.genotype[1]))
+        elif nMates == 1:
+            male = self.mates[-1]
+            for i in range(nEggs//8):
+                pop.append(Male(male.genotype[0], self.genotype[0]))
+                pop.append(Male(male.genotype[0], self.genotype[1]))
+                pop.append(Male(male.genotype[1], self.genotype[0]))
+                pop.append(Male(male.genotype[1], self.genotype[1]))
+                pop.append(Female(male.genotype[0], self.genotype[0]))
+                pop.append(Female(male.genotype[0], self.genotype[1]))
+                pop.append(Female(male.genotype[1], self.genotype[0]))
+                pop.append(Female(male.genotype[1], self.genotype[1]))
+        else:
+            pass
+
+    def genAlgEggLay(self, pop, nEggs,  genVars):
+        nMates = len(self.mates)
+        if nMates > 0:
+            for male in self.mates[:-1]:
+                for i in range(int((1-genVars[12])/(nMates-1)*nEggs)//8):
+                    pop.append(Male(male.genotype[0], self.genotype[0]))
+                    pop.append(Male(male.genotype[0], self.genotype[1]))
+                    pop.append(Male(male.genotype[1], self.genotype[0]))
+                    pop.append(Male(male.genotype[1], self.genotype[1]))
+                    pop.append(Female(male.genotype[0], self.genotype[0]))
+                    pop.append(Female(male.genotype[0], self.genotype[1]))
+                    pop.append(Female(male.genotype[1], self.genotype[0]))
+                    pop.append(Female(male.genotype[1], self.genotype[1]))
+            male = self.mates[-1]
+            for i in range(int(genVars[12]*nEggs)//8):
+                pop.append(Male(male.genotype[0], self.genotype[0]))
+                pop.append(Male(male.genotype[0], self.genotype[1]))
+                pop.append(Male(male.genotype[1], self.genotype[0]))
+                pop.append(Male(male.genotype[1], self.genotype[1]))
+                pop.append(Female(male.genotype[0], self.genotype[0]))
+                pop.append(Female(male.genotype[0], self.genotype[1]))
+                pop.append(Female(male.genotype[1], self.genotype[0]))
+                pop.append(Female(male.genotype[1], self.genotype[1]))
+        elif nMates == 1:
+            male = self.mates[-1]
+            for i in range(nEggs//8):
+                pop.append(Male(male.genotype[0], self.genotype[0]))
+                pop.append(Male(male.genotype[0], self.genotype[1]))
+                pop.append(Male(male.genotype[1], self.genotype[0]))
+                pop.append(Male(male.genotype[1], self.genotype[1]))
+                pop.append(Female(male.genotype[0], self.genotype[0]))
+                pop.append(Female(male.genotype[0], self.genotype[1]))
+                pop.append(Female(male.genotype[1], self.genotype[0]))
+                pop.append(Female(male.genotype[1], self.genotype[1]))
+        else:
+            pass
 
 def randomAllele(p,q,r):
     newRand = random.random()
