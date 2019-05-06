@@ -103,9 +103,9 @@ def matingSearch(pop, newPop, genVars):
 
 def runSim(genVars):
     pop = genAlgStartingPop(200, 0.18, 0.24, 0.58, genVars)
-    for gen in range(100):
+    for gen in range(10):
         nextGen = []
-        for i in range(30):
+        for i in range(10):
             matingSearch(pop, nextGen, genVars)
             for fem in pop[1]:
                 if fem.taken !=0:
@@ -172,10 +172,10 @@ def controlVars(genVars):
 if __name__ == "__main__":
     genePop = createGenes()
     output = []
-    for gen in range(20):
-        results = genAlgGeneration(genePop)
+    for gen in range(5):
+        results = genAlgGeneration(genePop[:18])
         fitnessFrame = fitnessSort(results)
-        parents = selectMating(genePop, fitnessFrame,32)
+        parents = selectMating(genePop, fitnessFrame,12)
         for ind in range(5):
             output.append(parents[ind])
             output.append(results[fitnessFrame.iloc[ind,0]])
@@ -186,7 +186,7 @@ if __name__ == "__main__":
         print("Run {} complete".format(str(gen+1)))
     results = genAlgGeneration(genePop)
     fitnessFrame = fitnessSort(results)
-    parents = selectMating(genePop, fitnessFrame,32)
+    parents = selectMating(genePop, fitnessFrame,12)
     for ind in range(5):
         output.append(parents[ind])
         output.append(results[fitnessFrame.iloc[ind,0]])

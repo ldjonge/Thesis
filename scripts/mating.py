@@ -162,6 +162,11 @@ def runSim(length):
         matings = 0
         contacts = 0
         MMcontacts = 0
+        if length == "long":
+            prefs = recordPref(pop)
+            freqTable.append([gen-1, "preAPref", prefs[0]])
+            freqTable.append([gen-1, "preIPref", prefs[1]])
+            freqTable.append([gen-1, "preOPref", prefs[2]])
         for i in range(10):
             results = matingSearch(pop, nEggs, paramDict["successRate"], nextGen, paramDict["K"])
             matings += results[0]
