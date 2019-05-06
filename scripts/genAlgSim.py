@@ -146,9 +146,9 @@ def controlVars(genVars):
             if gene[i] > 1:
                 numpy.put(gene,i, 2-gene[i])
         if gene[10] < 0.5:
-            numpy.put(gene,11, 1-gene[10])
+            numpy.put(gene,10, 1-gene[10])
         if gene[10] > 1:
-            numpy.put(gene,11, 2-gene[10])
+            numpy.put(gene,10, 2-gene[10])
         if gene[11] < 1:
             numpy.put(gene,11, 2-gene[11])
         if gene[11] > 2:
@@ -169,6 +169,13 @@ if __name__ == "__main__":
         #offspring = mutate(offspring)
         genePop = controlVars(offspring)
         #print("Wow")
+        output.append("New Generation")
+    results = genAlgGeneration(genePop)
+    fitnessFrame = fitnessSort(results)
+    parents = selectMating(genePop, fitnessFrame,32)
+    for ind in range(5):
+        output.append(parents[ind])
+        output.append(results[fitnessFrame.iloc[ind,0]])
     if len(sys.argv) > 1:
         with open(sys.argv[1], "w") as outfile:
             for line in output:
