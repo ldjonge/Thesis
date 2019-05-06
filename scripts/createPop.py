@@ -48,9 +48,9 @@ class Male:
         else:
             selected = pop
         prefDict = calcPhenoFreqM(selected)
-        self.aPref = 0.25*prefDict["M"]+1.75*prefDict["A"]
-        self.iPref = 2*prefDict["I"]+0.2
-        self.oPref = 2*prefDict["O"]+0.2
+        self.aPref = 0.41*prefDict["M"]+0.7*prefDict["A"]
+        self.iPref = 1.1*prefDict["I"]+0.43
+        self.oPref = 0.066*prefDict["O"]+0.43
 
     def genAlgLearning(self, pop, genVars):
         if len(pop) >= 50:

@@ -8,7 +8,7 @@ import sys
 """
 Starting frequencies can be fixed at 1/3 for these sims
 Parameters to vary:
-0   successRate: range(0,0.5)
+0   successRate: range(0,0.3)
 1:4 learning parameters:    aPref, iPref, oPref, mPref, range(0,2)
 5   Heterochrome Bonus preference, range(-0.5,0.5)
 6   female affected by mating, range(0.8,1)
@@ -22,7 +22,7 @@ Parameters to vary:
 """
 
 def createGenes():
-    succesVars = numpy.random.uniform(low=0, high=0.5, size=(48,1))
+    succesVars = numpy.random.uniform(low=0, high=0.3, size=(48,1))
     learningVars = numpy.random.uniform(low=0, high=2, size=(48,4))
     femBonus = numpy.random.uniform(low=-0.5, high=0.5, size=(48,1))
     matingVars = numpy.random.uniform(low=0.8, high=1, size=(48,4))
@@ -61,7 +61,7 @@ def matingSearch(pop, newPop, genVars):
                     mate = None
                 if type(mate)==Female:
                     if random.random() <= genVars[0]:
-                        eggLay(newPop, male, mate, math.ceil(400*mate.fecundity))
+                        eggLay(newPop, male, mate, math.ceil(400))
                         mate.mate()
                         mate.fecundity *= genVars[6]
                         male.fecundity *= genVars[8]
@@ -129,8 +129,8 @@ def controlVars(genVars):
     for gene in genVars:
         if gene[0] < 0:
             numpy.put(gene,0, 0-gene[0])
-        if gene[0] > 0.5:
-            numpy.put(gene,0, 1-gene[0])
+        if gene[0] > 0.3:
+            numpy.put(gene,0, 0.6-gene[0])
         for i in range(1,5):
             if gene[i] < 0:
                 numpy.put(gene,i, 0-gene[i])

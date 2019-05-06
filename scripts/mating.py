@@ -41,10 +41,10 @@ def matingSearch(pop, nEggs, successRate, newPop, K):
                     contacts += 1
                     if random.random() <= successRate:
                         matings += 1
-                        eggLay(newPop, male, mate, math.ceil(nEggs*mate.fecundity))
+                        eggLay(newPop, male, mate, math.ceil(nEggs))
                         mate.mate()
-                        mate.fecundity *= 0.85
-                        male.fecundity *= 0.95
+                        mate.fecundity *= 0.99
+                        male.fecundity *= 0.87
                         if mate.phenotype == "A":
                             male.aPref *=1.4
                         elif mate.phenotype == "I":
@@ -52,7 +52,7 @@ def matingSearch(pop, nEggs, successRate, newPop, K):
                         elif mate.phenotype == "O":
                             male.oPref *=1.4
                     else:
-                        mate.fecundity *=0.95
+                        mate.fecundity *=0.84
                         if mate.fecundity <0.5:
                             if random.random()**2>mate.fecundity:
                                 mate.fecundity = 0
@@ -66,7 +66,7 @@ def matingSearch(pop, nEggs, successRate, newPop, K):
                             male.oPref *=0.8
                 elif type(mate) == Male:
                     MMcontacts += 1
-                    mate.fecundity *= 0.95
+                    mate.fecundity *= 0.84
                     if mate.fecundity < 0.5:
                         if random.random()**2>mate.fecundity:
                             mate.fecundity = 0

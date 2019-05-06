@@ -9,3 +9,5 @@ output/popSize/
 output/raw/
 *.png
 outTable
+/output2
+nohup.out
