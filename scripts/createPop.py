@@ -21,6 +21,7 @@ def readParams():
                 paramDict[line[0]] = line[1]
     return(paramDict)
 
+"""
 N=500 #Population size, should be possible to keep small
 K=200 #Carrying capacity
 p=0.23 #Allele frequency
@@ -30,6 +31,7 @@ nGen = 100 #Number of generations
 s = -3 #Selection Pressure
 equilA = 0.5 #Equilibrium frequency for andromorphs
 equilI = 0.3 #Equilibrium frequency for infuscans
+"""
 
 class Male:
     def __init__(self, pAll, mAll):
@@ -48,7 +50,7 @@ class Male:
         else:
             selected = pop
         prefDict = calcPhenoFreqM(selected)
-        self.aPref = 0.378*prefDict["M"]+0.596*prefDict["A"]
+        self.aPref = 0.378*prefDict["M"]+0.696*prefDict["A"]
         self.iPref = 0.949*prefDict["I"]+0.0753
         self.oPref = 1.450*prefDict["O"]+0.0753
 
@@ -81,7 +83,7 @@ class Female:
         elif self.phenotype == "I":
             self.fecundity = 1
         elif self.phenotype == "A":
-            self.fecundity = 1
+            self.fecundity = 0.9
 
     def mate(self, male):
         self.taken += 2
