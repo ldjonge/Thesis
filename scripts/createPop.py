@@ -50,9 +50,9 @@ class Male:
         else:
             selected = pop
         prefDict = calcPhenoFreqM(selected)
-        self.aPref = 0.378*prefDict["M"]+0.696*prefDict["A"]
-        self.iPref = 0.949*prefDict["I"]+0.0753
-        self.oPref = 1.450*prefDict["O"]+0.0753
+        self.aPref = 1.302*prefDict["M"]+1.522*prefDict["A"]
+        self.iPref = 1.463*prefDict["I"]+0.337
+        self.oPref = 1.317*prefDict["O"]+0.337
 
     def genAlgLearning(self, pop, genVars):
         if len(pop) >= 50:
@@ -77,13 +77,13 @@ class Female:
     def __str__(self):
         return self.phenotype
 
-    def calcFec(self, phenoFreq): #As per Le Rouzic 2015
+    def calcFec(self, phenoFreq):
         if self.phenotype == "O":
             self.fecundity = 1
         elif self.phenotype == "I":
             self.fecundity = 1
         elif self.phenotype == "A":
-            self.fecundity = 0.9
+            self.fecundity = 1
 
     def mate(self, male):
         self.taken += 2
@@ -93,7 +93,7 @@ class Female:
         nMates = len(self.mates)
         if nMates > 0:
             for male in self.mates[:-1]:
-                for i in range(int(0.161/(nMates-1)*nEggs)//8):
+                for i in range(int(0.265/(nMates-1)*nEggs)//8):
                     pop.append(Male(male.genotype[0], self.genotype[0]))
                     pop.append(Male(male.genotype[0], self.genotype[1]))
                     pop.append(Male(male.genotype[1], self.genotype[0]))
@@ -103,7 +103,7 @@ class Female:
                     pop.append(Female(male.genotype[1], self.genotype[0]))
                     pop.append(Female(male.genotype[1], self.genotype[1]))
             male = self.mates[-1]
-            for i in range(int(0.839*nEggs)//8):
+            for i in range(int(0.735*nEggs)//8):
                 pop.append(Male(male.genotype[0], self.genotype[0]))
                 pop.append(Male(male.genotype[0], self.genotype[1]))
                 pop.append(Male(male.genotype[1], self.genotype[0]))

@@ -14,7 +14,7 @@ def matingSearch(pop, nEggs, successRate, newPop, K):
         for male in pop[0]:
             hitChance = []
             for ind in pop[0]:
-                hitChance.append(max(0.204*male.aPref, 0))
+                hitChance.append(max(0.451*male.aPref, 0))
             for fem in pop[1]:
                 if fem.taken != 0:
                     hitChance.append(0)
@@ -44,36 +44,36 @@ def matingSearch(pop, nEggs, successRate, newPop, K):
                         mate.mate(male)
                         #eggLay(newPop, male, mate, math.ceil(nEggs))
                         #mate.mate()
-                        mate.fecundity *= 0.934
-                        male.fecundity *= 0.912
+                        mate.fecundity *= 0.897
+                        male.fecundity *= 0.916
                         if mate.phenotype == "A":
-                            male.aPref *=1.226
+                            male.aPref *=1.249
                         elif mate.phenotype == "I":
-                            male.iPref *=1.226
+                            male.iPref *=1.249
                         elif mate.phenotype == "O":
-                            male.oPref *=1.226
+                            male.oPref *=1.249
                     else:
-                        mate.fecundity *=0.881
+                        mate.fecundity *=0.957
                         if mate.fecundity <0.5:
                             if random.random()**2>mate.fecundity:
                                 mate.fecundity = 0
                         if mate.fecundity <= 0:
                             pop[1].remove(mate)
                         if mate.phenotype == "A":
-                            male.aPref *=0.729
+                            male.aPref *=0.879
                         elif mate.phenotype == "I":
-                            male.iPref *=0.729
+                            male.iPref *=0.879
                         elif mate.phenotype == "O":
-                            male.oPref *=0.729
+                            male.oPref *=0.879
                 elif type(mate) == Male:
                     MMcontacts += 1
-                    mate.fecundity *= 0.954
+                    mate.fecundity *= 0.912
                     if mate.fecundity < 0.5:
                         if random.random()**2>mate.fecundity:
                             mate.fecundity = 0
                     if mate.fecundity <= 0:
                         pop[0].remove(mate)
-                    male.aPref *=0.608
+                    male.aPref *=0.879
     else:
         pass
     return [matings, contacts, MMcontacts]
@@ -167,7 +167,7 @@ def runSim(length):
             freqTable.append([gen-1, "preAPref", prefs[0]])
             freqTable.append([gen-1, "preIPref", prefs[1]])
             freqTable.append([gen-1, "preOPref", prefs[2]])
-        for i in range(10):
+        for i in range(30):
             results = matingSearch(pop, nEggs, paramDict["successRate"], nextGen, paramDict["K"])
             matings += results[0]
             contacts += results[1]
