@@ -164,9 +164,9 @@ def runSim(length):
         MMcontacts = 0
         if length == "long":
             prefs = recordPref(pop)
-            freqTable.append([gen-1, "preAPref", prefs[0]])
-            freqTable.append([gen-1, "preIPref", prefs[1]])
-            freqTable.append([gen-1, "preOPref", prefs[2]])
+            freqTable.append([gen, "preAPref", prefs[0]])
+            freqTable.append([gen, "preIPref", prefs[1]])
+            freqTable.append([gen, "preOPref", prefs[2]])
         for i in range(30):
             results = matingSearch(pop, nEggs, paramDict["successRate"], nextGen, paramDict["K"])
             matings += results[0]
@@ -199,11 +199,11 @@ def runSim(length):
             freqTable.append([gen, "M", len(pop[0])])
             freqTable.append([gen, "F", len(pop[1])])
             freqTable.append([gen, "T", len(pop[0])+len(pop[1])])
-            freqTable.append([gen-1, "MalF", avgFecs[0]])
-            freqTable.append([gen-1,"FemF", avgFecs[1]])
-            freqTable.append([gen-1, "APref", prefs[0]])
-            freqTable.append([gen-1, "IPref", prefs[1]])
-            freqTable.append([gen-1, "OPref", prefs[2]])
+            freqTable.append([gen, "MalF", avgFecs[0]])
+            freqTable.append([gen,"FemF", avgFecs[1]])
+            freqTable.append([gen, "APref", prefs[0]])
+            freqTable.append([gen, "IPref", prefs[1]])
+            freqTable.append([gen, "OPref", prefs[2]])
             freqTable.append([gen, "Matings", matings])
             freqTable.append([gen, "Contacts", contacts])
             freqTable.append([gen, "MMContacts", MMcontacts])

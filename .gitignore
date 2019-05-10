@@ -7,7 +7,9 @@ output/*.png
 output/freqs/
 output/popSize/
 output/raw/
+output/genAlgOut
+output/summary/
 *.png
 outTable
-/output2
+output2/
 nohup.out
