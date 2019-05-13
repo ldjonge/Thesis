@@ -110,7 +110,7 @@ def popControl(pop, size):
             femalePop.append(ind)
         else:
             print("error, individual of type: ", type(ind))
-    newPop = (malePop, femalePop)
+    newPop = [malePop, femalePop]
     return(newPop)
 
 def recordFec(pop):

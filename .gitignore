@@ -9,7 +9,15 @@ output/popSize/
 output/raw/
 output/genAlgOut
 output/summary/
+output/genAlgOutput
 *.png
 outTable
 output2/
 nohup.out
+multiOutput/*.png
+multiOutput/freqs/
+multiOutput/popSize/
+multiOutput/raw/
+multiOutput/genAlgOut
+multiOutput/summary/
+outputNew/

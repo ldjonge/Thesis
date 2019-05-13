@@ -3,7 +3,7 @@ import seaborn as sns; sns.set()
 import matplotlib.pyplot as plt
 import numpy as np
 
-data = pandas.read_csv("output/summary/summary.tsv", sep="\t")
+data = pandas.read_csv("outputNew/summary/summary.tsv", sep="\t")
 parameters = data.Pheno.unique()
 
 dataList = []
@@ -24,8 +24,10 @@ data = dataReshape
 data['matingSuccess'] = (data['Matings']/data['Contacts']).astype(float)
 data['misIdent'] = (data['MMContacts']/(data['Contacts']+data['MMContacts'])).astype(float)
 
-sns.set_context("talk")
+print(data[data['T']==data['T'].min()])
 
+sns.set_context("talk")
+"""
 corr = data.corr()
 fig = plt.figure(figsize=(15,12))
 fig.suptitle("Correlation Matrix")
@@ -38,7 +40,7 @@ plt.xticks(rotation=90)
 ax.set_yticks(ticks)
 ax.set_xticklabels(data.columns)
 ax.set_yticklabels(data.columns)
-fig.savefig("output/summary/correlation.png")
+fig.savefig("outputNew/summary/correlation.png")
 #print(data.head())
 sns.set_style("white")
 
@@ -50,7 +52,7 @@ plot2 = sns.regplot(x="A", y="FemF", data=data, ax=axarr[1])
 plot2.set_title("Female")
 sns.despine()
 fig.suptitle("Fecundity")
-fig.savefig("output/summary/fecFreq.png")
+fig.savefig("outputNew/summary/fecFreq.png")
 
 #Preference vs Frequency
 fig, axarr = plt.subplots(3,2, sharex ='col', sharey=False, figsize=(10,8))
@@ -70,10 +72,18 @@ plot5.set(ylabel="")
 plot6 = sns.regplot(x="O", y="OPref", data=data, ax=axarr[2,1])
 plot6.set(ylabel="")
 sns.despine()
-fig.savefig("output/summary/prefFreq.png")
+fig.savefig("outputNew/summary/prefFreq.png")
 
 plt.figure(figsize=(10,8))
 plot = sns.regplot(x="A", y="misIdent", data=data)
 sns.despine()
-plt.savefig("output/summary/maleMating.png")
+plt.savefig("outputNew/summary/maleMating.png")
 #plot = sns.lmplot(x="A", y="preAPref", data=data, legend=False)
+
+plt.figure(figsize=(10,8))
+plot = sns.regplot(x="M", y="F", data=data)
+sns.despine()
+plt.savefig("outputNew/summary/popDist.png")
+
+
+"""
