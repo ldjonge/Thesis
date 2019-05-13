@@ -10,7 +10,7 @@ phenoDict = {"pp":"A", "pq":"A", "pr":"A", "qp":"A", "rp":"A", "qq":"I", "qr":"I
 
 #Starting parameters
 def readParams():
-    with open("scripts/parameters.ini", "r") as infile:
+    with open("paramFiles/parameters.ini", "r") as infile:
         paramDict = {}
         for line in infile:
             line = line.strip()

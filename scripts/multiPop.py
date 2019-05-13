@@ -23,10 +23,7 @@ def migrate(pops, female):
 
 def runSim(length):
     paramDict = readParams()
-    #pop1 = startingPop(int(paramDict["N"]), paramDict["p"], paramDict["q"], paramDict["r"])
-    #pop2 = startingPop(int(paramDict["N"]), paramDict["p"], paramDict["q"], paramDict["r"])
     pops = [startingPop(int(paramDict["N"]), paramDict["p"], paramDict["q"], paramDict["r"]) for i in range(int(paramDict['nPops']))]
-    #pops = [startingPop(20, 1, 0, 0), startingPop(20,0,1,0)]
     nEggs = paramDict["nEggs"]
     if length=="short":
         freqTable = [["Pop", "Gen", "A", "I", "O", "Males", "Females", "Total", "MaleFec", "FemFec", "APref", "IPref", "OPref", "Matings", "Contacts", "MMContacts"]]
@@ -58,23 +55,13 @@ def runSim(length):
                 freqTable.append([id, gen, "Contacts", contacts])
                 freqTable.append([id, gen, "MMContacts", MMcontacts])
         for pop in pops:
-            #print(len(pop[1]))
-            #print(pops.index(pop), len(pop[1]))
             for fem in pop[1]:
-                if random.random() <= 1 and fem.migrate == 0: # float(paramDict["m"])
+                if random.random() <= float(paramDict["m"]) and fem.migrate == 0:
                     fem.migrate += 1
                     migrate(pops, fem)
                     fem.migrated += 1
                 if fem.migrate > 1:
                     print("Wow")
-                #print(fem.migrated)
-            #print(len(pop[1]))
-            #print(pops.index(pop), len(pop[1]))
-        # for fem in pop2[1]:
-        #     if random.random() < float(paramDict["m"]) and fem.migrated == 0:
-        #         migrate(pops, fem)
-        #     if fem.migrated > 1:
-        #         print("Wow")
         newPops = []
         for pop in pops:
             nextGen = []
@@ -95,7 +82,6 @@ def runSim(length):
                 ind.complexLearning(totalPop)
             for ind in newPop[1]:
                 ind.calcFec(phenFreq)
-            #print([str(phenFreq["A"]), str(phenFreq["I"]), str(phenFreq["O"]), str(len(pop[0])), str(len(pop[1]))])
             if length == "short":
                 freqTable.append([str(id), str(gen), str(phenFreq["A"]), str(phenFreq["I"]), str(phenFreq["O"]), str(len(pop[0])), str(len(pop[1])), str(len(pop[0])+len(pop[1])), str(avgFecs[0]), str(avgFecs[1]), str(prefs[0]), str(prefs[1]), str(prefs[2]), str(matings), str(contacts), str(MMcontacts)])
             elif length == "long":
@@ -110,14 +96,12 @@ def runSim(length):
                 freqTable.append([id, gen, "APref", prefs[0]])
                 freqTable.append([id, gen, "IPref", prefs[1]])
                 freqTable.append([id, gen, "OPref", prefs[2]])
-
             else:
                 print("failure")
             newPops.append(newPop)
         if (gen)%10 == 0:
             print("Generation {} complete, population size {}".format(str(gen), str(totalLen)))
         pops = newPops
-
     return freqTable
 
 if __name__ == "__main__":
