@@ -1,0 +1,32 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[backend=biber, style=nature, citestyle=nature, maxnames=7, minnames=7, maxcitenames=2, mincitenames=1]{biblatex}
+\usepackage[colorlinks=true,  urlcolor=blue]{hyperref}
+
+\addbibresource{thesis.bib}
+\title{Model as Implemented}
+\date{\vspace{-5ex}}
+
+\begin{document}
+\maketitle
+
+\section{Baseline Model Factors}
+A model was created which simulates multiple generations of a population of individual damselflies. Female colour polymorphisms were assumed to be a single locus trait with three alleles \cite{}, for which the dominance hierarchy is known. To start the simulation a population of specified size is created, 50\% female and 50\% male. Genotypes for each individual were randomly generated based on pre-specified allele frequencies. Based on these genotypes the female phenotypes were also recorded. Baseline female fecundity was allowed to vary based on phenotype, with male fecundity not affected by the genotype as no phenotypical effects of these genes on males have been found.
+
+\section{Mating Preference}
+
+At the start of each generation each male will develop a mating preference for the phenotype it most often detects. This was simulated by randomly sampling a maximum of 50 other individuals from the population, both male and female. Research has shown that in populations dominated by males androchrome females are more likely to be preferred, although males have a smaller effect on androchrome preference than real androchrome females. A passive preference bonus for heterochrome females was added into the model as research has shown density has a smaller effect on the preference for these phenotypes than for the androchrome females.
+
+\section{Mating Search}
+Subsequently the actual mating search is simulated, where each male will search for a mate. This process is done by randomly sampling an individual from the population, with probabilities weighted by the preference of the searching male. The probability of a male identifying another male as a possible mate was dependent on the preference for androchrome females, although the actual probability was reduced representing the ability to correctly identify a member of the same sex. In small populations the possibility was added to identify no mates, representing a smaller population in a large area making it harder to find potential mates. Whenever a male chooses a female as a potential partner, the probability of successful mating was dependent on both the fecundity of the female and a baseline probability of success. In case of successful copulation, the male's genotype was added to the list of potential partners for the female, and the male's preference for this phenotype was increased. After this the fecundity for both male and female was reduced to represent the energy spent on mating.
+
+In case of no successful copulation, whether as a result of homosexuality or failure to mate with a female, the fecundity of the mate was reduced to represent time and energy lost as a result of mating harassment. The searching male had its preference for the chosen phenotype reduced, including a reduction in androchrome preference in the case of a male as chosen partner. Any individuals with a reduction in fecundity below half the starting fecundity were potentially removed from the population with a probability dependent on the exact fecundity value.
+
+\section{Egg Production}
+At the end of the mating process, any female that has mated has a recorded list of the genotypes of the males she has mated with, representing the sperm stored. Each female was allowed to lay a fixed number off eggs, with the father for those eggs depending on the order in which the female mated with each male. The majority of sperm used to produce offspring was taken from the last male mated with, with an even distribution of sperm from any other males mated previously. For each couple that produced offspring, an even distribution of eggs was laid, 50\% of each sex, and 25\% of each parental allele combination.
+
+\section{Egg Hatching}
+As each female was allowed to lay a large number off eggs, not all eggs can reproduce in the next generation. The number of individuals allowed to grow to maturity was dependent both on the number of eggs laid and a specified carrying capacity, using logistic growth as a guideline for the exact formula. This number of individuals was then randomly sampled from the population of eggs, and this was carried over to the next generation where the cycle restarts with preference learning. 
+
+\printbibliography
+\end{document}

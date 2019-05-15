@@ -39,11 +39,9 @@ def matingSearch(pop, nEggs, successRate, newPop, K):
                     mate = None
                 if type(mate)==Female:
                     contacts += 1
-                    if random.random() <= successRate:
+                    if random.random() <= successRate*mate.fecundity:
                         matings += 1
                         mate.mate(male)
-                        #eggLay(newPop, male, mate, math.ceil(nEggs))
-                        #mate.mate()
                         mate.fecundity *= 0.896
                         male.fecundity *= 0.963
                         if mate.phenotype == "A":

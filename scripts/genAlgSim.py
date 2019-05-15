@@ -25,7 +25,7 @@ Parameters to vary:
 
 geneParamVars = ((0,0.3), (0,2), (0,2),(0,2),(0,2),(-0.5,0.5), (0.8,1),(0.8,1),(0.8,1),(0.8,1),(0.5,1), (1,2),(0.6,1),(0,1))
 
-def createGenes():
+def createsGenes():
     succesVars = numpy.random.uniform(low=0, high=0.3, size=(48,1))
     learningVars = numpy.random.uniform(low=0, high=2, size=(48,4))
     femBonus = numpy.random.uniform(low=-0.5, high=0.5, size=(48,1))
@@ -36,6 +36,13 @@ def createGenes():
     maleRec = numpy.random.uniform(low=0, high=1, size=(48,1))
     varPop = numpy.concatenate((succesVars, learningVars, femBonus, matingVars, mateFailEff, mateSuccEff, spermComp, maleRec), axis=1)
     return varPop
+
+def createGenes(rangeList, popSize):
+    varPop = [Gene(rangeList) for i in range(popSize)]
+    for gene in varPop:
+        gene.createGene()
+    return(varPop)
+
 
 def matingSearch(pop, newPop, genVars):
     if len(pop[1])!=0:
@@ -128,11 +135,13 @@ def runSim(genVars):
 def genAlgGeneration(genVars):
     results = []
     for gene in genVars:
-        results.append(runSim(gene))
+        results.append(runSim(gene.gene))
     return results
 
 def controlVars(genVars):
     for gene in genVars:
+        gene.rangeControl()
+        """
         if gene[0] < 0:
             numpy.put(gene,0, 0-gene[0])
         if gene[0] > 0.3:
@@ -167,28 +176,29 @@ def controlVars(genVars):
             numpy.put(gene,13, 0-gene[13])
         if gene[13] > 1:
             numpy.put(gene,13,2-gene[13])
+        """
     return genVars
 
 if __name__ == "__main__":
-    genePop = createGenes()
+    genePop = createGenes(geneParamVars, 48)
     output = []
-    for gen in range(50):
+    for gen in range(5):
         results = genAlgGeneration(genePop)
         fitnessFrame = fitnessSort(results)
-        parents = selectMating(genePop, fitnessFrame,12)
+        parents = selectMating(genePop, fitnessFrame,16)
         for ind in range(5):
-            output.append(parents[ind])
+            output.append(parents[ind].gene)
             output.append(results[fitnessFrame.iloc[ind,0]])
-        offspring = crossover(parents, 14)
-        #offspring = mutate(offspring)
+        offspring = crossover(parents, geneParamVars)
+        offspring = mutate(offspring, 0.05)
         genePop = controlVars(offspring)
         output.append("Run {}".format(str(gen+1)))
         print("Run {} complete".format(str(gen+1)))
     results = genAlgGeneration(genePop)
     fitnessFrame = fitnessSort(results)
-    parents = selectMating(genePop, fitnessFrame,12)
+    parents = selectMating(genePop, fitnessFrame,48)
     for ind in range(5):
-        output.append(parents[ind])
+        output.append(parents[ind].gene)
         output.append(results[fitnessFrame.iloc[ind,0]])
     if len(sys.argv) > 1:
         with open(sys.argv[1], "w") as outfile:
