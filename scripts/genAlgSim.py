@@ -68,7 +68,7 @@ def matingSearch(pop, newPop, genVars):
             if totalW != 0:
                 for i in range(len(hitChance)):
                     hitChance[i] = hitChance[i]/totalW
-                if random.random() < male.fecundity:
+                if random.random() < male.fertility:
                     mate = choice(totalPop, p=hitChance)
                 else:
                     mate = None
@@ -76,8 +76,8 @@ def matingSearch(pop, newPop, genVars):
                     if random.random() <= genVars[0]:
                         #eggLay(newPop, male, mate, math.ceil(400))
                         mate.mate(male)
-                        mate.fecundity *= genVars[6]
-                        male.fecundity *= genVars[8]
+                        mate.fertility *= genVars[6]
+                        male.fertility *= genVars[8]
                         if mate.phenotype == "A":
                             male.aPref *=genVars[11]
                         elif mate.phenotype == "I":
@@ -85,11 +85,11 @@ def matingSearch(pop, newPop, genVars):
                         elif mate.phenotype == "O":
                             male.oPref *=genVars[11]
                     else:
-                        mate.fecundity *=genVars[7]
-                        if mate.fecundity <0.5:
-                            if random.random()**2>mate.fecundity:
-                                mate.fecundity = 0
-                        if mate.fecundity <= 0:
+                        mate.fertility *=genVars[7]
+                        if mate.fertility <0.5:
+                            if random.random()**2>mate.fertility:
+                                mate.fertility = 0
+                        if mate.fertility <= 0:
                             pop[1].remove(mate)
                         if mate.phenotype == "A":
                             male.aPref *=genVars[10]
@@ -98,11 +98,11 @@ def matingSearch(pop, newPop, genVars):
                         elif mate.phenotype == "O":
                             male.oPref *=genVars[10]
                 elif type(mate) == Male:
-                    mate.fecundity *= genVars[9]
-                    if mate.fecundity < 0.5:
-                        if random.random()**2>mate.fecundity:
-                            mate.fecundity = 0
-                    if mate.fecundity <= 0:
+                    mate.fertility *= genVars[9]
+                    if mate.fertility < 0.5:
+                        if random.random()**2>mate.fertility:
+                            mate.fertility = 0
+                    if mate.fertility <= 0:
                         pop[0].remove(mate)
                     male.aPref *=genVars[10]
     else:
@@ -182,7 +182,7 @@ def controlVars(genVars):
 if __name__ == "__main__":
     genePop = createGenes(geneParamVars, 48)
     output = []
-    for gen in range(5):
+    for gen in range(100):
         results = genAlgGeneration(genePop)
         fitnessFrame = fitnessSort(results)
         parents = selectMating(genePop, fitnessFrame,16)

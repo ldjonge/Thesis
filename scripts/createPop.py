@@ -38,7 +38,7 @@ class Male:
         self.genotype = pAll+mAll
         self.phenotype = "M"
     def calcFec(self, phenoFreq):
-        self.fecundity = 1
+        self.fertility = 1
     def learning(self, phenoFreq):
         self.aPref = (exp(5*phenoFreq["A"]-2))/(exp(5*phenoFreq["A"]-2)+1)
         self.iPref = (exp(5*phenoFreq["I"]-2))/(exp(5*phenoFreq["I"]-2)+1)
@@ -81,11 +81,11 @@ class Female:
 
     def calcFec(self, phenoFreq):
         if self.phenotype == "O":
-            self.fecundity = 1
+            self.fertility = 1
         elif self.phenotype == "I":
-            self.fecundity = 1
+            self.fertility = 1
         elif self.phenotype == "A":
-            self.fecundity = 1
+            self.fertility = 1
 
     def mate(self, male):
         self.taken += 2
@@ -213,14 +213,14 @@ def repVarPop(pop, K):
     newMalePop = []
     newFemalePop = []
     phenoFreq = calcPhenoFreq(pop)
-    maleFec = [ind.fecundity for ind in pop[0]]
+    maleFec = [ind.fertility for ind in pop[0]]
     maleFecSum = sum(maleFec)
     maleFec = [i*(math.log(K/maleFecSum)+1) for i in maleFec]
-    femaleFec = [ind.fecundity for ind in pop[1]]
+    femaleFec = [ind.fertility for ind in pop[1]]
     femaleFecSum = sum(femaleFec)
 
     for i in pop[1]:
-        i.fullFec = i.fecundity*(1+math.log(K/femaleFecSum))
+        i.fullFec = i.fertility*(1+math.log(K/femaleFecSum))
         while i.fullFec > 1:
             pat = choice(pop[0], 1, maleFec)[0]
             offspring = reproduce(pat, i)
@@ -244,8 +244,8 @@ def newGen(pop):
     newMalePop = []
     newFemalePop = []
     phenoFreq = calcPhenoFreq(pop)
-    maleFec = [ind.fecundity for ind in pop[0]]
-    femaleFec = [ind.fecundity for ind in pop[1]]
+    maleFec = [ind.fertility for ind in pop[0]]
+    femaleFec = [ind.fertility for ind in pop[1]]
     for i in range(N):
         pat = choice(pop[0], 1, maleFec)[0]
         mat = choice(pop[1], 1, femaleFec)[0]
@@ -304,10 +304,10 @@ def calcGenoFreq(pop):
 
 def calcNFDF(phenotype, phenoFreq):
     try:
-        fecundity = 1/3/phenoFreq[phenotype]
+        fertility = 1/3/phenoFreq[phenotype]
     except ZeroDivisionError:
-        fecundity = N/3
-    return fecundity
+        fertility = N/3
+    return fertility
 
 def startingPop(N, p, q, r):
     malePop = createMalePop(N//2, p,q,r)
