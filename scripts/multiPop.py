@@ -23,7 +23,8 @@ def migrate(pops, female):
 
 def runSim(length):
     paramDict = readParams()
-    pops = [startingPop(int(paramDict["N"]), paramDict["p"], paramDict["q"], paramDict["r"]) for i in range(int(paramDict['nPops']))]
+    #pops = [startingPop(int(paramDict["N"]), paramDict["p"], paramDict["q"], paramDict["r"]) for i in range(int(paramDict['nPops']))]
+    pops = [startingPop(int(paramDict["N"]), paramDict["p"], paramDict["q"], paramDict["r"]), startingPop(int(paramDict["N"])//2, 1, 0, 0)]
     nEggs = paramDict["nEggs"]
     if length=="short":
         freqTable = [["Pop", "Gen", "A", "I", "O", "Males", "Females", "Total", "MaleFec", "FemFec", "APref", "IPref", "OPref", "Matings", "Contacts", "MMContacts"]]

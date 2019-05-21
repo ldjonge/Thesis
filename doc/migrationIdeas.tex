@@ -1,0 +1,28 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[backend=biber, style=nature, citestyle=nature, maxnames=7, minnames=7, maxcitenames=2, mincitenames=1]{biblatex}
+\usepackage[colorlinks=true,  urlcolor=blue]{hyperref}
+
+\addbibresource{thesis.bib}
+\title{Migration Ideas}
+\date{\vspace{-5ex}}
+
+\begin{document}
+\maketitle
+
+\section{Baseline Migration Stuff}
+The current basic version of the model is based on a stepping stone model, where an individual that has been randomly chosen to migrate will have an equal chance to go to either neighbouring population. The model is not circular, and individuals migrating from one of the populations at the edges of the range will always migrate to the only neighbouring population. While an Island model could be used instead, this seems less realistic considering the distribution of real populations. Instead the way to make the model more realistic would be to add in different migration rates between different populations, reflecting different distances. As studies have shown Odonates are unlikely to travel large distances, migration rates between close ponds should be significantly higher than between ponds with a larger distance between them. This would mean that a matrix of migration rates should be constructed, with migration rates between ponds presumably being symmetrical between ponds.
+
+\section{Population Differences}
+As different populations are assumed to live in different conditions, some of the baseline parameters should be allowed to differ between populations. This certainly includes the starting frequencies of phenotypes, but also the baseline fertility levels of different phenotypes, and potentially even the baseline mating success before factoring in fertility. Variation in these factors is the most likely explanation for the wide range of frequency differences in the different populations throughout Europe, which could hopefully be reflected in the model. Carrying capacity is another important factor to differ between populations, as it should be obvious that pond systems of different sizes can support different numbers of damselflies. In addition interspecies competition can have a significant effect on carrying capacity, which should certainly be reflected in the model. The most likely way to implement this is to use a table of populations, with all parameters where variation is allowed determined for each individual population.
+
+\section{Realism}
+For determining both migration rates and abiotic factors the actual realistic migration distances of \textit{I. elegans} should be determined. While this could be ignored in a model only accounting for migration due to rates always being realistic assuming the distance is short or long enough, a realistic combination of distance and difference in abiotic factors is essential for drawing relevant and accurate conclusions.
+
+\section{New Populations}
+To investigate the formation of new populations and possible founder effects empty populations can be added into the model. It is well known that populations often go extinct, and new populations can form in their place. While creating completely new populations out of nowhere is nearly impossible to model with the current approach, adding in 'empty' populations reflecting ponds with no \textit{I. elegans} present is a very realistic option. This is still biologically relevant, as founding a new population still requires an appropriate habitat. Of course fertility levels per phenotype will be predetermined here, as will the potential carrying capacity. For reference in this model it will be recorded when a population either goes extinct or is newly founded, to ensure the visibility of potential founder effects.
+
+Due to the migration of fertilised females the probability of starting a new population from a single migration event is reasonable, although this population would start out small with a reasonable chance of going extinct early if not supported with more migrations and some luck. It may also be required to account for lower fertility levels when incest is involved, although this may be near impossible to represent accurately, especially considering the relatively small short-term effects of incest as well as the difficulties recording ancestry with the current model.
+
+\printbibliography
+\end{document}

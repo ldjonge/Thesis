@@ -73,7 +73,7 @@ def matingSearch(pop, newPop, genVars):
                 else:
                     mate = None
                 if type(mate)==Female:
-                    if random.random() <= genVars[0]:
+                    if random.random() <= genVars[0]*mate.fertility:
                         #eggLay(newPop, male, mate, math.ceil(400))
                         mate.mate(male)
                         mate.fertility *= genVars[6]

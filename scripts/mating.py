@@ -1,4 +1,4 @@
-fertilityimport random
+import random
 from standardFunctions import *
 from numpy.random import choice
 from numpy import exp
@@ -121,12 +121,42 @@ def recordFec(pop):
         avgMFec = 0
     if len(pop[1]) > 0:
         totalFFec = 0
+        totalAFec = 0
+        totalIFec = 0
+        totalOFec = 0
+        totalA = 0
+        totalI = 0
+        totalO = 0
         for f in pop[1]:
             totalFFec += f.fertility
+            if f.phenotype == "A":
+                totalAFec += f.fertility
+                totalA += 1
+            elif f.phenotype == "I":
+                totalIFec += f.fertility
+                totalI += 1
+            elif f.phenotype == "O":
+                totalOFec += f.fertility
+                totalO += 1
         avgFFec = totalFFec/len(pop[1])
+        try:
+            avgAFec = totalAFec/totalA
+        except ZeroDivisionError:
+            avgAFec = 0
+        try:
+            avgIFec = totalIFec/totalI
+        except ZeroDivisionError:
+            avgIFec = 0
+        try:
+            avgOFec = totalOFec/totalO
+        except ZeroDivisionError:
+            avgOFec = 0
     else:
         avgFFec = 0
-    return [avgMFec, avgFFec]
+        avgAFec = 0
+        avgIFec = 0
+        avgOFec = 0
+    return [avgMFec, avgFFec, avgAFec, avgIFec, avgOFec]
 
 def recordPref(pop):
     totalAPref = 0
@@ -188,7 +218,7 @@ def runSim(length):
             ind.calcFec(phenFreq)
         #print([str(phenFreq["A"]), str(phenFreq["I"]), str(phenFreq["O"]), str(len(pop[0])), str(len(pop[1]))])
         if length == "short":
-            freqTable.append([str(gen), str(phenFreq["A"]), str(phenFreq["I"]), str(phenFreq["O"]), str(len(pop[0])), str(len(pop[1])), str(len(pop[0])+len(pop[1])), str(avgFecs[0]), str(avgFecs[1]), str(prefs[0]), str(prefs[1]), str(prefs[2]), str(matings), str(contacts), str(MMcontacts)])
+            freqTable.append([str(gen), str(phenFreq["A"]), str(phenFreq["I"]), str(phenFreq["O"]), str(len(pop[0])), str(len(pop[1])), str(len(pop[0])+len(pop[1])), str(avgFecs[0]), str(avgFecs[1]), str(avgFecs[2]), str(avgFecs[3]), str(avgFecs[4]), str(prefs[0]), str(prefs[1]), str(prefs[2]), str(matings), str(contacts), str(MMcontacts)])
         elif length == "long":
             freqTable.append([gen, "A", phenFreq["A"]])
             freqTable.append([gen, "I", phenFreq["I"]])
@@ -198,6 +228,9 @@ def runSim(length):
             freqTable.append([gen, "T", len(pop[0])+len(pop[1])])
             freqTable.append([gen, "MalF", avgFecs[0]])
             freqTable.append([gen,"FemF", avgFecs[1]])
+            freqTable.append([gen,"AF", avgFecs[2]])
+            freqTable.append([gen,"IF", avgFecs[3]])
+            freqTable.append([gen,"OF", avgFecs[4]])
             freqTable.append([gen, "APref", prefs[0]])
             freqTable.append([gen, "IPref", prefs[1]])
             freqTable.append([gen, "OPref", prefs[2]])
