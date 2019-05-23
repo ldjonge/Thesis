@@ -21,10 +21,33 @@ def migrate(pops, female):
         else:
             pops[listIndex+1][1].append(copy(female))
 
+def readPopInfo(file="paramFiles/popInfo.csv"):
+    with open(file, 'r') as data:
+        header = data.readline()
+        header = header.strip()
+        header = header.split(",")
+        pops = []
+        for line in data.readlines():
+            line = line.strip()
+            line = line.split(",")
+            popDict={}
+            for i in range(len(header)):
+                popDict[header[i]] = line[i]
+            pops.append(popDict)
+        return pops
+
+def readMigration(file="paramFiles/dispersalMatrix.csv"):
+    data = pandas.read_csv(file, sep=",")
+    return(data)
+
 def runSim(length):
     paramDict = readParams()
     #pops = [startingPop(int(paramDict["N"]), paramDict["p"], paramDict["q"], paramDict["r"]) for i in range(int(paramDict['nPops']))]
-    pops = [startingPop(int(paramDict["N"]), paramDict["p"], paramDict["q"], paramDict["r"]), startingPop(int(paramDict["N"])//2, 1, 0, 0)]
+    #pops = [startingPop(int(paramDict["N"]), paramDict["p"], paramDict["q"], paramDict["r"]), startingPop(int(paramDict["N"])//2, 1, 0, 0)]
+    pops = []
+    params = readPopInfo()
+    for pop in params:
+        pops.append(startingPop(int(pop["N"]), float(pop["p"]), float(pop["q"]), float(pop["r"])))
     nEggs = paramDict["nEggs"]
     if length=="short":
         freqTable = [["Pop", "Gen", "A", "I", "O", "Males", "Females", "Total", "MaleFec", "FemFec", "APref", "IPref", "OPref", "Matings", "Contacts", "MMContacts"]]
@@ -44,7 +67,7 @@ def runSim(length):
                 freqTable.append([id, gen, "preIPref", prefs[1]])
                 freqTable.append([id, gen, "preOPref", prefs[2]])
             for i in range(30):
-                results = matingSearch(pop, nEggs, paramDict["successRate"], nextGen, paramDict["K"])
+                results = matingSearch(pop, nEggs, paramDict["successRate"], nextGen, int(params[id-1]["K"]))
                 matings += results[0]
                 contacts += results[1]
                 MMcontacts += results[2]
@@ -56,13 +79,17 @@ def runSim(length):
                 freqTable.append([id, gen, "Contacts", contacts])
                 freqTable.append([id, gen, "MMContacts", MMcontacts])
         for pop in pops:
+            migrations = 0
             for fem in pop[1]:
                 if random.random() <= float(paramDict["m"]) and fem.migrate == 0:
                     fem.migrate += 1
                     migrate(pops, fem)
                     fem.migrated += 1
+                    migrations += 1
                 if fem.migrate > 1:
                     print("Wow")
+            if length == "long":
+                freqTable.append([id, gen, "migrations", migrations])
         newPops = []
         for pop in pops:
             nextGen = []
@@ -70,7 +97,7 @@ def runSim(length):
             for fem in pop[1]:
                 if fem.migrated == 0:
                     fem.eggLay(nextGen, nEggs)
-            size = newPopSize(nEggs, nextGen, int(paramDict["K"]))
+            size = newPopSize(nEggs, nextGen, int(params[id-1]["K"]))
             avgFecs = recordFec(pop)
             prefs = recordPref(pop)
 
