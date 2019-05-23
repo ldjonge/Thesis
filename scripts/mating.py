@@ -194,12 +194,24 @@ def runSim(length):
             freqTable.append([gen, "preAPref", prefs[0]])
             freqTable.append([gen, "preIPref", prefs[1]])
             freqTable.append([gen, "preOPref", prefs[2]])
-        for i in range(30):
-            results = matingSearch(pop, nEggs, paramDict["successRate"], nextGen, paramDict["K"])
+        genLength = int(paramDict["genLength"])
+        for i in range(genLength):
+            if i < genLength//2:
+                males = pop[0][:len(pop[0])//2]
+            else:
+                males = pop[0][len(pop[0])//2:]
+            if i < genLength//3:
+                females = pop[1][:len(pop[1])//3]
+            elif i < 2*genLength//3:
+                females = pop[1][len(pop[1])//3:2*len(pop[1])//3]
+            else:
+                females = pop[1][2*len(pop[1])//3:]
+            print(gen, len(males), len(females))
+            results = matingSearch((males,females), nEggs, paramDict["successRate"], nextGen, paramDict["K"])
             matings += results[0]
             contacts += results[1]
             MMcontacts += results[2]
-            for fem in pop[1]:
+            for fem in females:
                 if fem.taken != 0:
                     fem.taken -= 1
         for fem in pop[1]:
