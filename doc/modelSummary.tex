@@ -13,10 +13,44 @@
 \section{Assumptions}
 Non-overlapping generations \cite{Svensson2005}
 Even sex distribution
+During the entire generation time all individuals are available for mating (Not realistic, but much easier to code)
 Male-male interactions pre-mating may increase the preference for androchrome female (Could this also be a negative effect? What has research shown?)
 Male-male interactions may occur during the mating phase due to misidentification \cite{Blow2019}
 Successful mating increases the preference for the chosen phenotype, failed mating reduces the preference (Should the preference be reduced varying depending on the way mating failed, i.e. more reduction when partner is aggressive,male, etc.?)
 Both males and females can mate multiple times \cite{Gosden2007}
+Failed mating attempts have a negative effect on the fertility of the female, or on the 'bottom' male in case of male-male interactions (Again should this effect be allowed to vary based on the way mating failed?)
+Successful mating attempts have a negative effect on both individuals, although this effect may be smaller than the effect of failed mating attempts
+Males have a (small) inherent preference for heterochrome females \cite{Blow2019}
+Mated females lay a fixed number of eggs (Should this be allowed to vary based on mating attempts, i.e. number of eggs reduced on successful mating attempts, fertility reduced on failed mating attempts?)
+The father of the eggs is dependent on the order of mating, The most recent partner will father the majority of a female's eggs, while the rest of the eggs will be evenly spread between the other partners \cite{Cordoba2003}
+In populations with low density males may fail to find a mating during any given search session (How common should this be? If common parameters should be set so carrying capacity is presumably higher?)
+As each female lays many eggs, the individuals that grow to reproductive age are sampled randomly from the many eggs produced, accounting for drift in the model.
+
+\section{Important things to discuss}
+How important is learning before the mating phase? May need to wait on Rachel's experiments for definitive answer
+How exactly is fertility affected by mating harassment? Do females become less likely to mate after each mating attempt, are they equally promiscuous but with a chance of death? Does the number of eggs they lay go down as a result of mating harassment? Is either of these parameters affected by succesful mating, and if so how (Proteins in sperm could make successful mating beneficial as well)?
+How common are low density populations?
+Are males affected (positively or negatively) by failing to mate? By mating?
+
+
+Migration stuff
+
+\section{Ideas}
+Find a way to vary density more, population sizes are awfully constant with the current model. How constant are population sizes anyway?
+Split each generation into groups, not all individuals fly at the same time. As expected flight time for males is longer, perhaps fewer groups of males that each fly for a longer period, with more, smaller groups of females. For ease of use non-overlapping groups of equal size and equal duration, e.g. 2 groups of males for half the rounds and 3 groups of females for 1/3 of the rounds. Probably best to have prime numbers of groups.
+
+\subsection{Migration}
+Have multiple subpopulations each running in the same way as the original single-population model.
+After the mating stage of each generation fertilised females will be allowed to migrate to different populations, where they can lay their eggs. While this is not necessarily the only way migration happens in real populations, it is almost certainly a way and if so it certainly would be the most impactful way migration could happen. There may be a possiblity to include migration at other life stages as well but it most likely will not be relevant enough.
+Each subpopulation should have different parameter values, for starting size, carrying capacity, baseline morph fertility, starting morph frequencies, maybe more.
+Successrate of mating may also differ between populations, should probably discuss whether this is relevant or not.
+As long as no inherent preference for certain morphs based on genetics is assumed, preference calculations should be identical between populations. Number of eggs laid as well, as this should depend more on individual genetics than environment.
+All subpopulations will be linked differently through a matrix of migration rates. To start out migration will probably be symmetrical, but this does not necessarily need to stay that way.
+Some empty 'subpopulations' will be included later, to simulate the possibility of starting a new population, investigating founder effects etc.
+When allowing for new populations to form there should be some kind of notice that a new population has formed, as well as a notice whenever a population dies out. 
+
+
+
 
 
 

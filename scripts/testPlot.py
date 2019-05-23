@@ -7,7 +7,7 @@ from createPop import *
 import os
 
 newFile = str(len(os.listdir("output/freqs"))+1)
-
+print("simulation {}".format(newFile))
 with open("output/paramValues.tsv", "r") as paramFile:
     nameList = paramFile.readline()
     nameList = nameList.strip()
@@ -30,6 +30,7 @@ if len(sys.argv) > 1:
 
 else:
     data = mating.runSim("long")
+    print("simulation {}".format(newFile))
     with open("output/raw/sim{}.tsv".format(newFile), "w") as dataFile:
         for line in data:
             new = []
