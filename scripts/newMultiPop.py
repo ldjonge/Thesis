@@ -136,6 +136,10 @@ def runSim(length):
             else:
                 print("failure")
             newPops.append(newPop)
+            if len(pops[id-1][0])+len(pops[id-1][1]) == 0 and len(totalPop) > 0:
+                print("New population formed in pop {}, generation {}".format(str(id), str(gen)))
+            if len(pops[id-1][0])+len(pops[id-1][1]) > 0 and len(totalPop) == 0:
+                print("Population {} extinct in generation {}".format(str(id), str(gen)))
         if (gen)%10 == 0:
             print("Generation {} complete, population size {}".format(str(gen), str(totalLen)))
         pops = newPops
