@@ -3,7 +3,7 @@ import seaborn as sns; sns.set()
 import matplotlib.pyplot as plt
 import sys
 import mating
-import multiPop
+import newMultiPop
 from createPop import *
 import os
 
@@ -31,7 +31,7 @@ if len(sys.argv) > 1:
     table = pandas.read_csv(sys.argv[1], sep="\t")
 
 else:
-    data = multiPop.runSim("long")
+    data = newMultiPop.runSim("long")
     with open("multiOutput/raw/sim{}.tsv".format(newFile), "w") as dataFile:
         for line in data:
             new = []
@@ -92,7 +92,7 @@ plot.fig.suptitle("Phenotype Frequency Pre-mating", y=1)
 plot.set(xlabel="Generation", ylabel="Preference")
 plot.savefig("multiOutput/prePrefs/sim{}.png".format(newFile), bbox_inches="tight")
 
-plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["T", "migrations"], style="Pop", palette = ["black", "green"], data=table, legend="brief")
+plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["migrations"], style="Pop", palette = ["green"], data=table, legend="brief")
 sns.despine()
 plot.fig.suptitle("Migration", y=1)
 plot.set(xlabel="Generation")
