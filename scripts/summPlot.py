@@ -3,6 +3,7 @@ import seaborn as sns; sns.set()
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
+from heatmap import *
 
 if len(sys.argv) > 1 and sys.argv[1].lower() == "multi":
     multi = True
@@ -41,10 +42,10 @@ else:
 data = dataReshape
 
 data['matingSuccess'] = (data['Matings']/data['Contacts']).astype(float)
-print(data['matingSuccess'].min(), data['matingSuccess'].max(), data['matingSuccess'].mean())
+#print(data['matingSuccess'].min(), data['matingSuccess'].max(), data['matingSuccess'].mean())
 data['misIdent'] = (data['MMContacts']/(data['Contacts']+data['MMContacts'])).astype(float)
 
-print(data[data['matingSuccess']==data['matingSuccess'].max()])
+#print(data[data['matingSuccess']==data['matingSuccess'].max()])
 
 sns.set_context("talk")
 
@@ -62,8 +63,16 @@ ax.set_xticklabels(data.columns)
 ax.set_yticklabels(data.columns)
 if multi:
     fig.savefig("multiOutput/summary/correlation.png")
+    plt.figure(figsize=(10,10))
+    corrplot(data.corr())
+    plt.subplots_adjust(left=0.2, bottom=0.2)
+    plt.savefig("multiOutput/summary/corrHeatMap.png")
 else:
     fig.savefig("newOutputAgain/summary/correlation.png")
+    plt.figure(figsize=(10,10))
+    corrplot(data.corr())
+    plt.subplots_adjust(left=0.2, bottom=0.2)
+    plt.savefig("newOutputAgain/summary/corrHeatMap.png")
 #print(data.head())
 sns.set_style("white")
 
@@ -71,9 +80,11 @@ sns.set_style("white")
 fig, axarr = plt.subplots(1,2, sharey=True, figsize=(10,8))
 
 if multi:
-    plot1 = sns.regplot(x="A", y="MalF", style="Pop", data=data,ax=axarr[0])
+    #for i in set(data.index.get_level_values("Pop")):
+        #subdata = data.loc[[i]]
+    plot1 = sns.regplot(x="A", y="MalF", data=data,ax=axarr[0])
     plot1.set_title("Male")
-    plot2 = sns.regplot(x="A", y="FemF", style="Pop", data=data, ax=axarr[1])
+    plot2 = sns.regplot(x="A", y="FemF", data=data, ax=axarr[1])
     plot2.set_title("Female")
     sns.despine()
     fig.suptitle("Fecundity")
@@ -104,23 +115,25 @@ if not multi:
 fig, axarr = plt.subplots(3,2, sharex ='col', sharey=False, figsize=(10,8))
 fig.suptitle("Preference")
 if multi:
-    plot1 = sns.regplot(x="A", y="preAPref", style="Pop", data=data, ax=axarr[0,0])
-    plot1.set(ylabel="")
-    plot1.set_title("Pre-Mating")
-    plot2 = sns.regplot(x="A", y="APref", style="Pop", data=data, ax=axarr[0,1])
-    plot2.set(ylabel="")
-    plot2.set_title("Post-Mating")
-    plot3 = sns.regplot(x="I", y="preIPref", style="Pop", data=data, ax=axarr[1,0])
-    plot3.set(ylabel="")
-    plot4 = sns.regplot(x="I", y="IPref", style="Pop", data=data, ax=axarr[1,1])
-    plot4.set(ylabel="")
-    plot5 = sns.regplot(x="O", y="preOPref", style="Pop", data=data, ax=axarr[2,0])
-    plot5.set(ylabel="")
-    plot6 = sns.regplot(x="O", y="OPref", style="Pop", data=data, ax=axarr[2,1])
-    plot6.set(ylabel="")
-    sns.despine()
+    for i in set(data.index.get_level_values("Pop")):
+        subdata = data.loc[[i]]
+        plot1 = sns.regplot(x="A", y="preAPref", data=subdata, ax=axarr[0,0])
+        plot1.set(ylabel="")
+        plot1.set_title("Pre-Mating")
+        plot2 = sns.regplot(x="A", y="APref", data=subdata, ax=axarr[0,1])
+        plot2.set(ylabel="")
+        plot2.set_title("Post-Mating")
+        plot3 = sns.regplot(x="I", y="preIPref", data=subdata, ax=axarr[1,0])
+        plot3.set(ylabel="")
+        plot4 = sns.regplot(x="I", y="IPref", data=subdata, ax=axarr[1,1])
+        plot4.set(ylabel="")
+        plot5 = sns.regplot(x="O", y="preOPref", data=subdata, ax=axarr[2,0])
+        plot5.set(ylabel="")
+        plot6 = sns.regplot(x="O", y="OPref", data=subdata, ax=axarr[2,1])
+        plot6.set(ylabel="")
+        sns.despine()
 
-    fig.savefig("multiOutput/summary/prefFreq.png")
+        fig.savefig("multiOutput/summary/prefFreq{}.png".format(str(i)))
 else:
     plot1 = sns.regplot(x="A", y="preAPref", data=data, ax=axarr[0,0])
     plot1.set(ylabel="")
@@ -141,24 +154,28 @@ else:
 
 plt.figure(figsize=(10,8))
 if multi:
-    plot = sns.regplot(x="A", y="misIdent", style="Pop", data=data)
+    for i in set(data.index.get_level_values("Pop")):
+        subdata = data.loc[[i]]
+        plot = sns.regplot(x="A", y="misIdent", data=subdata)
+        sns.despine()
+        plt.savefig("multiOutput/summary/maleMating{}.png".format(str(i)))
+
 else:
     plot = sns.regplot(x="A", y="misIdent", data=data)
-sns.despine()
-if multi:
-    plt.savefig("multiOutput/summary/maleMating.png")
-else:
+    sns.despine()
     plt.savefig("newOutputAgain/summary/maleMating.png")
 #plot = sns.lmplot(x="A", y="preAPref", data=data, legend=False)
 
 plt.figure(figsize=(10,8))
 if multi:
-    plot = sns.regplot(x="M", y="F", style="Pop", data=data)
+    for i in set(data.index.get_level_values("Pop")):
+        subdata = data.loc[[i]]
+        plot = sns.regplot(x="M", y="F", data=data)
+        sns.despine()
+        plt.savefig("multiOutput/summary/popDist{}.png".format(str(i)))
 else:
     plot = sns.regplot(x="M", y="F", data=data)
 
-sns.despine()
-if multi:
-    plt.savefig("multiOutput/summary/popDist.png")
-else:
+    sns.despine()
+
     plt.savefig("newOutputAgain/summary/popDist.png")

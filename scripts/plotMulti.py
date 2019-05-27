@@ -54,7 +54,7 @@ plot.fig.suptitle("Phenotype Frequencies", y=1)
 plot.set(xlabel="Generation", ylabel="Frequency")
 plot.savefig("multiOutput/freqs/sim{}.png".format(newFile), bbox_inches="tight")
 
-plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["M", "F", "T"], style="Pop", palette =["blue", "red", "black"], data=table, legend='brief')
+plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["T"], style="Pop", palette =["black"], data=table, legend='brief')
 sns.despine()
 plot.fig.suptitle("Population Size", y=1)
 #plt.legend(labels=("Male", "Female", "Total"), loc="upper left", bbox_to_anchor=(1.05, 0.5), title="Sex")
