@@ -30,7 +30,7 @@ if len(sys.argv) > 1:
 
 else:
     data = mating.runSim("long")
-    print("simulation {}".format(newFile))
+    #print("simulation {}".format(newFile))
     with open("output/raw/sim{}.tsv".format(newFile), "w") as dataFile:
         for line in data:
             new = []

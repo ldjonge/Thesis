@@ -82,16 +82,24 @@ class Female:
     def calcFec(self, phenoFreq):
         if self.phenotype == "O":
             self.fertility = 1
+            self.fecundity = 1
         elif self.phenotype == "I":
             self.fertility = 1
+            self.fecundity = 1
         elif self.phenotype == "A":
             self.fertility = 1
+            self.fecundity = 1
 
     def mate(self, male):
         self.taken += 2
+        if len(self.mates) < 1:
+            self.fecundity *=1.1
+        else:
+            self.fecundity *=0.9
         self.mates.append(male.genotype)
 
     def eggLay(self, pop, nEggs):
+        nEggs = nEggs * self.fecundity
         nMates = len(self.mates)
         if nMates > 0:
             for male in self.mates[:-1]:
