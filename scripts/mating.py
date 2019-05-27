@@ -91,7 +91,7 @@ def eggLay(pop, male, female, nEggs):
 
 def newPopSize(nEggs, pop, K):
     oldPopSize = len(pop)
-    avgPop = 4*oldPopSize/nEggs
+    avgPop = 2*oldPopSize/nEggs
     newPopSize = randomRound(avgPop*(exp(0.5*(K-avgPop)/K)))
     if avgPop > K:
         newPopSize = max(K, newPopSize)
