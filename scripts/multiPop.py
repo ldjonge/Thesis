@@ -32,7 +32,7 @@ def readPopInfo(file="paramFiles/popInfo.csv"):
             line = line.split(",")
             popDict={}
             for i in range(len(header)):
-                popDict[header[i]] = line[i]
+                popDict[header[i]] = float(line[i])
             pops.append(popDict)
         return pops
 

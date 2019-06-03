@@ -326,7 +326,7 @@ def calcNFDF(phenotype, phenoFreq):
     return fertility
 
 def startingPop(popInfo):
-    N = popInfo["N"]
+    N = int(popInfo["N"])
     p = popInfo["p"]
     q = popInfo["q"]
     r = popInfo["r"]

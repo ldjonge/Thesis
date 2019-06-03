@@ -32,8 +32,9 @@ def readPopInfo(file="paramFiles/popInfo.csv"):
             line = line.split(",")
             popDict={}
             for i in range(len(header)):
-                popDict[header[i]] = line[i]
+                popDict[header[i]] = float(line[i])
             pops.append(popDict)
+        print(pops[0].keys())
         return pops
 
 def readMigration(file="paramFiles/dispersalMatrix.csv"):
@@ -72,7 +73,7 @@ def runSim(length):
     nPop = min(len(params), len(migrationMatrix.index))
     for i in range(nPop):
         pop = params[i]
-        pops.append(startingPop(int(pop["N"]), float(pop["p"]), float(pop["q"]), float(pop["r"])))
+        pops.append(startingPop(pop))
     nEggs = paramDict["nEggs"]
     if length=="short":
         freqTable = [["Pop", "Gen", "A", "I", "O", "Males", "Females", "Total", "MaleFec", "FemFec", "APref", "IPref", "OPref", "Matings", "Contacts", "MMContacts"]]
@@ -120,10 +121,10 @@ def runSim(length):
             totalLen += len(totalPop)
             phenFreq = calcPhenoFreq(newPop)
             for ind in newPop[0]:
-                ind.calcFec(phenFreq)
+                ind.calcFec(params[id-1])
                 ind.complexLearning(totalPop)
             for ind in newPop[1]:
-                ind.calcFec(phenFreq)
+                ind.calcFec(params[id-1])
             #if length == "short":
             #    freqTable.append([str(id), str(gen), str(phenFreq["A"]), str(phenFreq["I"]), str(phenFreq["O"]), str(len(pop[0])), str(len(pop[1])), str(len(pop[0])+len(pop[1])), str(avgFecs[0]), str(avgFecs[1]), str(prefs[0]), str(prefs[1]), str(prefs[2]), str(matings), str(contacts), str(MMcontacts)])
             if length == "long":
