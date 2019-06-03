@@ -6,7 +6,7 @@ import sys
 if len(sys.argv)>1:
     data = pd.read_csv(sys.argv[1], sep="\t")
 else:
-    data = pd.read_csv("multiOutput/summary/summary/summary.tsv", sep="\t")
+    data = pd.read_csv("multiOutput/summary/summary.tsv", sep="\t")
 
 parameters = data.Pheno.unique()
 Runs = data.Run.unique()
@@ -77,4 +77,4 @@ data['T'].replace(0, np.nan, inplace=True)
 #print(data.describe())
 
 
-data.to_csv("multiOutput/summary/summary/newData.tsv", sep="\t", index=False)
+data.to_csv("multiOutput/summary/newData.tsv", sep="\t", index=False)

@@ -10,7 +10,7 @@ import sys
 if len(sys.argv)>1:
     data = pd.read_csv(sys.argv[1], sep="\t", dtype={'Pop':'str', 'Run':'int', 'Gen':'int', 'preAPref':'float', 'preIPref':'float', 'preOPref':'float', 'Matings':'float','Contacts':'float', 'MMContacts':'float', 'MalF':'float', 'FemF':'float', 'APref':'float', 'IPref':'float', 'OPref':'float','migrations':'float', 'A':'float', 'I':'float', 'O':'float', 'M':'float', 'F':'float', 'T':'float', 'matingSuccess':'float', 'misIdent':'float'})
 else:
-    data = pd.read_csv("multiOutput/summary/summary/newData.tsv", sep="\t",  dtype={'Pop':'str', 'Run':'int', 'Gen':'int', 'preAPref':'float', 'preIPref':'float', 'preOPref':'float', 'Matings':'float','Contacts':'float', 'MMContacts':'float', 'MalF':'float', 'FemF':'float', 'APref':'float', 'IPref':'float', 'OPref':'float','migrations':'float', 'A':'float', 'I':'float', 'O':'float', 'M':'float', 'F':'float', 'T':'float', 'matingSuccess':'float', 'misIdent':'float'})
+    data = pd.read_csv("multiOutput/summary/newData.tsv", sep="\t",  dtype={'Pop':'str', 'Run':'int', 'Gen':'int', 'preAPref':'float', 'preIPref':'float', 'preOPref':'float', 'Matings':'float','Contacts':'float', 'MMContacts':'float', 'MalF':'float', 'FemF':'float', 'APref':'float', 'IPref':'float', 'OPref':'float','migrations':'float', 'A':'float', 'I':'float', 'O':'float', 'M':'float', 'F':'float', 'T':'float', 'matingSuccess':'float', 'misIdent':'float'})
 
 data.set_index(["Pop", "Run", "Gen"], inplace=True)
 
@@ -34,18 +34,18 @@ ax.set_yticks(ticks)
 ax.set_xticklabels(data.columns)
 ax.set_yticklabels(data.columns)
 
-fig.savefig("multiOutput/summary/summary/correlation.png")
+fig.savefig("multiOutput/summary/correlation.png")
 plt.figure(figsize=(10,10))
 corrplot(data.corr())
 plt.subplots_adjust(left=0.2, bottom=0.2)
-plt.savefig("multiOutput/summary/summary/corrHeatMap.png")
+plt.savefig("multiOutput/summary/corrHeatMap.png")
 
 for pop, popData in pops:
     sns.set_style("darkgrid")
     plt.figure(figsize=(10,10))
     corrplot(popData.corr())
     plt.subplots_adjust(left=0.2, bottom=0.2)
-    plt.savefig("multiOutput/summary/summary/corrHeatMap{}.png".format(pop))
+    plt.savefig("multiOutput/summary/corrHeatMap{}.png".format(pop))
     sns.set_style("white")
     fig, axarr = plt.subplots(1,2, sharey=True, figsize=(10,8))
     plot1 = sns.regplot(x="A", y="MalF", data=popData,ax=axarr[0])
@@ -54,7 +54,7 @@ for pop, popData in pops:
     plot2.set_title("Female")
     sns.despine()
     fig.suptitle("Fecundity")
-    fig.savefig("multiOutput/summary/summary/sexFec{}.png".format(pop))
+    fig.savefig("multiOutput/summary/sexFec{}.png".format(pop))
 
     #Preference vs Frequency
     fig, axarr = plt.subplots(3,2, sharex ='col', sharey=False, figsize=(10,8))
@@ -74,21 +74,21 @@ for pop, popData in pops:
     plot6 = sns.regplot(x="O", y="OPref", data=popData, ax=axarr[2,1])
     plot6.set(ylabel="")
     sns.despine()
-    fig.savefig("multiOutput/summary/summary/prefFreq{}.png".format(pop))
+    fig.savefig("multiOutput/summary/prefFreq{}.png".format(pop))
 
     plt.figure(figsize=(10,8))
     plot = sns.regplot(x="A", y="misIdent", data=popData)
     sns.despine()
-    plt.savefig("multiOutput/summary/summary/maleMating{}.png".format(pop))
+    plt.savefig("multiOutput/summary/maleMating{}.png".format(pop))
 
     plt.figure(figsize=(10,8))
     plot = sns.regplot(x="M", y="F", data=popData)
     sns.despine()
-    plt.savefig("multiOutput/summary/summary/popDist{}.png".format(pop))
+    plt.savefig("multiOutput/summary/popDist{}.png".format(pop))
 
 
     plt.figure(figsize=(10,8))
     plot = sns.regplot(x="T", y="migrations", data=popData)
     sns.despine()
-    plt.savefig("multiOutput/summary/summary/migr{}.png".format(pop))
+    plt.savefig("multiOutput/summary/migr{}.png".format(pop))
     plt.close(fig='all')
