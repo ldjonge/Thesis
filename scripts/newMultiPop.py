@@ -34,7 +34,6 @@ def readPopInfo(file="paramFiles/popInfo.csv"):
             for i in range(len(header)):
                 popDict[header[i]] = float(line[i])
             pops.append(popDict)
-        print(pops[0].keys())
         return pops
 
 def readMigration(file="paramFiles/dispersalMatrix.csv"):

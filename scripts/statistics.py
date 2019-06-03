@@ -8,17 +8,28 @@ import statsmodels.formula.api as smf
 import sys
 
 if len(sys.argv)>1:
-    data = pd.read_csv(sys.argv[1], sep="\t", dtype={'Pop':'str', 'Run':'int', 'Gen':'int', 'preAPref':'float', 'preIPref':'float', 'preOPref':'float', 'Matings':'float','Contacts':'float', 'MMContacts':'float', 'MalF':'float', 'FemF':'float', 'APref':'float', 'IPref':'float', 'OPref':'float','migrations':'float', 'A':'float', 'I':'float', 'O':'float', 'M':'float', 'F':'float', 'T':'float', 'matingSuccess':'float', 'misIdent':'float'})
+    data = pd.read_csv(sys.argv[1],
+    sep="\t",
+    dtype={'Pop':'str', 'Run':'int', 'Gen':'int', 'preAPref':'float', 'preIPref':'float', 'preOPref':'float', 'Matings':'float','Contacts':'float', 'MMContacts':'float', 'MalF':'float', 'FemF':'float', 'APref':'float', 'IPref':'float', 'OPref':'float','migrations':'float', 'A':'float', 'I':'float', 'O':'float', 'M':'float', 'F':'float', 'T':'float', 'matingSuccess':'float', 'misIdent':'float'})
 else:
-    data = pd.read_csv("multiOutput/summary/newData.tsv", sep="\t",  dtype={'Pop':'str', 'Run':'int', 'Gen':'int', 'preAPref':'float', 'preIPref':'float', 'preOPref':'float', 'Matings':'float','Contacts':'float', 'MMContacts':'float', 'MalF':'float', 'FemF':'float', 'APref':'float', 'IPref':'float', 'OPref':'float','migrations':'float', 'A':'float', 'I':'float', 'O':'float', 'M':'float', 'F':'float', 'T':'float', 'matingSuccess':'float', 'misIdent':'float'})
+    data = pd.read_csv("multiOutput/summary/newData.tsv",
+    sep="\t",
+    dtype={'Pop':'str', 'Run':'int', 'Gen':'int', 'preAPref':'float', 'preIPref':'float', 'preOPref':'float', 'Matings':'float','Contacts':'float', 'MMContacts':'float', 'MalF':'float', 'FemF':'float', 'APref':'float', 'IPref':'float', 'OPref':'float','migrations':'float', 'A':'float', 'I':'float', 'O':'float', 'M':'float', 'F':'float', 'T':'float', 'matingSuccess':'float', 'misIdent':'float'})
 
 data.set_index(["Pop", "Run", "Gen"], inplace=True)
+print(data.describe())
 
+data.fillna(value=0, inplace=True)
 pops = data.groupby("Pop")
 
+finals = data.iloc[data.index.get_level_values('Gen')==100]
 
+finalPops = finals.groupby("Pop")
+for pop, popData in pops:
+    print(pop, popData["T"].max(), popData["T"].min(), popData["T"].mean())
 
 """ PLOTS """
+
 sns.set_context("talk")
 
 corr = data.corr()
@@ -39,8 +50,9 @@ plt.figure(figsize=(10,10))
 corrplot(data.corr())
 plt.subplots_adjust(left=0.2, bottom=0.2)
 plt.savefig("multiOutput/summary/corrHeatMap.png")
-
+"""
 for pop, popData in pops:
+    print(pop, popData["T"].max(), popData["T"].min(), popData["T"].mean())
     sns.set_style("darkgrid")
     plt.figure(figsize=(10,10))
     corrplot(popData.corr())
@@ -92,3 +104,4 @@ for pop, popData in pops:
     sns.despine()
     plt.savefig("multiOutput/summary/migr{}.png".format(pop))
     plt.close(fig='all')
+"""
