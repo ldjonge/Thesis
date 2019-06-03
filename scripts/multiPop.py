@@ -47,7 +47,7 @@ def runSim(length):
     pops = []
     params = readPopInfo()
     for pop in params:
-        pops.append(startingPop(int(pop["N"]), float(pop["p"]), float(pop["q"]), float(pop["r"])))
+        pops.append(startingPop(pop))
     nEggs = paramDict["nEggs"]
     if length=="short":
         freqTable = [["Pop", "Gen", "A", "I", "O", "Males", "Females", "Total", "MaleFec", "FemFec", "APref", "IPref", "OPref", "Matings", "Contacts", "MMContacts"]]

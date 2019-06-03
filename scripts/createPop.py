@@ -37,8 +37,12 @@ class Male:
     def __init__(self, pAll, mAll):
         self.genotype = pAll+mAll
         self.phenotype = "M"
-    def calcFec(self, phenoFreq):
-        self.fertility = 1
+    def calcFec(self, popInfo=None):
+        if popInfo == None:
+            self.fertility = 1
+        else:
+            self.fertility = popInfo["Mfer"]
+
     def learning(self, phenoFreq):
         self.aPref = (exp(5*phenoFreq["A"]-2))/(exp(5*phenoFreq["A"]-2)+1)
         self.iPref = (exp(5*phenoFreq["I"]-2))/(exp(5*phenoFreq["I"]-2)+1)
@@ -79,16 +83,20 @@ class Female:
     def __str__(self):
         return self.phenotype
 
-    def calcFec(self, phenoFreq):
-        if self.phenotype == "O":
+    def calcFec(self, popInfo=None):
+        if popInfo == None:
             self.fertility = 1
             self.fecundity = 1
-        elif self.phenotype == "I":
-            self.fertility = 1
-            self.fecundity = 1
-        elif self.phenotype == "A":
-            self.fertility = 1
-            self.fecundity = 1
+        else:
+            if self.phenotype == "O":
+                self.fertility = popInfo["Ofer"]
+                self.fecundity = popInfo["Ofec"]
+            elif self.phenotype == "I":
+                self.fertility = popInfo["Ifer"]
+                self.fecundity = popInfo["Ifec"]
+            elif self.phenotype == "A":
+                self.fertility = popInfo["Afer"]
+                self.fecundity = popInfo["Afec"]
 
     def mate(self, male):
         self.taken += 2
@@ -317,17 +325,21 @@ def calcNFDF(phenotype, phenoFreq):
         fertility = N/3
     return fertility
 
-def startingPop(N, p, q, r):
+def startingPop(popInfo):
+    N = popInfo["N"]
+    p = popInfo["p"]
+    q = popInfo["q"]
+    r = popInfo["r"]
     malePop = createMalePop(N//2, p,q,r)
     femalePop = createFemalePop(N//2, p,q,r)
     phenFreq = calcPhenoFreq((malePop, femalePop))
     #print(phenFreq)
     totalPop = malePop+femalePop
     for ind in malePop:
-        ind.calcFec(phenFreq)
+        ind.calcFec(popInfo)
         ind.complexLearning(totalPop)
     for ind in femalePop:
-        ind.calcFec(phenFreq)
+        ind.calcFec(popInfo)
     pop = [malePop, femalePop]
     return pop
 
