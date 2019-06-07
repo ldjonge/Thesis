@@ -1,4 +1,3 @@
-import createPop
 import pandas
 from mating import *
 from createPop import *

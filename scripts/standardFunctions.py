@@ -57,6 +57,14 @@ def randomRound(num):
         return(math.floor(num))
     else:
         return(math.ceil(num))
+        
+def wavg(group, avgName, weightName):
+    d = group[avgName]
+    w = group[weightName]
+    try:
+        return (d*w).sum() / w.sum()
+    except ZeroDivisionError:
+        return d.mean()
 
 if __name__ == "__main__":
     print(alleleFreq(1/3,1/3,1/3))

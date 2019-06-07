@@ -25,3 +25,5 @@ outputNew/
 newOutputAgain/
 summary/
 testPrj/
+.ipynb_checkpoints/
+scripts/.ipynb_checkpoints

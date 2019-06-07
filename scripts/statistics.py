@@ -23,13 +23,24 @@ data.fillna(value=0, inplace=True)
 pops = data.groupby("Pop")
 
 finals = data.iloc[data.index.get_level_values('Gen')==100]
+print(finals.describe())
 
 finalPops = finals.groupby("Pop")
 for pop, popData in pops:
     print(pop, popData["T"].max(), popData["T"].min(), popData["T"].mean())
 
-""" PLOTS """
+""" Multiple Linear Regression """
+X = data[["A"]]
+Y = data["FemF"]
+X = sm.add_constant(X)
+est = sm.OLS(Y,X).fit()
+print(est.summary())
 
+est = smf.ols(formula="FemF~A*T", data=data).fit()
+print(est.summary())
+
+""" PLOTS """
+"""
 sns.set_context("talk")
 
 corr = data.corr()
@@ -50,7 +61,7 @@ plt.figure(figsize=(10,10))
 corrplot(data.corr())
 plt.subplots_adjust(left=0.2, bottom=0.2)
 plt.savefig("multiOutput/summary/corrHeatMap.png")
-"""
+
 for pop, popData in pops:
     print(pop, popData["T"].max(), popData["T"].min(), popData["T"].mean())
     sns.set_style("darkgrid")
