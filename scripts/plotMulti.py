@@ -22,13 +22,13 @@ with open("multiOutput/paramValues.tsv", "a") as paramFile:
         try:
             valueList.append(str(paramValues[i]))
         except KeyError:
-            print(i)
+            #print(i)
             valueList.append(" ")
     valueList = "\t".join(valueList)
     print(valueList, file=paramFile)
 
 if len(sys.argv) > 1:
-    table = pandas.read_csv(sys.argv[1], sep="\t")
+    table = pandas.read_csv(sys.argv[1], sep=",")
 
 else:
     data = newMultiPop.runSim("long")
@@ -92,7 +92,7 @@ plot.fig.suptitle("Phenotype Frequency Pre-mating", y=1)
 plot.set(xlabel="Generation", ylabel="Preference")
 plot.savefig("multiOutput/prePrefs/sim{}.png".format(newFile), bbox_inches="tight")
 
-plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["migrations"], style="Pop", palette = ["green"], data=table, legend="brief")
+plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["Migrations"], style="Pop", palette = ["green"], data=table, legend="brief")
 sns.despine()
 plot.fig.suptitle("Migration", y=1)
 plot.set(xlabel="Generation")
