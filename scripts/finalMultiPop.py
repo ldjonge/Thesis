@@ -11,29 +11,43 @@ from copy import copy
 # Create a dictionary for all possible genotypes to refer to a phenotype
 phenoDict = {"pp":"A", "pq":"A", "pr":"A", "qp":"A", "rp":"A", "qq":"I", "qr":"I", "rq":"I", "rr":"O"}
 
-# Function to read in parameter values from external file, allowing for a potential alternative file
-# The function returns a dictionary with the values for each parameter
+"""
+Function to read in parameter values from external file, allowing for a potential alternative file
+The function returns a dictionary with the values for each parameter
+"""
 def readParams(file="paramFiles/parameters.ini"):
     with open(file, "r") as infile:
         paramDict = {}
         for line in infile:
             line = line.strip()
             line = line.split(" ") # ini file should be space separated
-            # Numeric parameters should be converted to floats, other parameters should stay strings.
-            # In case integers are needed for a specific parameter this conversion can be performed later
+            """
+            Numeric parameters should be converted to floats, other parameters should stay strings.
+            In case integers are needed for a specific parameter this conversion can be performed later
+            """
             try:
-                # Numeric parameters should be converted to floats, other parameters should stay strings.
-                # In case integers are needed for a specific parameter this conversion can be performed later
+                """
+                Numeric parameters should be converted to floats, other parameters should stay strings.
+                In case integers are needed for a specific parameter this conversion can be performed later
+                """
                 paramDict[line[0]] = float(line[1])
             except ValueError:
                 paramDict[line[0]] = line[1]
     return(paramDict)
 
+"""
+All population specific parameter values such as survival rate and fecundity per sex/morph are specified in a csv file.
+This file also includes the starting status of each population, including population size and allele frequency
+"""
 def readPopInfo(file="paramFiles/popInfo.csv"):
     with open(file, 'r') as data:
         header = data.readline()
         header = header.strip()
         header = header.split(",")
+        """
+        Using the header line of the file makes it so the parameters can be entered in any order,
+        and possible missing parameters do not cause any big issues
+        """
         pops = []
         for line in data.readlines():
             line = line.strip()
@@ -42,19 +56,26 @@ def readPopInfo(file="paramFiles/popInfo.csv"):
             for i in range(len(header)):
                 popDict[header[i]] = float(line[i])
             pops.append(popDict)
+        """
+        By giving each population its own dictionary of parameter values, it is very easy to index them
+        """
         return pops
 
+"""
+The migration probability between each population, including the probability of staying in the same population, is specified in a csv file.
+These probabilities are transformed to make sure they add up to 1, to make sure no errors occur.
+This could be adjusted to only accept percentages and proper probabilities so typos are filtered out
+"""
 def readMigration(file="paramFiles/dispersalMatrix.csv"):
     data = pd.read_csv(file, sep=",", header=None)
-    data = data.div(data.sum(axis=1), axis=0)
+    data = data.div(data.sum(axis=1), axis=0) # Dividing by the sum of the row normalises probabilities
     return(data)
 
 # Define Males
 class Male:
-    # New individuals are created as offspring from two parental alleles, in males genotype has no effect on phenotype
     def __init__(self, pAll, mAll):
-        self.genotype = pAll+mAll
-        self.phenotype = "M"
+        self.genotype = pAll+mAll # New individuals are created as offspring from two parental alleles
+        self.phenotype = "M"    # In males genotype has no effect on phenotype
         self.taken = 0
         self.migrate = 0
 
@@ -95,10 +116,9 @@ class Male:
 
 # Define Females
 class Female:
-    # New individuals are created from two parental alleles, genotype determines female phenotype.
     def __init__(self,pAll,mAll):
-        self.genotype = pAll+mAll
-        self.phenotype = phenoDict[self.genotype]
+        self.genotype = pAll+mAll   # New individuals are created from two parental alleles
+        self.phenotype = phenoDict[self.genotype]   # Genotype determines female phenotype.
         self.taken = 0 # A mating female is taken out of the mating search for a short time
         self.mates = [] # A list to store the individuals a female has mated with for genotype determination of offspring
         self.migrate = 0 # A counter to keep track of migration
@@ -150,16 +170,20 @@ class Female:
                 except KeyError:
                     self.surv = 1
 
-    # When a female mates, fecundity is affected, and she is removed from mating searches for two cycles. The male is added to the list of males to determine the distribution of the offspring
+    """
+    When a female mates, fecundity is affected, and she is removed from mating searches for two cycles.
+    The male is added to the list of males to determine the distribution of the offspring
+    """
     def mate(self, male, params):
         self.fecundity *= params["mateFecEff"]
         self.mates.append(male.genotype)
         self.taken += 2 #Copulation is assumed to take up 2 additional cycles worth of time
         male.taken += 2
 
-    # Fertilised females are assumed to lay all eggs at the same time, with the sperm used for fertilisation depending on the order of mating
-    # Genotypes of the offspring are evenly distributed according to Mendelian genetics, with randomness of survival accounting for the realistic randomness of genotype distribution in adults
-
+    """Fertilised females are assumed to lay all eggs at the same time, with the sperm used for fertilisation
+    depending on the order of mating. Genotypes of the offspring are evenly distributed according to Mendelian
+    genetics, with randomness of survival accounting for the realistic randomness of genotype distribution in adults
+    """
     def eggLay(self, pop, Eggs):
         nEggs = Eggs * self.fecundity
         nMates = len(self.mates)
@@ -216,8 +240,6 @@ def randomAllele(p,q,r):
 # Male and female starting populations are created separately
 def createMalePop(N, p, q, r):
     population = []
-    pAll = randomAllele(p,q,r)
-    mAll = randomAllele(p,q,r)
     for i in range(N):
         pAll = randomAllele(p,q,r)
         mAll = randomAllele(p,q,r)
@@ -226,8 +248,6 @@ def createMalePop(N, p, q, r):
 
 def createFemalePop(N, p, q, r):
     population = []
-    pAll = randomAllele(p,q,r)
-    mAll = randomAllele(p,q,r)
     for i in range(N):
         pAll = randomAllele(p,q,r)
         mAll = randomAllele(p,q,r)
@@ -252,7 +272,10 @@ def startingPop(popInfo, params):
     pop = [malePop, femalePop]
     return pop
 
-# Phenotype distribution is relevant in many cases, sometimes male frequency is also important but in most cases it is not
+"""
+Phenotype distribution is relevant in many cases.
+While male frequency may be relevant in some cases, it usually is not, hence the default value
+"""
 def calcPhenoFreq(pop, male=False):
     freqDict = {"M":0, "A":0, "I":0, "O":0}
     if type(pop[0]) == list:
@@ -278,9 +301,11 @@ def calcPhenoFreq(pop, male=False):
                 phenoDist[phen] = 0
     return phenoDist
 
-# Males will search for mates based on their preference.
+"""
+Males will search for mates based on their preference.
+The number of interactions per population/generation should be recorded.
+"""
 def matingSearch(pop, params, popDict):
-    # The number of interactions per population/generation should be recorded
     matings = 0
     contacts = 0
     MMcontacts = 0
@@ -318,7 +343,11 @@ def matingSearch(pop, params, popDict):
                         mate = None
                     if type(mate)==Female:
                         contacts += 1
-                        # Female mating success incorporates both the chance of contact leading to mating and the chance of mating leading to fertilisation
+                        """
+                        Female mating success incorporates both the chance of contact leading to mating and the chance of mating leading to fertilisation.
+                        While biologically very different processes, the end result is very similar. Without fertilisation the female is harassed,
+                        but no offspring is produced.
+                        """
                         if random.random() <= mate.mSucc*male.fertility:
                             matings += 1
                             mate.mate(male, params)
@@ -351,21 +380,29 @@ def matingSearch(pop, params, popDict):
         # Individuals that die will be removed from the population
         pop[0] = [i for i in pop[0] if i.surv > random.random()]
         pop[1] = [i for i in pop[1] if i.surv > random.random()]
-        deaths += (N - len(pop[0]) - len(pop[1]))
+        deaths += (N - len(pop[0]) - len(pop[1])) # Number of deaths is recorded
     else:
         pass
     return [matings, contacts, MMcontacts, deaths]
 
-# The new population size will be decided based on the number of eggs produced in the previous generation and  the carrying capacity of the population
+"""
+The new population size will be decided based on the number of eggs produced in the previous generation,
+as well as the carrying capacity of the population. The 'pop' variable in this function is the population of eggs
+"""
 def newPopSize(nEggs, pop, K):
     oldPopSize = len(pop)
-    avgPop = 4*oldPopSize/nEggs
+    avgPop = 4*oldPopSize/nEggs # 4 eggs from each female's clutch are expected to survive on average
     newPopSize = randomRound(avgPop*(np.exp(0.5*(K-avgPop)/K)))
+    """
+    At large numbers of eggs the formula will reduce population size below carrying capacity
+    which is obviously unrealistic. While this seems like something that needs a change it may not be needed
+    due to the low chance of these numbers actually occurring
+    """
     if avgPop > K:
         newPopSize = max(K, newPopSize)
     return(newPopSize)
 
-# individuals will be chosen randomly from the population of eggs
+# Individuals will be chosen randomly from the population of eggs
 def popControl(pop, size):
     newPop = list(choice(pop, size=int(size), replace=False))
     malePop = []
@@ -380,8 +417,11 @@ def popControl(pop, size):
     newPop = [malePop, femalePop]
     return(newPop)
 
-# Fecundity parameters should be recorded, not per individual but as a population average
-# These parameters are recorded per sex, as well as per female morph
+"""
+Fecundity parameters should be recorded, not per individual but as a population average
+These parameters are recorded per sex, as well as per female morph
+Any morph or sex that is not present will have fecundity values set to NaN to make sure the data does not get corrupted.
+"""
 def recordFecStats(pop):
     if len(pop[0]) > 0:
         totalMFer = 0
@@ -475,7 +515,10 @@ def recordFecStats(pop):
         avgOSurv = np.nan
     return [avgMFer, avgMMSucc, avgMSurv, avgFFec, avgFMSucc, avgFSurv, avgAFec, avgAMSucc, avgASurv, avgIFec, avgIMSucc, avgISurv, avgOFec, avgOMSucc, avgOSurv]
 
-# Preference should be recorded, again as a population average
+"""
+Preference should be recorded, again as a population average.
+Again in populations with no males the preferences are set to NaN.
+"""
 def recordPref(pop):
     totalAPref = 0
     totalIPref =0
@@ -492,46 +535,59 @@ def recordPref(pop):
         return [avgAPref, avgIPref, avgOPref]
     else:
         return [np.nan,np.nan,np.nan]
-
+"""
+Migration is a possibility at the end of each mating cycle, for both males and females.
+Migration is of course dependent on the migration probabilities specified, and each individual may migrate randomly.
+Migrations are recorded, including whether a migrating female had already been fertilised.
+Migrations of fertilised females contribute more gene flow than migrations of other individuals,
+up to twice as much depending on whether mating occurs after migration.
+"""
 def migrate(pops, migrationMatrix):
-	newPops = [([],[]) for i in pops]
-	migrationList = []
-	for pop in pops:
-		migrations = 0
-		id = pops.index(pop)
-		mRates = migrationMatrix.iloc[id]
-		mChance = mRates.cumsum()
-		for male in pop[0]:
-			if male.migrate == 0:	#Individuals that are still migrating cannot migrate again
-				migOut = random.random()
-				for i in range(len(mChance)):
-					if migOut <= mChance[i]:
-						newPop = i
-						break
-				if newPop != id:
-					migrations += 1
-					male.migrate += random.randint(1,5)	#Depending on distance and speed migration may take a variable amount of time
-				newPops[newPop][0].append(male)	#Individuals are added to the population for the next cycle
-			else:
-				male.migrate -= 1	#Migrating individuals get one step closer to their destination
-				newPops[id][0].append(male)	#But are staying in the population they are going towards
-		for female in pop[1]:
-			if female.migrate == 0:
-				migChance = random.random()
-				for i in range(len(mChance)):
-					if migOut <= mChance[i]:
-						newPop = i
-						break
-				if newPop != id:
-					migrations += 1
-					female.migrate += 2
-				newPops[newPop][0].append(female)
-			else:
-				female.migrate -= 1
-				newPops[id][0].append(female)
-		migrationList.append(migrations)
-	pops = newPops
-	return migrationList
+    newPops = [([],[]) for i in pops]
+    migrationList = []
+    for pop in pops:
+        migrations = 0
+        fertMigrations = 0
+        id = pops.index(pop)
+        mRates = migrationMatrix.iloc[id]
+        mChance = mRates.cumsum()
+        for male in pop[0]:
+            if male.migrate == 0:	#Individuals that are still migrating cannot migrate again
+                migOut = random.random()
+                for i in range(len(mChance)):
+                    if migOut <= mChance[i]:
+                        newPop = i
+                        break
+                if newPop != id:
+                    migrations += 1
+                    male.migrate += random.randint(1,5)
+                    """
+                    Depending on distance and speed migration may take a variable amount of time.
+                    This could also be related to the migration probability depending on how that is decided on
+                    """
+                newPops[newPop][0].append(male)	#Individuals are added to the population for the next cycle
+            else:
+                male.migrate -= 1	# Migrating individuals get one step closer to their destination
+                newPops[id][0].append(male)	# But for the purpose of recording are 'staying' in the population they are going towards
+        for female in pop[1]:
+            if female.migrate == 0:
+                migChance = random.random()
+                for i in range(len(mChance)):
+                    if migOut <= mChance[i]:
+                        newPop = i
+                        break
+                if newPop != id:
+                    migrations += 1
+                    female.migrate += random.randint(1,5)
+                    if len(female.mates) > 0:
+                        fertMigrations += 1
+                newPops[newPop][0].append(female)
+            else:
+                female.migrate -= 1
+                newPops[id][0].append(female)
+        migrationList.append([migrations, fertMigrations])
+    pops = newPops
+    return migrationList
 
 def runSim():
     paramDict = readParams()
@@ -546,7 +602,7 @@ def runSim():
         pops.append(startingPop(pop, paramDict))
     nEggs = paramDict["nEggs"]
     freqTable = [["Pop", "Gen", "Pheno", "Value"]]
-    for gen in range(1, int(paramDict["nGen"])+1):#First generation should be called 1
+    for gen in range(1, int(paramDict["nGen"])+1): #First generation should be called 1 to please non-coders
         totalLen = 0
         matings = [0 for i in range(nPop)]
         contacts = [0 for i in range(nPop)]
@@ -580,7 +636,8 @@ def runSim():
                     if fem.taken != 0:
                         fem.taken -= 1
             cyclMigr = migrate(pops, migrationMatrix)
-            migrations = [a+b for a,b in zip(migrations, cyclMigr)]
+            migrations = [a+b for a,b in zip(migrations, cyclMigr[0])]
+            fertMigrations = [mig[1] for mig in cyclMigr]
         newPops = []
         totalLen = 0
         for pop in pops:
@@ -606,6 +663,7 @@ def runSim():
             freqTable.append([id+1, gen, 'Contacts', contacts[id]])
             freqTable.append([id+1, gen, 'MMContacts', MMcontacts[id]])
             freqTable.append([id+1, gen, 'Migrations', migrations[id]])
+            freqTable.append([id+1, gen, 'Fertilised Migrations', fertMigrations[id]])
             freqTable.append([id+1, gen, 'Deaths', deaths[id]])
             freqTable.append([id+1, gen, "APref", prefs[0]])
             freqTable.append([id+1, gen, "IPref", prefs[1]])
@@ -636,3 +694,5 @@ if __name__ == "__main__":
     freqTable = pd.DataFrame(runSim())
     if len(sys.argv) > 1:
         freqTable.to_csv(sys.argv[1], header=None, index=None)
+    else:
+        print(freqTable)
