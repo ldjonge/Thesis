@@ -20,16 +20,17 @@ Successful mating increases the preference for the chosen phenotype, failed mati
 Both males and females can mate multiple times \cite{Gosden2007}
 Failed mating attempts have a negative effect on the fertility of the female, or on the 'bottom' male in case of male-male interactions (Again should this effect be allowed to vary based on the way mating failed?)
 Successful mating attempts have a negative effect on both individuals, although this effect may be smaller than the effect of failed mating attempts
-Males have a (small) inherent preference for heterochrome females \cite{Blow2019}
+Males may have a (small) inherent preference for heterochrome females \cite{Blow2019}
 Mated females lay a fixed number of eggs (Should this be allowed to vary based on mating attempts, i.e. number of eggs reduced on successful mating attempts, fertility reduced on failed mating attempts?)
 The father of the eggs is dependent on the order of mating, The most recent partner will father the majority of a female's eggs, while the rest of the eggs will be evenly spread between the other partners \cite{Cordoba2003}
 In populations with low density males may fail to find a mating during any given search session (How common should this be? If common parameters should be set so carrying capacity is presumably higher?)
+Have big differences in general non-morph dependent survival/fecundity to have some populations with very low density and some with much higher density, this is just realistic.
 As each female lays many eggs, the individuals that grow to reproductive age are sampled randomly from the many eggs produced, accounting for drift in the model.
 
 \section{Important things to discuss}
 How important is learning before the mating phase? May need to wait on Rachel's experiments for definitive answer
 How exactly is fertility affected by mating harassment? Do females become less likely to mate after each mating attempt, are they equally promiscuous but with a chance of death? Does the number of eggs they lay go down as a result of mating harassment? Is either of these parameters affected by succesful mating, and if so how (Proteins in sperm could make successful mating beneficial as well)?
-How common are low density populations?
+- How common are low density populations? - Density differs significantly between populations, \cite{anecdotal}
 Are males affected (positively or negatively) by failing to mate? By mating?
 
 \subsection{Migration stuff}
@@ -49,21 +50,14 @@ All subpopulations will be linked differently through a matrix of migration rate
 Some empty 'subpopulations' will be included later, to simulate the possibility of starting a new population, investigating founder effects etc.
 When allowing for new populations to form there should be some kind of notice that a new population has formed, as well as a notice whenever a population dies out.
 
-
-
-
-
-
-
-
 \section{Baseline Model Factors}
 A model was created which simulates multiple generations of a population of individual damselflies. Female colour polymorphisms were assumed to be a single locus trait with three alleles, for which the dominance hierarchy is known \cite{Cordero1990}. To start the simulation a population of specified size is created, 50\% female and 50\% male. Genotypes for each individual were randomly generated based on pre-specified allele frequencies. Based on these genotypes the female phenotypes were also recorded. Baseline female fertility was allowed to vary based on phenotype, with male fertility not affected by the genotype as no phenotypical effects of these genes on males have been found.
 
 \section{Mating Preference}
-At the start of each generation each male will develop a mating preference for the phenotype it most often detects. This was simulated by randomly sampling a maximum of 50 other individuals from the population, both male and female. Research has shown that in populations dominated by males androchrome females are more likely to be preferred\cite{}, although males have a smaller effect on androchrome preference than real androchrome females. A passive preference bonus for heterochrome females was added into the model as research has shown density has a smaller effect on the preference for these phenotypes than for the androchrome females.
+At the start of each generation each male will develop a mating preference for the phenotype it most often detects. This was simulated by randomly sampling a maximum of 50 other individuals from the population, both male and female. Research has shown that in populations dominated by males androchrome females are more likely to be preferred \cite{}, although males appear to have a smaller effect on androchrome preference than real androchrome females. A passive preference bonus for heterochrome females was added into the model as research has shown density has a smaller effect on the preference for these phenotypes than for the androchrome females.
 
 \section{Mating Search}
-Subsequently the actual mating search is simulated, where each male will search for a mate. This process is done by randomly sampling an individual from the population, with probabilities weighted by the preference of the searching male. The probability of a male identifying another male as a possible mate was dependent on the preference for androchrome females, although the actual probability was reduced representing the ability to correctly identify a member of the same sex. In small populations the possibility was added to identify no mates, representing a smaller population in a large area making it harder to find potential mates. Whenever a male chooses a female as a potential partner, the probability of successful mating was dependent on both the fertility of the female and a baseline probability of success. In case of successful copulation, the male's genotype was added to the list of potential partners for the female, and the male's preference for this phenotype was increased. After this the fertility for both male and female was reduced to represent the energy spent on mating.
+Subsequently the actual mating search is simulated, where each male will search for a mate. This process is done by randomly sampling an individual from the population, with probabilities weighted by the preference of the searching male. The probability of a male identifying another male as a possible mate was dependent on the preference for androchrome females, although the actual probability was reduced representing the ability to correctly identify a member of the same sex. In small populations the possibility was added to identify no mates, representing a smaller population in a large area making it harder to find potential mates. Whenever a male chooses a female as a potential partner, the probability of successful mating was dependent on both the fertility of the female and a baseline probability of success. In case of successful copulation, the male's genotype was added to the list of sexual partners for the female, and the male's preference for this phenotype was increased. After this the fertility for both male and female was reduced to represent the energy spent on mating.
 
 In case of no successful copulation, whether as a result of homosexuality or failure to mate with a female, the fertility of the mate was reduced to represent time and energy lost as a result of mating harassment. The searching male had its preference for the chosen phenotype reduced, including a reduction in androchrome preference in the case of a male as chosen partner. Any individuals with a reduction in fertility below half the starting fertility were potentially removed from the population with a probability dependent on the exact fertility value.
 
@@ -71,7 +65,7 @@ In case of no successful copulation, whether as a result of homosexuality or fai
 At the end of the mating process, any female that has mated has a recorded list of the genotypes of the males she has mated with, representing the sperm stored. Each female was allowed to lay a fixed number off eggs, with the father for those eggs depending on the order in which the female mated with each male. The majority of sperm used to produce offspring was taken from the last male mated with, with an even distribution of sperm from any other males mated previously. For each couple that produced offspring, an even distribution of eggs was laid, 50\% of each sex, and 25\% of each parental allele combination.
 
 \section{Egg Hatching}
-As each female was allowed to lay a large number off eggs, not all eggs can reproduce in the next generation. The number of individuals allowed to grow to maturity was dependent both on the number of eggs laid and a specified carrying capacity, using logistic growth as a guideline for the exact formula. This number of individuals was then randomly sampled from the population of eggs, and this was carried over to the next generation where the cycle restarts with preference learning.
+As each female was allowed to lay a large number of eggs, not all eggs can reproduce in the next generation. The number of individuals allowed to grow to maturity was dependent both on the number of eggs laid and a specified carrying capacity, using logistic growth as a guideline for the exact formula. This number of individuals was then randomly sampled from the population of eggs, and this was carried over to the next generation where the cycle restarts with preference learning.
 
 \printbibliography
 \end{document}

@@ -1,0 +1,71 @@
+---
+  title: "Database Analysis"
+author: "Lorenzo de Jonge"
+date: "December 2019"
+output:
+  pdf_document:
+  toc: false
+number_sections: false
+df_print: default
+fig_width: 6.5
+fig_height: 4
+---
+  
+  ```{r include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warnings=FALSE)
+```
+
+```{r include=FALSE}
+setwd("C:/Users/Lorenzo/Documents/Thesis/rawData/ischDB")
+options(warn=-1)
+```
+```{r}
+dens = read.csv("density.csv", sep=",", header=T)
+dens$Season = as.factor(dens$Season)
+dens$ID = as.factor(dens$ID)
+eggs = read.csv("eggs.csv", sep=",", header=T)
+ind = read.csv("individuals.csv", sep=",", header=T)
+ind$Sex = as.factor(ind$Sex)
+ind$Copula = as.factor(ind$Copula)
+ind$Season = as.factor(ind$Season)
+ind$Locale[ind$Locale=="Vombs vattenverk"]="Vombs Vattenverk"
+ind$Age[ind$Age=="tenral"]="teneral"
+
+eggInd = merge(eggs, ind, by="Season_ID")
+```
+```{r}
+dens$No.indiv = dens$No.females+dens$No.males
+dens$cpm = dens$No.indiv/dens$Catching.time..min.
+boxplot(dens$cpm~dens$Locale)
+```
+
+
+```{r}
+egg.aov = aov(Egg.count~Locale, data=eggs)
+summary(egg.aov)
+egg.tuk = TukeyHSD(egg.aov)
+```
+
+```{r}
+copMorph = table(ind$Copula, ind$Morph)
+print(copMorph)
+print(chisq.test(copMorph))
+
+```
+```{r}
+egg.aov = aov(Egg.count~Morph, data=eggInd)
+boxplot(Egg.count~Morph, data=eggInd)
+summary(egg.aov)
+egg.tuk = TukeyHSD(egg.aov)
+egg.tuk
+mean(eggInd$Egg.count[eggInd$Morph==""])
+mean(eggInd$Egg.count[eggInd$Morph=="androchrome"])
+mean(eggInd$Egg.count[eggInd$Morph=="infuscans"])
+mean(eggInd$Egg.count[eggInd$Morph=="infuscans-obsoleta"])
+
+summary(eggInd$Thor_col[eggInd$Morph==""])
+summary(eggInd$Morph[eggInd$Thor_col==""])
+plot(eggInd$Egg.count, eggInd$Eggs)
+
+```
+

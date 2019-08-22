@@ -27,8 +27,8 @@ def readParams(file="paramFiles/parameters.ini"):
             """
             try:
                 """
-                Numeric parameters should be converted to floats, other parameters should stay strings.
-                In case integers are needed for a specific parameter this conversion can be performed later
+                Numeric parameters should be recorded as such (floats), other parameters should stay strings.
+                In case integers are needed for a specific parameter this conversion will be performed later
                 """
                 paramDict[line[0]] = float(line[1])
             except ValueError:
