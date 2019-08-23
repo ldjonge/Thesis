@@ -32,8 +32,9 @@ When only looking at the proportion of mature females however, there is no corre
 
 Overall the proportion of females copulating differs significantly between all morphs, with 76% of infuscans copulating, 50% of androchromes, and 47% of obsoleta. Again it should be noted that a lot of the obsoleta have colour phase specified, and eliminating the 'immature' females leads to 79% of I, 52% of A, 69% of O.
 
-Androchrome fecundity significantly reduced by an increased androchrome morph frequency. Not the case when including females that failed to lay eggs. 
+Androchrome fecundity significantly reduced by an increased androchrome morph frequency. Not the case when including females that failed to lay eggs. Then however increased infuscans frequency leads to increased fecundity, some evidence obsoleta fecundity is increased by increasing frequency of the other morphs (interaction, so more balanced frequency is better???)
 
+Good chance linear regression isnt necessarily the best option, but some patterns are very clear regardless. 
 
 ## Question post-analysis
 Why do females fail to lay eggs in the cups? Is it more likely due to failed copulation or death/failure to lay eggs after successful fertilisation? Real question being how important is it to include death of mated females in the model, and if so should it differ much between morphs?
