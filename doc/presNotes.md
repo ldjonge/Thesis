@@ -34,7 +34,11 @@ Overall the proportion of females copulating differs significantly between all m
 
 Androchrome fecundity significantly reduced by an increased androchrome morph frequency. Not the case when including females that failed to lay eggs. Then however increased infuscans frequency leads to increased fecundity, some evidence obsoleta fecundity is increased by increasing frequency of the other morphs (interaction, so more balanced frequency is better???)
 
-Good chance linear regression isnt necessarily the best option, but some patterns are very clear regardless. 
+Good chance linear regression isnt necessarily the best option, but some patterns are very clear regardless.
+
+For all morphs mating frequency increases with increasing population size. This is less significant in case of infuscans, but should be perceived as a general pattern, and not a morph-specific one. For both androchrome and infuscans there is a significant positive correlation of both log(population size) and morph frequency when both are included in the same model, assuming no interaction between the factors. In obsoleta however morph frequency has no significant effect. These correlations hold whether absolute numbers of individuals caught are used, or adjusted for catching time.
+
+It should be noted that once again when looking at morph frequency relating purely to the mature females, there was a negative correlation between morph frequency and mating rate for both obsoleta and androchrome, also when accounting for population size. It is quite possible that morph frequency when not accounting for maturity functions more as a proxy of maturation frequency, which may very well be similar between males and females. As such, when any given morph frequency is higher, this would also lead to a higher proportion of the present males being mature, and as such a higher chance to be found in copula. Correlation can have many reasons. 
 
 ## Question post-analysis
 Why do females fail to lay eggs in the cups? Is it more likely due to failed copulation or death/failure to lay eggs after successful fertilisation? Real question being how important is it to include death of mated females in the model, and if so should it differ much between morphs?
@@ -43,3 +47,7 @@ How useful is the database in the current state? Many obsoleta are presumably me
 
 When looking at only proportion of mature females, negative correlation between morph frequency and copulating, how does this make any sense? Similar though less clear results when checking frequency comparing to all females including immature, but that may just be due to the presence of immature females increasing the probability any individual mature female is mating.  
 Potential explanation for this unexpected result, at least for heterochrome females, could be that when heterochrome morphs are rare, due to a potential innate preference for these morphs if they are rare they will always be mating, whereas non-mating individuals are more likely to be found when the morph is common, also due to their better 'camouflage' for the human eye. Unclear whether this is a true biological effect or possibly just a side-effect of sampling methods.
+
+
+# Seriously huge Question
+Should the whole learning process be simulated or are there too many uncertainties about learning to have a realistic model. Alternative is to simply use fitness functions from LeRouzic2015, and adjust based on environmental factors, simulating population size etc.
