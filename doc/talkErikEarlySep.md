@@ -6,3 +6,16 @@
   * All rufescens females (547/550) are marked as obsoleta, and therefore included in the figures for mating rate and frequency figures, whereas violacea females are generally not (only 10-15%)
   * Rufescens females have a ~7% mating rate, Mature obsoleta 55%, so when counting all obsoleta in db this averages out to ~30%, which is lower than not only infuscans but also androchromes (though not statistically significant)
   * By including rufescens but not violacea in frequency figures, this presumably skews frequency figures in favour of obsoleta, are they even rarer than previously presumed?
+
+
+# New learning plans
+* Males have an innate preference, which could range anywhere between 0-1 for each morph, including 100% preference for one morph, or 33% for each.
+* Innate preference can be related to genotype, either same locus or different locus
+  * If same locus, should be considered if there are three phenotypes like in females, or potentially up to 6
+  * Any relationship between male genotype and preference for same genotype should be possible, selfish gene vs. MHC-type gene
+* Potential learning before maturation, although this is hard to justify maybe??
+* Once mature, males will try to mate, and mating attempts will have an impact on preference, failed mating reduces pref, successful mating increases pref.
+* By simply having preference change due to failed/successful mating, this automatically leads to a sigmoid preference curve.
+
+# New questions
+* The whole system is highly stochastic, how big is the risk of 'black box'? Is this an issue?
