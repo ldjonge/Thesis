@@ -58,7 +58,7 @@ class testFem:
     def __str__(self):
         return self.phenotype
 
-params = {"MprefA": 1.5, "MprefI": 1.5, "MprefO": 1.5, "succEff": 5, "failEff": 0.8}
+params = {"MprefA": 1, "MprefI": 1, "MprefO": 1, "succEff": 3, "failEff": 0.9}
 
 A = range(51)
 options = [v for v in itertools.product(A, repeat=3) if sum(v)==50]

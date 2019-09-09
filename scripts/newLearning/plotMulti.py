@@ -2,10 +2,12 @@ import pandas
 import seaborn as sns; sns.set()
 import matplotlib.pyplot as plt
 import sys
-import mating
-import newMultiPop
-from createPop import *
+#import mating
+#import newMultiPop
+import newLearning as nL
+#from createPop import *
 import os
+from readFiles import *
 
 newFile = str(len(os.listdir("multiOutput/freqs"))+1)
 print("Simulation ", newFile)
@@ -61,7 +63,7 @@ plot.fig.suptitle("Population Size", y=1)
 plot.set(xlabel="Generation", ylabel="Population")
 plot.savefig("multiOutput/popSize/sim{}.png".format(newFile), bbox_inches="tight")
 
-plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["MalF", "FemF"], style="Pop", palette=["blue", "red"], data=table, legend='brief')
+plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["AFec", "IFec", "OFec"], style="Pop", palette=["blue", "green", "red"], data=table, legend='brief')
 sns.despine()
 plot.set(ylim=(-0.01,1.01))
 plot.fig.suptitle("Fecundity", y=1)

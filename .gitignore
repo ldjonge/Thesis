@@ -28,3 +28,4 @@ testPrj/
 .ipynb_checkpoints/
 scripts/.ipynb_checkpoints
 rawData/
+scripts/newLearning/__pycache__/

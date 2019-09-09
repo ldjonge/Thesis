@@ -2,7 +2,7 @@
 old=$(ls multiOutput/raw/ | wc -l)
 new=$(($old+100))
 for i in $(seq $old $new); do
-  python3 -u scripts/plotMulti.py;
+  python3 -u scripts/newLearning/plotMulti.py;
 done
 head -1 multiOutput/raw/sim101.tsv | sed -r "s/^/Run\t/" > multiOutput/summary/summary.tsv
 for i in $(seq $old $new); do
