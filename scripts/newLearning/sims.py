@@ -11,7 +11,7 @@ def matingSearch(pop, params, popDict):
     matings = 0
     contacts = 0
     #MMcontacts = 0
-    #deaths = 0
+    deaths = 0
     totalPop = pop[0] + pop[1]
     N = len(totalPop)
     if len(pop[1])!=0:
@@ -19,6 +19,7 @@ def matingSearch(pop, params, popDict):
             if male.taken == 0: #Copulating males cannot search for a new mate
                 # the chance of approaching a specific individual is determined for each potential pair, based on the male's preference.
                 hitChance = []
+                male.calcmSucc()
                 """
                 for ind in pop[0]:
                     # In case there should be the potential for a male to approach another male
@@ -31,11 +32,11 @@ def matingSearch(pop, params, popDict):
                     if fem.taken != 0:
                         hitChance.append(0)
                     elif fem.phenotype == "A":
-                        hitChance.append(max(male.prefs["A"], 0))
+                        hitChance.append(max(male.prefs["A"]*fem.vis, 0))
                     elif fem.phenotype == "I":
-                        hitChance.append(max(male.prefs["I"], 0))
+                        hitChance.append(max(male.prefs["I"]*fem.vis, 0))
                     elif fem.phenotype == "O":
-                        hitChance.append(max(male.prefs["O"], 0))
+                        hitChance.append(max(male.prefs["O"]*fem.vis, 0))
                 totalW = sum(hitChance)
                 # Probabilities of selecting a specific individual are calculated from the weights
                 if totalW != 0:
@@ -57,8 +58,8 @@ def matingSearch(pop, params, popDict):
                             mate.mate(male, params)
                             mate.mSucc *= params["mateFFertEff"]
                             male.fertility *= params["mateMFertEff"]
-                            #mate.surv *= params["mateSurvEff"]
-                            #male.surv *= params["mateSurvEff"]
+                            mate.surv *= params["mateSurvEff"]
+                            male.surv *= params["mateSurvEff"]
                             if mate.phenotype == "A":
                                 male.prefs["A"] *=params["matePrefEff"]
                             elif mate.phenotype == "I":
@@ -66,8 +67,9 @@ def matingSearch(pop, params, popDict):
                             elif mate.phenotype == "O":
                                 male.prefs["O"] *=params["matePrefEff"]
                         else:
-                            mate.mSucc *=params["failFertEff"]
-                            #mate.surv *= params["failSurvEff"]
+                            mate.fecundity *= params["failFecEff"]
+                            # mate.mSucc *=params["failFertEff"]
+                            mate.surv *= params["failSurvEff"]
                             if mate.phenotype == "A":
                                 male.prefs["A"] *=params["failPrefEff"]
                             elif mate.phenotype == "I":
@@ -77,17 +79,17 @@ def matingSearch(pop, params, popDict):
                     elif type(mate) == Male:
                         MMcontacts += 1
                         mate.fertility *= params["failFertEff"]
-                        #mate.surv *= params["failSurvEff"]
+                        mate.surv *= params["failSurvEff"]
                         male.prefs["A"] *=params["failPrefEff"]
             else:
                 male.taken -= 1
-        # Individuals that die will be removed from the population
-        #pop[0] = [i for i in pop[0] if i.surv > random.random()]
-        #pop[1] = [i for i in pop[1] if i.surv > random.random()]
-        #deaths += (N - len(pop[0]) - len(pop[1])) # Number of deaths is recorded
+        #Individuals that die will be removed from the population
+        pop[0] = [i for i in pop[0] if i.surv > random.random()]
+        pop[1] = [i for i in pop[1] if i.surv > random.random()]
+        deaths += (N - len(pop[0]) - len(pop[1])) # Number of deaths is recorded
     else:
         pass
-    return [matings, contacts]
+    return [matings, contacts, deaths]
 
 def migrate(pops, migrationMatrix):
     newPops = [([],[]) for i in pops]

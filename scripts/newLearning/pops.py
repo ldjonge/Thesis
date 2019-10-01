@@ -17,7 +17,6 @@ class Male:
     def calcFec(self, popInfo=None):
         if popInfo == None:
             self.fertility = 1
-            self.mSucc = 1
             self.surv = 1
         else:
             try:
@@ -25,23 +24,24 @@ class Male:
             except KeyError:
                 self.fertility = 1
             try:
-                self.mSucc= popInfo["MMSucc"]
-            except KeyError:
-                self.mSucc = 1
-            try:
                 self.surv = popInfo["MSurv"]
             except KeyError:
                 self.surv = 1
 
+    def calcmSucc(self):
+        self.mSucc = (max(self.prefs.values())/(sum(self.prefs.values())))**2
+
     # Males go through a learning process based on the frequencies of morphs in the population around them
     def learning(self, pop, params):
         # If learning pre-mating:
-        for fem in np.random.choice(pop, size=min(len(pop), 10), replace=False):
-            pass
+        chance = [fem.vis for fem in pop]
+        chSum = sum(chance)
+        chance = [i/chSum for i in chance]
+        for fem in np.random.choice(pop, size=min(len(pop), 10), p=chance, replace=False):
             # if random.random() < fem.mSucc:
-            #     self.prefs[fem.phenotype] *= params["matePrefEff"]
-            # else:
-            #     self.prefs[fem.phenotype] *= params["failPrefEff"]
+            self.prefs[fem.phenotype] *= params["matePrefEff"]**0.5
+            #else:
+            #    self.prefs[fem.phenotype] *= params["failPrefEff"]
 
     # In case a full population should be shown males will be represented by "M"
     def __str__(self):
@@ -58,14 +58,14 @@ class Female:
     # Fecundity, Mating Success and Survival chance are specified in an external file, however if these are not present baseline values of 1 will be applied.
     def calcFec(self, popInfo=None):
         if popInfo == None:
-            self.fecundity = 1
+            self.fecundity = 400
             self.mSucc = 1
             self.surv = 1
         else:
             try:
                 self.fecundity = popInfo["{}fec".format(self.phenotype)]
             except KeyError:
-                self.fecundity = 1
+                self.fecundity = 400
             try:
                 self.mSucc = popInfo["{}MSucc".format(self.phenotype)]
             except KeyError:
@@ -75,6 +75,11 @@ class Female:
             except KeyError:
                 self.surv = 1
 
+    def calcVis(self, phenFreq):
+        if self.phenotype == "A":
+            self.vis = phenFreq["A"]**0.25
+        else:
+            self.vis = 1
     """
     When a female mates, fecundity is affected, and she is removed from mating searches for two cycles.
     The male is added to the list of males to determine the distribution of the offspring, and also removed from mating searches for two cycles.
@@ -90,8 +95,8 @@ class Female:
     depending on the order of mating. Genotypes of the offspring are evenly distributed according to Mendelian
     genetics, with randomness of survival accounting for the realistic randomness of genotype distribution in adults
     """
-    def eggLay(self, pop, Eggs, params):
-        nEggs = Eggs * self.fecundity
+    def eggLay(self, pop, params):
+        nEggs = np.random.normal(1, 0.1)*self.fecundity
         nMates = len(self.mates)
         if nMates > 1:
             for male in self.mates[:-1]:
@@ -159,9 +164,9 @@ def calcPhenoFreq(pop, male=False):
             freqDict[ind.phenotype] += 1
     phenoDist = {}
     if male==True:
-        for phen in "MAIO":
+        for phen in "MA":
             try:
-                phenoDist[phen] = freqDict[phen]/sum([freqDict["A"], freqDict["I"], freqDict["O"], freqDict["M"]])
+                phenoDist[phen] = freqDict[phen]/sum([freqDict["A"], freqDict["M"]])
             except ZeroDivisionError:
                 phenoDist[phen] = 0
     else:
@@ -196,19 +201,21 @@ def startingPop(popInfo, params):
     r = popInfo["r"]
     malePop = createMalePop(N//2, p,q,r, popInfo)
     femalePop = createFemalePop(N//2, p,q,r)
-    phenFreq = calcPhenoFreq((malePop, femalePop))
+    phenFreq = calcPhenoFreq((malePop, femalePop), male=True)
     totalPop = malePop+femalePop
     for ind in femalePop:
         ind.calcFec(popInfo)
+        ind.calcVis(phenFreq)
     for ind in malePop:
         ind.calcFec(popInfo)
         ind.learning(femalePop, params)
+        ind.calcmSucc()
     pop = [malePop, femalePop]
     return pop
 
-def newPopSize(nEggs, pop, K):
+def newPopSize(pop, K):
     oldPopSize = len(pop)
-    avgPop = 4*oldPopSize/nEggs # 4 eggs from each female's clutch are expected to survive on average
+    avgPop = oldPopSize/100 # 1% of eggs are expected to survive on average
     newPopSize = randomRound(avgPop*(np.exp(0.5*(K-avgPop)/K))) #Adjust the number of survivors based on carrying capacity
     """
     At large numbers of eggs the formula will reduce population size below carrying capacity
@@ -217,6 +224,10 @@ def newPopSize(nEggs, pop, K):
     """
     if avgPop > K:
         newPopSize = max(K, newPopSize)
+    """
+    The number off survivors should be randomised, as situations will vary over the years
+    """
+    #newPopSize = randomRound(np.random.normal(1, 0.25)*newPopSize)
     return(newPopSize)
 
 # Individuals will be chosen randomly from the population of eggs

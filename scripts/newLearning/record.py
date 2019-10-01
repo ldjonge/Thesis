@@ -136,7 +136,7 @@ def preRecord(freqTable, pops, gen):
         freqTable.append([id, gen, "F", len(pop[1])])
         freqTable.append([id, gen, "T", len(pop[0])+len(pop[1])])
 
-def postRecord(freqTable, pops, matings, contacts, gen):
+def postRecord(freqTable, pops, matings, contacts, deaths, gen):
     for pop in pops:
         id = pops.index(pop)
         avgFecs = recordFecStats(pop)
@@ -161,7 +161,7 @@ def postRecord(freqTable, pops, matings, contacts, gen):
         #freqTable.append([id+1, gen, 'MMContacts', MMcontacts[id]])
         #freqTable.append([id+1, gen, 'Migrations', migrations[id]])
         #freqTable.append([id+1, gen, 'Fertilised Migrations', fertMigrations[id]])
-        #freqTable.append([id+1, gen, 'Deaths', deaths[id]])
+        freqTable.append([id+1, gen, 'Deaths', deaths[id]])
         freqTable.append([id+1, gen, "APref", prefs[0]])
         freqTable.append([id+1, gen, "IPref", prefs[1]])
         freqTable.append([id+1, gen, "OPref", prefs[2]])

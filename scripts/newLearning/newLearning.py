@@ -22,6 +22,7 @@ def runSim():
         totalLen = 0
         matings = [0 for i in range(nPop)]
         contacts = [0 for i in range(nPop)]
+        deaths = [0 for i in range(nPop)]
         popSizes = []
         preRecord(freqTable, pops, gen)
         for pop in pops:
@@ -32,18 +33,19 @@ def runSim():
                 results = matingSearch(pop, paramDict, params[id])
                 matings[id] += results[0]
                 contacts[id] += results[1]
+                deaths[id] += results[2]
                 for fem in pop[1]:
                     if fem.taken != 0:
                         fem.taken -= 1
         newPops = []
         totalLen = 0
-        postRecord(freqTable, pops, matings, contacts, gen)
+        postRecord(freqTable, pops, matings, contacts, deaths, gen)
         for pop in pops:
             id = pops.index(pop)
             newPop = []
             for f in pop[1]:
-                f.eggLay(newPop, paramDict["nEggs"], params[id])
-            size = newPopSize(paramDict["nEggs"], newPop, params[id]["K"])
+                f.eggLay(newPop, params[id])
+            size = newPopSize(newPop, params[id]["K"])
             newPop = popControl(newPop, size)
             popSize = len(newPop[0]) + len(newPop[1])
             if popSize > 0 and popSizes[id] ==0:
@@ -51,8 +53,10 @@ def runSim():
             elif popSize == 0 and popSizes[id] > 0:
                 print("Population {} extinct in generation {}".format(id+1, gen))
             totalLen += popSize
+            phenFreq = calcPhenoFreq(newPop, male=True)
             for ind in newPop[1]:
                 ind.calcFec(popInfo=params[id])
+                ind.calcVis(phenFreq)
             for ind in newPop[0]:
                 ind.calcFec(popInfo=params[id])
                 ind.learning(newPop[1], paramDict)
@@ -68,4 +72,5 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         freqTable.to_csv(sys.argv[1], header=None, index=None)
     else:
-        print(freqTable)
+        pass
+        # print(freqTable)

@@ -21,7 +21,6 @@ def reshape(data):
     for df in dataList[2:]:
         dataReshape = dataReshape.join(df, on=["Pop", "Run", "Gen"])
     data = dataReshape
-
     data[["M", "F", "T", "migrations", "Matings", "Contacts", "MMContacts"]] = data[["M", "F", "T", "migrations", "Matings", "Contacts", "MMContacts"]].astype('Int64')
     totalPopDict = {}
     for col in data.select_dtypes('Int64').columns:
@@ -38,6 +37,7 @@ def reshape(data):
     totalPop = pd.DataFrame(totalPopDict)
     totalPop = totalPop.reset_index()
     data = data.reset_index()
+
     data = data.append(totalPop, sort=False)
 
     data['matingSuccess'] = (data['Matings']/data['Contacts']).astype(float)
@@ -57,7 +57,6 @@ if __name__=="__main__":
     else:
         data = pd.read_csv("multiOutput/summary/summary.tsv", sep="\t")
 
-    reshape(data)
-    print(data.describe())
+    data = reshape(data)
 
-    data.to_csv("multiOutput/summary/newData.tsv", sep="\t", index=False)
+    data.to_csv("multiOutput/summary/newData1.tsv", sep="\t", index=False)
