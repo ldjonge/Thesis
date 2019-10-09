@@ -109,14 +109,15 @@ def recordPref(pop):
     totalIPref =0
     totalOPref = 0
     for m in pop[0]:
-        totalAPref += m.prefs["A"]
-        totalIPref += m.prefs["I"]
-        totalOPref += m.prefs["O"]
+        prefSm = sum(m.prefs.values())
+        totalAPref += (m.prefs["A"]/prefSm*0.7+0.1)
+        totalIPref += (m.prefs["I"]/prefSm*0.7+0.1)
+        totalOPref += (m.prefs["O"]/prefSm*0.7+0.1)
     prefSum = totalAPref + totalIPref + totalOPref
     if prefSum > 0:
-        avgAPref = totalAPref/prefSum
-        avgIPref = totalIPref/prefSum
-        avgOPref = totalOPref/prefSum
+        avgAPref = totalAPref/len(pop[0])
+        avgIPref = totalIPref/len(pop[0])
+        avgOPref = totalOPref/len(pop[0])
         return [avgAPref, avgIPref, avgOPref]
     else:
         return [np.nan,np.nan,np.nan]
@@ -141,6 +142,7 @@ def postRecord(freqTable, pops, matings, contacts, deaths, gen):
         id = pops.index(pop)
         avgFecs = recordFecStats(pop)
         prefs = recordPref(pop)
+        #print(id, prefs)
         freqTable.append([id+1, gen, "MFer", avgFecs[0]])
         freqTable.append([id+1, gen, "MMSucc", avgFecs[1]])
         freqTable.append([id+1, gen, "MSurv", avgFecs[2]])

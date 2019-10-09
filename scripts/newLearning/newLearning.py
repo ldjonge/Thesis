@@ -37,6 +37,8 @@ def runSim():
                 for fem in pop[1]:
                     if fem.taken != 0:
                         fem.taken -= 1
+                for male in pop[0]:
+                    male.calcmSucc()
         newPops = []
         totalLen = 0
         postRecord(freqTable, pops, matings, contacts, deaths, gen)
@@ -59,9 +61,9 @@ def runSim():
                 ind.calcVis(phenFreq)
             for ind in newPop[0]:
                 ind.calcFec(popInfo=params[id])
-                ind.learning(newPop[1], paramDict)
+            #    ind.learning(newPop[1], paramDict)
             newPops.append(newPop)
-        if gen%10 == 0:
+        if gen%1 == 0:
             print("Generation {} complete, population size {}".format(str(gen), str(totalLen)))
         pops = newPops
     return freqTable

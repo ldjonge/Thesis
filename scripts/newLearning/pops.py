@@ -13,7 +13,7 @@ class Male:
         self.migrate = 0
         self.prefs = {"A": params["{}prefA".format(self.phenotype)], "I": params["{}prefI".format(self.phenotype)], "O": params["{}prefO".format(self.phenotype)]}
 
-    # Mating Success and Survival chance are specified in an external file, however if these are not present baseline values of 1 will be applied.
+    # Fertility and Survival chance are specified in an external file, however if these are not present baseline values of 1 will be applied.
     def calcFec(self, popInfo=None):
         if popInfo == None:
             self.fertility = 1
@@ -29,7 +29,12 @@ class Male:
                 self.surv = 1
 
     def calcmSucc(self):
-        self.mSucc = (max(self.prefs.values())/(sum(self.prefs.values())))**2
+        valsum = sum(self.prefs.values())
+        #for key in self.prefs.keys():
+        #    self.prefs[key] = (self.prefs[key]/valsum)*0.7+0.1
+        #if sum(self.prefs.values()) < 0.99 or sum(self.prefs.values()) > 1.01:
+        #    print(self.prefs)
+        self.mSucc = (max(self.prefs.values())/(sum(self.prefs.values())))
 
     # Males go through a learning process based on the frequencies of morphs in the population around them
     def learning(self, pop, params):
@@ -77,7 +82,7 @@ class Female:
 
     def calcVis(self, phenFreq):
         if self.phenotype == "A":
-            self.vis = phenFreq["A"]**0.25
+            self.vis = 1 #phenFreq["A"]**0.5
         else:
             self.vis = 1
     """
@@ -208,7 +213,7 @@ def startingPop(popInfo, params):
         ind.calcVis(phenFreq)
     for ind in malePop:
         ind.calcFec(popInfo)
-        ind.learning(femalePop, params)
+        #ind.learning(femalePop, params)
         ind.calcmSucc()
     pop = [malePop, femalePop]
     return pop

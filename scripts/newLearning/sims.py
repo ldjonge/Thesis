@@ -10,7 +10,7 @@ The number of interactions per population/generation should be recorded.
 def matingSearch(pop, params, popDict):
     matings = 0
     contacts = 0
-    #MMcontacts = 0
+    MMcontacts = 0
     deaths = 0
     totalPop = pop[0] + pop[1]
     N = len(totalPop)
@@ -20,30 +20,31 @@ def matingSearch(pop, params, popDict):
                 # the chance of approaching a specific individual is determined for each potential pair, based on the male's preference.
                 hitChance = []
                 male.calcmSucc()
-                """
+                prefSum = sum(male.prefs.values())
+
                 for ind in pop[0]:
                     # In case there should be the potential for a male to approach another male
                     if ind.taken != 0:
                         hitChance.append(0)
                     else:
-                        hitChance.append(max(params["maleRec"]*male.prefs["A"], 0))
-                """
+                        hitChance.append(max(params["maleRec"]*(male.prefs["A"]/prefSum*0.7+0.1), 0))
+
                 for fem in pop[1]:
                     if fem.taken != 0:
                         hitChance.append(0)
                     elif fem.phenotype == "A":
-                        hitChance.append(max(male.prefs["A"]*fem.vis, 0))
+                        hitChance.append(max((male.prefs["A"]/prefSum*0.7+0.1)*fem.vis, 0))
                     elif fem.phenotype == "I":
-                        hitChance.append(max(male.prefs["I"]*fem.vis, 0))
+                        hitChance.append(max((male.prefs["I"]/prefSum*0.7+0.1)*fem.vis, 0))
                     elif fem.phenotype == "O":
-                        hitChance.append(max(male.prefs["O"]*fem.vis, 0))
+                        hitChance.append(max((male.prefs["O"]/prefSum*0.7+0.1)*fem.vis, 0))
                 totalW = sum(hitChance)
                 # Probabilities of selecting a specific individual are calculated from the weights
                 if totalW != 0:
                     for i in range(len(hitChance)):
                         hitChance[i] = hitChance[i]/totalW
                     if random.random() < male.mSucc*N/popDict["K"]:    # Male mating success is used as probability of finding a mate
-                        mate = choice(pop[1], p=hitChance)
+                        mate = choice(totalPop, p=hitChance)
                     else:
                         mate = None
                     if type(mate)==Female:

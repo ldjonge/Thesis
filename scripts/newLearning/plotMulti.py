@@ -66,9 +66,9 @@ for pop in table.Pop.unique():
     plot.savefig("multiOutput/popSize/sim{}pop{}.png".format(newFile, pop), bbox_inches="tight")
     plt.close()
 
-    plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["FFec", "MFec"], palette=["red", "blue"], data=table[table["Pop"]==pop], legend='brief')
+    plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["FFec"], palette=["red"], data=table[table["Pop"]==pop], legend='brief')
     sns.despine()
-    plot.set(ylim=(-0.01,1.01))
+    plot.set(ylim=(0,max(table[table["Pheno"]=="FFec"]["Value"])))
     plot.fig.suptitle("Fecundity", y=1)
     #plt.legend(labels=("Male", "Female"), loc="upper left", bbox_to_anchor=(1.05, 0.5), title="Sex")
     plot.set(xlabel="Generation", ylabel="Fecundity")
@@ -77,7 +77,7 @@ for pop in table.Pop.unique():
 
     plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["APref", "IPref", "OPref"], palette = ["blue", "green", "red"], data=table[table["Pop"]==pop], legend='brief')
     sns.despine()
-    plot.set(ylim=(0,1.01))
+    plot.set(ylim=(-0.01,1.01))
     plot.fig.suptitle("Phenotype Preference Post-Mating", y=1)
     # plt.legend(labels=("Androchrome", "Infuscans", "Infuscans-Obsoleta"), loc="upper left", bbox_to_anchor=(1.05, 0.5), title="Phenotype")
     plot.set(xlabel="Generation", ylabel="Preference")
