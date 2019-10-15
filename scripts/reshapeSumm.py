@@ -21,15 +21,15 @@ def reshape(data):
     for df in dataList[2:]:
         dataReshape = dataReshape.join(df, on=["Pop", "Run", "Gen"])
     data = dataReshape
-    data[["M", "F", "T", "migrations", "Matings", "Contacts", "MMContacts"]] = data[["M", "F", "T", "migrations", "Matings", "Contacts", "MMContacts"]].astype('Int64')
+    data[["M", "F", "T", "Matings", "Contacts"]] = data[["M", "F", "T", "Matings", "Contacts"]].astype('Int64')
     totalPopDict = {}
     for col in data.select_dtypes('Int64').columns:
         totalPopDict[col] = data.groupby(["Run", "Gen"])[col].sum()
 
-    for col in ["A", "I", "O", "FemF"]:
+    for col in ["A", "I", "O", "FFec"]:
         totalPopDict[col] = data.groupby(["Run", "Gen"]).apply(wavg, col, "F")
 
-    for col in ["preAPref", "preIPref", "preOPref", "APref", "IPref", "OPref", "MalF"]:
+    for col in ["preAPref", "preIPref", "preOPref", "APref", "IPref", "OPref"]:
         totalPopDict[col] = data.groupby(["Run", "Gen"]).apply(wavg, col, "M")
 
     #totalPopDict["Run", "Gen"] = data.groupby(["Run", "Gen"]).groups.keys()
@@ -41,7 +41,7 @@ def reshape(data):
     data = data.append(totalPop, sort=False)
 
     data['matingSuccess'] = (data['Matings']/data['Contacts']).astype(float)
-    data['misIdent'] = (data['MMContacts']/(data['Contacts']+data['MMContacts'])).astype(float)
+    #data['misIdent'] = (data['MMContacts']/(data['Contacts']+data['MMContacts'])).astype(float)
 
     data.loc[data['F']==0, 'A'] = np.nan
     data.loc[data['F']==0, 'I'] = np.nan
