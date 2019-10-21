@@ -34,7 +34,7 @@ class Male:
         #    self.prefs[key] = (self.prefs[key]/valsum)*0.7+0.1
         #if sum(self.prefs.values()) < 0.99 or sum(self.prefs.values()) > 1.01:
         #    print(self.prefs)
-        self.mSucc = (max(self.prefs.values())/(sum(self.prefs.values())))
+        self.mSucc = (max(self.prefs.values())/valsum)
 
     # Males go through a learning process based on the frequencies of morphs in the population around them
     def learning(self, pop, params):
@@ -230,9 +230,9 @@ def newPopSize(pop, K):
     if avgPop > K:
         newPopSize = max(K, newPopSize)
     """
-    The number off survivors should be randomised, as situations will vary over the years
+    The number of survivors should be randomised, as situations will vary over the years
     """
-    #newPopSize = randomRound(np.random.normal(1, 0.25)*newPopSize)
+    newPopSize = randomRound(np.random.normal(1, 0.1)*newPopSize)
     return(newPopSize)
 
 # Individuals will be chosen randomly from the population of eggs

@@ -26,7 +26,7 @@ def reshape(data):
     for col in data.select_dtypes('Int64').columns:
         totalPopDict[col] = data.groupby(["Run", "Gen"])[col].sum()
 
-    for col in ["A", "I", "O", "FFec"]:
+    for col in ["A", "I", "O", "AFec", "IFec", "OFec"]:
         totalPopDict[col] = data.groupby(["Run", "Gen"]).apply(wavg, col, "F")
 
     for col in ["preAPref", "preIPref", "preOPref", "APref", "IPref", "OPref"]:

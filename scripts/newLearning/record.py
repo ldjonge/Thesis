@@ -110,9 +110,9 @@ def recordPref(pop):
     totalOPref = 0
     for m in pop[0]:
         prefSm = sum(m.prefs.values())
-        totalAPref += m.prefs["A"] #(m.prefs["A"]/prefSm*0.7+0.1)
-        totalIPref += m.prefs["I"] #(m.prefs["I"]/prefSm*0.7+0.1)
-        totalOPref += m.prefs["O"] #(m.prefs["O"]/prefSm*0.7+0.1)
+        totalAPref += (m.prefs["A"]/prefSm*0.7+0.1)
+        totalIPref += (m.prefs["I"]/prefSm*0.7+0.1)
+        totalOPref += (m.prefs["O"]/prefSm*0.7+0.1)
     prefSum = totalAPref + totalIPref + totalOPref
     if prefSum > 0:
         avgAPref = totalAPref/len(pop[0])

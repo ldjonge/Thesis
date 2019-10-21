@@ -63,8 +63,8 @@ def runSim():
                 ind.calcFec(popInfo=params[id])
             #    ind.learning(newPop[1], paramDict)
             newPops.append(newPop)
-        if gen%1 == 0:
-            print("Generation {} complete, population size {}".format(str(gen), str(totalLen)))
+        #if gen%1 == 0:
+        #    print("Generation {} complete, population size {}".format(str(gen), str(totalLen)))
         pops = newPops
     return freqTable
 
