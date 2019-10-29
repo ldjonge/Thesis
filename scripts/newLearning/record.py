@@ -104,15 +104,17 @@ def recordFecStats(pop):
 Preference should be recorded, again as a population average.
 Again in populations with no males the preferences are set to NaN.
 """
-def recordPref(pop):
+def recordPref(pop, freqs):
     totalAPref = 0
     totalIPref =0
     totalOPref = 0
+    pres = [phen for phen in freqs.keys() if freqs[phen]!=0]
+    nPhens=len(pres)
     for m in pop[0]:
-        prefSm = sum(m.prefs.values())
-        totalAPref += (m.prefs["A"]/prefSm*0.7+0.1)
-        totalIPref += (m.prefs["I"]/prefSm*0.7+0.1)
-        totalOPref += (m.prefs["O"]/prefSm*0.7+0.1)
+        prefSm = sum(m.prefs.values())+nPhens
+        totalAPref += (m.prefs["A"]/prefSm*(1-0.1*nPhens)+0.1*("A" in pres))
+        totalIPref += (m.prefs["I"]/prefSm*(1-0.1*nPhens)+0.1*("I" in pres))
+        totalOPref += (m.prefs["O"]/prefSm*(1-0.1*nPhens)+0.1*("O" in pres))
     prefSum = totalAPref + totalIPref + totalOPref
     if prefSum > 0:
         avgAPref = totalAPref/len(pop[0])
@@ -123,10 +125,12 @@ def recordPref(pop):
         return [np.nan,np.nan,np.nan]
 
 def preRecord(freqTable, pops, gen):
+    freqs = []
     for pop in pops:
         id = pops.index(pop)+1
-        prefs = recordPref(pop)
         phenFreq = calcPhenoFreq(pop)
+        freqs.append(phenFreq)
+        prefs = recordPref(pop, phenFreq)
         freqTable.append([id, gen, "preAPref", prefs[0]])
         freqTable.append([id, gen, "preIPref", prefs[1]])
         freqTable.append([id, gen, "preOPref", prefs[2]])
@@ -136,12 +140,14 @@ def preRecord(freqTable, pops, gen):
         freqTable.append([id, gen, "M", len(pop[0])])
         freqTable.append([id, gen, "F", len(pop[1])])
         freqTable.append([id, gen, "T", len(pop[0])+len(pop[1])])
+    return freqs
 
-def postRecord(freqTable, pops, matings, contacts, deaths, gen):
+
+def postRecord(freqTable, pops, matings, contacts, deaths, gen, freqs):
     for pop in pops:
         id = pops.index(pop)
         avgFecs = recordFecStats(pop)
-        prefs = recordPref(pop)
+        prefs = recordPref(pop, freqs[id])
         #print(id, prefs)
         freqTable.append([id+1, gen, "MFer", avgFecs[0]])
         freqTable.append([id+1, gen, "MMSucc", avgFecs[1]])

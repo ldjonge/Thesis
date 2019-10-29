@@ -25,13 +25,14 @@ def runSim():
         contacts = [0 for i in range(nPop)]
         deaths = [0 for i in range(nPop)]
         popSizes = []
-        preRecord(freqTable, pops, gen)
+        freqs = preRecord(freqTable, pops, gen)
         for pop in pops:
             popSizes.append(len(pop[0])+len(pop[1]))
         for i in range(int(paramDict["genLength"])):
             for pop in pops:
                 id = pops.index(pop)
-                results = sampleMating.matingSearch(pop, paramDict, params[id])
+                pres = [phen for phen in freqs[id].keys() if freqs[id][phen]!=0]
+                results = sampleMating.matingSearch(pop, paramDict, params[id], pres)
                 matings[id] += results[0]
                 contacts[id] += results[1]
                 deaths[id] += results[2]
@@ -42,7 +43,7 @@ def runSim():
                     male.calcmSucc()
         newPops = []
         totalLen = 0
-        postRecord(freqTable, pops, matings, contacts, deaths, gen)
+        postRecord(freqTable, pops, matings, contacts, deaths, gen, freqs)
         for pop in pops:
             id = pops.index(pop)
             newPop = []

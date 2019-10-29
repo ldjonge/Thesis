@@ -7,7 +7,7 @@ from baseFunctions import *
 Males will search for mates based on their preference.
 The number of interactions per population/generation should be recorded.
 """
-def matingSearch(pop, params, popDict):
+def matingSearch(pop, params, popDict, pres):
     attempts = 0
     matings = 0
     contacts = 0
@@ -16,24 +16,29 @@ def matingSearch(pop, params, popDict):
     totalPop = pop[0] + pop[1]
     N = len(totalPop)
     nonMating = []
+    for male in pop[0]:
+        for i in male.prefs.keys():
+            if i not in pres:
+                male.prefs[i] = 0
     for ind in totalPop:
         if ind.taken == 0:
             nonMating.append(ind)
+    nPhens = len(pres)
     sampleSize = randomRound(10*len(nonMating)/popDict["K"])
     if len(pop[1])!=0:
         for male in pop[0]:
             if male.taken == 0:
                 attempts += 1
-                prefSum = sum(male.prefs.values())+3
+                prefSum = sum(male.prefs.values())+nPhens
                 sample = random.sample(nonMating, sampleSize)
                 while len(sample) < 10:
                     sample.append(None)
                 hitChance = []
                 for ind in sample:
                     if type(ind)==Male:
-                        hitChance.append(max(params["maleRec"]*((1+male.prefs["A"])/prefSum*0.7+0.1), 0))
+                        hitChance.append(max(params["maleRec"]*((1+male.prefs["A"])/prefSum*(1-0.1*nPhens)+0.1*("A" in pres)), 0))
                     elif type(ind)==Female:
-                        hitChance.append(max(((1+male.prefs[ind.phenotype])/prefSum*0.7+0.1),0))
+                        hitChance.append(max((1+male.prefs[ind.phenotype])/prefSum*(1-0.1*nPhens)+0.1*(ind.phenotype in pres),0))
                     else:
                         hitChance.append(0)
                 totalW = sum(hitChance)

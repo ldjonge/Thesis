@@ -77,7 +77,7 @@ for pop in table.Pop.unique():
 
     plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["APref", "IPref", "OPref"], palette = ["blue", "green", "red"], data=table[table["Pop"]==pop], legend='brief')
     sns.despine()
-    plot.set(ylim=(0.1,0.8))
+    plot.set(ylim=(-0.01,1.01))
     plot.fig.suptitle("Phenotype Preference Post-Mating", y=1)
     # plt.legend(labels=("Androchrome", "Infuscans", "Infuscans-Obsoleta"), loc="upper left", bbox_to_anchor=(1.05, 0.5), title="Phenotype")
     plot.set(xlabel="Generation", ylabel="Preference")
