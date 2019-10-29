@@ -93,8 +93,8 @@ class Female:
         self.fecundity *= params["mateFecEff"]
         if random.random() <= male.fertility: # Even if a male does not successfully fertilise a female, the rest of the mating process still occurs.
             self.mates.append(male.genotype)
-        self.taken += 2 #Copulation is assumed to take up 2 additional cycles worth of time
-        male.taken += 2
+        self.taken += 5 #Copulation is assumed to take up 5 additional cycles worth of time
+        male.taken += 4
 
     """Fertilised females are assumed to lay all eggs at the same time, with the sperm used for fertilisation
     depending on the order of mating. Genotypes of the offspring are evenly distributed according to Mendelian

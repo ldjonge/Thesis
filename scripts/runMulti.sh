@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 old=$(ls multiOutput/raw/ | wc -l)+1
+old=$(($old +1))
 new=$(($old+100))
 for i in $(seq $old $new); do
   python3 -u scripts/newLearning/plotMulti.py;

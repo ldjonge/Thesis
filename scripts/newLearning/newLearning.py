@@ -9,6 +9,7 @@ from baseFunctions import *
 from record import *
 from pops import *
 from sims import *
+import sampleMating
 
 def runSim():
     paramDict = readParams()
@@ -30,7 +31,7 @@ def runSim():
         for i in range(int(paramDict["genLength"])):
             for pop in pops:
                 id = pops.index(pop)
-                results = matingSearch(pop, paramDict, params[id])
+                results = sampleMating.matingSearch(pop, paramDict, params[id])
                 matings[id] += results[0]
                 contacts[id] += results[1]
                 deaths[id] += results[2]
@@ -45,8 +46,13 @@ def runSim():
         for pop in pops:
             id = pops.index(pop)
             newPop = []
+            #unMated = {"A":0, "I":0, "O":0}
             for f in pop[1]:
                 f.eggLay(newPop, params[id])
+            #    if len(f.mates) ==0:
+            #        unMated[f.phenotype] += 1
+            #print(len(pop[1]))
+            #print(unMated)
             size = newPopSize(newPop, params[id]["K"])
             newPop = popControl(newPop, size)
             popSize = len(newPop[0]) + len(newPop[1])
@@ -63,8 +69,8 @@ def runSim():
                 ind.calcFec(popInfo=params[id])
             #    ind.learning(newPop[1], paramDict)
             newPops.append(newPop)
-        #if gen%1 == 0:
-        #    print("Generation {} complete, population size {}".format(str(gen), str(totalLen)))
+        if gen%1 == 0:
+            print("Generation {} complete, population size {}".format(str(gen), str(totalLen)))
         pops = newPops
     return freqTable
 
