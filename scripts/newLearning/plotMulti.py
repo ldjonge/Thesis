@@ -11,7 +11,7 @@ from readFiles import *
 
 if len(sys.argv) > 1:
     table = pandas.read_csv(sys.argv[1], sep="\t")
-    newFile= str(123)
+    newFile= str(196)
 
 else:
     newFile = str(len(os.listdir("multiOutput/raw"))+1)
@@ -68,7 +68,7 @@ for pop in table.Pop.unique():
 
     plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["AFec", "IFec", "OFec"], palette=["blue", "green", "red"], data=table[table["Pop"]==pop], legend='brief')
     sns.despine()
-    plot.set(ylim=(0,max(table[table["Pheno"]=="FFec"]["Value"])))
+    plot.set(ylim=(0,max(table[table["Pheno"].isin(["FFec", "AFec", "IFec", "OFec"])]["Value"])))
     plot.fig.suptitle("Fecundity", y=1)
     #plt.legend(labels=("Male", "Female"), loc="upper left", bbox_to_anchor=(1.05, 0.5), title="Sex")
     plot.set(xlabel="Generation", ylabel="Fecundity")

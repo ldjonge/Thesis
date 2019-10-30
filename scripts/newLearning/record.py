@@ -112,9 +112,9 @@ def recordPref(pop, freqs):
     nPhens=len(pres)
     for m in pop[0]:
         prefSm = sum(m.prefs.values())+nPhens
-        totalAPref += (m.prefs["A"]/prefSm*(1-0.1*nPhens)+0.1*("A" in pres))
-        totalIPref += (m.prefs["I"]/prefSm*(1-0.1*nPhens)+0.1*("I" in pres))
-        totalOPref += (m.prefs["O"]/prefSm*(1-0.1*nPhens)+0.1*("O" in pres))
+        totalAPref += ((m.prefs["A"]+("A" in pres))/prefSm*(1-0.1*nPhens)+0.1*("A" in pres))
+        totalIPref += ((m.prefs["I"]+("I" in pres))/prefSm*(1-0.1*nPhens)+0.1*("I" in pres))
+        totalOPref += ((m.prefs["O"]+("O" in pres))/prefSm*(1-0.1*nPhens)+0.1*("O" in pres))
     prefSum = totalAPref + totalIPref + totalOPref
     if prefSum > 0:
         avgAPref = totalAPref/len(pop[0])

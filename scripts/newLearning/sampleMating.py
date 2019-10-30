@@ -43,8 +43,6 @@ def matingSearch(pop, params, popDict, pres):
                         hitChance.append(0)
                 totalW = sum(hitChance)
                 mSucc = totalW/len(hitChance)
-                #print(male.prefs)
-                #print(mSucc)
                 if totalW != 0:
                     for i in range(len(hitChance)):
                         hitChance[i] = hitChance[i]/totalW
@@ -81,6 +79,9 @@ def matingSearch(pop, params, popDict, pres):
         #Individuals that die will be removed from the population
         pop[0] = [i for i in pop[0] if i.surv > random.random()]
         pop[1] = [i for i in pop[1] if i.surv > random.random()]
+        for fem in pop[1]:
+            if len(fem.mates)==0:
+                fem.mSucc *= 1.1
         deaths += (N - len(pop[0]) - len(pop[1])) # Number of deaths is recorded
     else:
         pass
