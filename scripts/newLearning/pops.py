@@ -237,7 +237,7 @@ def newPopSize(pop, K):
 
 # Individuals will be chosen randomly from the population of eggs
 def popControl(pop, size):
-    newPop = list(choice(pop, size=int(size), replace=False))
+    newPop = random.sample(pop, int(size))
     malePop = []
     femalePop = []
     for ind in newPop:

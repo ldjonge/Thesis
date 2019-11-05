@@ -12,7 +12,7 @@ Importantly, this process intuitively fits with the idea that less common morphs
 
 # Things to implement, doable but not done yet
 Simplify model, i.e. A vs H, I vs O only, this includes introducing a way that dimorphic populations are treated as such, and there is no constant preference for non-existent morphs. Adjusting this for the potential introduction of a new morph through migration will be interesting, but could almost certainly be done.
-Monomorphic and Dimorphic populations now handle preference properly without being influenced by a non-existent morph, this way it will also make populations without androchromes easier to simulate due to the lack of potential misidentification. This probably means we need to recalculate morph frequencies after every possible migration moment. 
+Monomorphic and Dimorphic populations now handle preference properly without being influenced by a non-existent morph, this way it will also make populations without androchromes easier to simulate due to the lack of potential misidentification. This probably means we need to recalculate morph frequencies after every possible migration moment.
 
 A vs H model may have to exclude learning altogether if we want to distinguish between mimicry and LMR, instead simply reducing harassment based on A frequency
 
@@ -20,3 +20,9 @@ Reduce probability of finding a mate based on presence of preferred morph, males
 ## Ideas:
 Randomly sample 10? individuals from a population as potential mates, male chooses between these based on preference, if preferred morph isn't there than much reduced chance of mating.
 Average preferences for each of the 10 individuals, this is chance of finding a partner, then weighted choice from the sample.
+
+
+# Findings:
+Morph preference vs. frequency appears to follow a sigmoid curve, however for morph fecundity vs. frequency a linear curve appears to be the best fit
+For Fecundity vs preference a linear curve also appears to be the best fit. This can explain why fec vs. freq has a linear curve when pref vs. freq is sigmoid.
+The response of both preference and fecundity to morph frequency is identical between both heterochrome morphs, but different for androchromes. This is to be expected due to mimicry. The response of fecundity to preference appears identical in all morphs, although this may need to be studied further in other simulations as androchrome baseline fecundity should be lower, it was probably equalised in this run. 

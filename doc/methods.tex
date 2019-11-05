@@ -1,0 +1,73 @@
+\documentclass[10pt,letterpaper]{article}
+
+\usepackage{changepage}
+
+\usepackage[right]{lineno}
+
+\usepackage{microtype}
+\DisableLigatures[f]{encoding = *, family = * }
+
+\newlength\savedwidth
+
+\newcommand\thickcline[1]{%
+  \noalign{\global\savedwidth\arrayrulewidth\global\arrayrulewidth 2pt}%
+  \cline{#1}%
+  \noalign{\vskip\arrayrulewidth}%
+  \noalign{\global\arrayrulewidth\savedwidth}%
+}
+
+\newcommand\thickhline{\noalign{\global\savedwidth\arrayrulewidth\global\arrayrulewidth 2pt}%
+\hline
+\noalign{\global\arrayrulewidth\savedwidth}}
+
+\usepackage[utf8x]{inputenc}
+
+\usepackage[top=0.85in,left=2.75in,footskip=0.75in]{geometry}
+
+\usepackage{cite}
+\bibliographystyle{plos2015}
+
+\usepackage{nameref,hyperref}
+
+\raggedright
+\setlength{\parindent}{0.5cm}
+\textwidth 5.25in
+\textheight 8.75in
+
+\usepackage[aboveskip=1pt,labelfont=bf,labelsep=period,justification=raggedright,singlelinecheck=off]{caption}
+\renewcommand{\figurename}{Fig}
+
+\makeatletter
+\renewcommand{\@biblabel}[1]{\quad#1.}
+\makeatother
+
+\usepackage{lastpage,fancyhdr,graphicx}
+\usepackage{epstopdf}
+%\pagestyle{myheadings}
+\pagestyle{fancy}
+\fancyhf{}
+%\setlength{\headheight}{27.023pt}
+%\lhead{\includegraphics[width=2.0in]{PLOS-submission.eps}}
+\rfoot{\thepage/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrule}{\hrule height 2pt \vspace{2mm}}
+\fancyheadoffset[L]{2.25in}
+\fancyfootoffset[L]{2.25in}
+\lfoot{\today}
+
+\title{Methods}
+\date{\vspace{-5ex}}
+
+\begin{document}
+
+\maketitle
+
+\section{System}
+The model was based on \textit{Ischnura elegans}, a small damselfly species in which males are monomorphic, and females have three colour morphs, one androchrome and two heterochrome.
+
+\section{Model}
+An individual-based model was created to evaluate the evolution of colour morph frequencies over time. For this model in each generation a population of male and female individuals was created, with the genotype determining the colour morph of females, as well as the genes that would be passed down to the next generation.
+
+\bibliography{thesis.bib}
+
+\end{document}

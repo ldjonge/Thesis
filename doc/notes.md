@@ -1,0 +1,46 @@
+2 Models: Full population and individual-based.
+
+##Biological background needed:
+    How many generations per season --> Usually 1 but sometimes multiple, depends on environment
+    Presumably many eggs/larvae per 'successful' female, where is most population limitation?
+        If eggs --> drift
+        If larvae --> drift
+        If pre-mature adults --> drift + selection
+        If mature adults --> selection
+    All the above purely considering colour morphs
+
+   ~50% sex split?
+
+##Baseline fixed stuff:
+
+#Shared effects:
+  Population size variable
+  Reproduction chance related to both pop-size (carrying capacity) and phenotype frequency, NFDS
+ ~Assume dominant/recessive is fixed unlike Kagawa et al.
+ ~Dominance levels: A > I > O
+  Environmental effects of phenotype on fitness
+
+# Full population:
+  Allele Frequency --> Phenotype frequency is dependent??
+  Reproduction isn't random, a given percentage survives
+  Both single and multiple-deme model, migration possibilities
+
+# Individual:
+ ~Each female has 2 alleles that determine phenotype
+ ~Males have same alleles but are carriers, no effect
+ ~Reproduction is actual random chance
+  NO LONGER TRUE One male can reproduce multiple times, females only once but produce multiple offspring
+  Innate preference for certain phenotype?
+ ~Single population, no migration effects
+
+##Stuff to test
+  Effects of lower fecundity of andromorphs
+  Male fitness affected by presence of andromorphs
+  Male reproduction dependent on choice, competition and willingness to 'mate' other males
+  Different population setups
+  Learning speed
+
+#Possible but unlikely inclusions:
+  mutation
+  Male choice affected by genotype
+  More andromorph mating harassment when male frequency is high?

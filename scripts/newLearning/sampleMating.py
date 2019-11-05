@@ -60,7 +60,7 @@ def matingSearch(pop, params, popDict, pres):
                         if random.random() <= mate.mSucc:
                             matings += 1
                             mate.mate(male, params)
-                            mate.mSucc *= params["mateFFertEff"]
+                            mate.mSucc = popDict["{}MSucc".format(mate.phenotype)]
                             male.fertility *= params["mateMFertEff"]
                             mate.surv *= params["mateSurvEff"]
                             male.surv *= params["mateSurvEff"]
@@ -80,7 +80,7 @@ def matingSearch(pop, params, popDict, pres):
         pop[0] = [i for i in pop[0] if i.surv > random.random()]
         pop[1] = [i for i in pop[1] if i.surv > random.random()]
         for fem in pop[1]:
-            if len(fem.mates)==0:
+            if fem.taken==0:
                 fem.mSucc *= 1.1
         deaths += (N - len(pop[0]) - len(pop[1])) # Number of deaths is recorded
     else:

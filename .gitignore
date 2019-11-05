@@ -14,12 +14,7 @@ output/genAlgOutput
 outTable
 output2/
 nohup.out
-multiOutput/*.png
-multiOutput/freqs/
-multiOutput/popSize/
-multiOutput/raw/
-multiOutput/genAlgOut
-multiOutput/summary/
+multiOutput/
 outputNew/
 *.tgz
 newOutputAgain/
