@@ -63,15 +63,15 @@ def runSim():
                 print("Population {} extinct in generation {}".format(id+1, gen))
             totalLen += popSize
             if gen == 50:
-                for i in range(1):
-                    newPop[1].append(Female("p", "p"))
+                for i in range(5):
+                    newPop[1].append(Female("r", "r"))
             phenFreq = calcPhenoFreq(newPop, male=True)
             for ind in newPop[1]:
                 ind.calcFec(popInfo=params[id])
                 ind.calcVis(phenFreq)
             for ind in newPop[0]:
                 ind.calcFec(popInfo=params[id])
-            #    ind.learning(newPop[1], paramDict)
+                #ind.learning(newPop[1], paramDict)
             newPops.append(newPop)
         if gen%10 == 0:
             print("Generation {} complete, population size {}".format(str(gen), str(totalLen)))

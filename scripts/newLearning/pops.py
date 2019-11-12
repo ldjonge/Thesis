@@ -42,7 +42,7 @@ class Male:
         chance = [fem.vis for fem in pop]
         chSum = sum(chance)
         chance = [i/chSum for i in chance]
-        for fem in np.random.choice(pop, size=min(len(pop), 10), p=chance, replace=False):
+        for fem in np.random.choice(pop, size=min(len(pop), 5), p=chance, replace=False):
             # if random.random() < fem.mSucc:
             self.prefs[fem.phenotype] *= params["matePrefEff"]**0.5
             #else:
