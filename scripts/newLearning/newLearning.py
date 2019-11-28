@@ -55,6 +55,8 @@ def runSim():
             #print(len(pop[1]))
             #print(unMated)
             size = newPopSize(newPop, params[id]["K"])
+            if gen%24==0:
+                size = size/4
             newPop = popControl(newPop, size)
             popSize = len(newPop[0]) + len(newPop[1])
             if popSize > 0 and popSizes[id] ==0:
@@ -62,9 +64,9 @@ def runSim():
             elif popSize == 0 and popSizes[id] > 0:
                 print("Population {} extinct in generation {}".format(id+1, gen))
             totalLen += popSize
-            if gen == 50:
-                for i in range(5):
-                    newPop[1].append(Female("r", "r"))
+            #if gen == 50:
+            #    for i in range(5):
+            #        newPop[1].append(Female("r", "r"))
             phenFreq = calcPhenoFreq(newPop, male=True)
             for ind in newPop[1]:
                 ind.calcFec(popInfo=params[id])

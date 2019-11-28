@@ -34,7 +34,10 @@ class Male:
         #    self.prefs[key] = (self.prefs[key]/valsum)*0.7+0.1
         #if sum(self.prefs.values()) < 0.99 or sum(self.prefs.values()) > 1.01:
         #    print(self.prefs)
-        self.mSucc = (max(self.prefs.values())/valsum)
+        if valsum>0:
+            self.mSucc = (max(self.prefs.values())/valsum)
+        else:
+            self.mSucc = np.nan
 
     # Males go through a learning process based on the frequencies of morphs in the population around them
     def learning(self, pop, params):
@@ -221,18 +224,18 @@ def startingPop(popInfo, params):
 def newPopSize(pop, K):
     oldPopSize = len(pop)
     avgPop = oldPopSize/100 # 1% of eggs are expected to survive on average
-    newPopSize = randomRound(avgPop*(np.exp(0.5*(K-avgPop)/K))) #Adjust the number of survivors based on carrying capacity
+    newPopSize = randomRound(avgPop*(np.exp(0.1*(K-avgPop)/K))) #Adjust the number of survivors based on carrying capacity
     """
     At large numbers of eggs the formula will reduce population size below carrying capacity
-    which is obviously unrealistic. While this seems like something that needs a change it may not be needed
-    due to the low chance of these numbers actually occurring
+    which is obviously unrealistic. While this seems like something that needs a bigger change it may not be needed
+    due to the low chance of these numbers actually occurring. A fail-safe may therefore be enough.
     """
     if avgPop > K:
         newPopSize = max(K, newPopSize)
     """
     The number of survivors should be randomised, as situations will vary over the years
     """
-    newPopSize = randomRound(np.random.normal(1, 0.1)*newPopSize)
+    newPopSize = randomRound(np.random.normal(1, 0.25)*newPopSize)
     return(newPopSize)
 
 # Individuals will be chosen randomly from the population of eggs

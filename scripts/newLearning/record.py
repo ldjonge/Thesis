@@ -110,16 +110,18 @@ def recordPref(pop, freqs):
     totalOPref = 0
     pres = [phen for phen in freqs.keys() if freqs[phen]!=0]
     nPhens=len(pres)
+    prefCounted=0
     for m in pop[0]:
         prefSm = sum(m.prefs.values())+nPhens
-        totalAPref += ((m.prefs["A"]+("A" in pres))/prefSm*(1-0.1*nPhens)+0.1*("A" in pres))
-        totalIPref += ((m.prefs["I"]+("I" in pres))/prefSm*(1-0.1*nPhens)+0.1*("I" in pres))
-        totalOPref += ((m.prefs["O"]+("O" in pres))/prefSm*(1-0.1*nPhens)+0.1*("O" in pres))
-    prefSum = totalAPref + totalIPref + totalOPref
-    if prefSum > 0:
-        avgAPref = totalAPref/len(pop[0])
-        avgIPref = totalIPref/len(pop[0])
-        avgOPref = totalOPref/len(pop[0])
+        if prefSm > 0:
+            totalAPref += ((m.prefs["A"]+("A" in pres))/prefSm*(1-0.1*nPhens)+0.1*("A" in pres))
+            totalIPref += ((m.prefs["I"]+("I" in pres))/prefSm*(1-0.1*nPhens)+0.1*("I" in pres))
+            totalOPref += ((m.prefs["O"]+("O" in pres))/prefSm*(1-0.1*nPhens)+0.1*("O" in pres))
+            prefCounted += 1
+    if totalAPref + totalIPref + totalOPref > 0:
+        avgAPref = totalAPref/prefCounted
+        avgIPref = totalIPref/prefCounted
+        avgOPref = totalOPref/prefCounted
         return [avgAPref, avgIPref, avgOPref]
     else:
         return [np.nan,np.nan,np.nan]
