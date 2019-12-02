@@ -60,7 +60,10 @@ for pop in table.Pop.unique():
     plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["T"], palette =["black"], data=table[table["Pop"]==pop], legend='brief')
     sns.despine()
     plot.fig.suptitle("Population Size", y=1)
-    plot.set(ylim=(0, max(table[table["Pheno"]=="T"]["Value"])))
+    try:
+        plot.set(ylim=(0, max(table[table["Pheno"]=="T"]["Value"])))
+    except ValueError:
+        plot.set(ylim=(0, 1000))
     #plt.legend(labels=("Male", "Female", "Total"), loc="upper left", bbox_to_anchor=(1.05, 0.5), title="Sex")
     plot.set(xlabel="Generation", ylabel="Population")
     plot.savefig("multiOutput/popSize/sim{}pop{}.png".format(newFile, pop), bbox_inches="tight")
@@ -68,7 +71,10 @@ for pop in table.Pop.unique():
 
     plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["AFec", "IFec", "OFec"], palette=["blue", "green", "red"], data=table[table["Pop"]==pop], legend='brief')
     sns.despine()
-    plot.set(ylim=(0,max(table[table["Pheno"].isin(["FFec", "AFec", "IFec", "OFec"])]["Value"])))
+    try:
+        plot.set(ylim=(0,max(table[table["Pheno"].isin(["FFec", "AFec", "IFec", "OFec"])]["Value"])))
+    except ValueError:
+        plot.set(ylim=(0,400))
     plot.fig.suptitle("Fecundity", y=1)
     #plt.legend(labels=("Male", "Female"), loc="upper left", bbox_to_anchor=(1.05, 0.5), title="Sex")
     plot.set(xlabel="Generation", ylabel="Fecundity")
@@ -87,7 +93,10 @@ for pop in table.Pop.unique():
     plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["Contacts", "Matings"], palette = ["red", "green"], data=table[table["Pop"]==pop], legend='brief')
     sns.despine()
     plot.fig.suptitle("Interactions", y=1)
-    plot.set(ylim=(0, max(table[table["Pheno"]=="Contacts"]["Value"])))
+    try:
+        plot.set(ylim=(0, max(table[table["Pheno"]=="Contacts"]["Value"])))
+    except ValueError:
+        plot.set(ylim=(0,5000))
     # plt.legend(labels=("M-F Interactions", "Copulations", "M-M Interactions"), loc="upper left", bbox_to_anchor=(1.05, 0.5))
     plot.set(xlabel="Generation", ylabel="Number of Interactions")
     plot.savefig("multiOutput/contact/sim{}pop{}.png".format(newFile, pop), bbox_inches="tight")

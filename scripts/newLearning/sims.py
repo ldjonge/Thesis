@@ -96,7 +96,8 @@ def migrate(pops, migrationMatrix):
     newPops = [([],[]) for i in pops]
     migrationList = []
     for pop in pops:
-        migrations = 0
+        mMigrations = 0
+        fMigrations = 0
         fertMigrations = 0
         id = pops.index(pop)
         mRates = migrationMatrix.iloc[id]
@@ -109,7 +110,8 @@ def migrate(pops, migrationMatrix):
                         newPop = i
                         break
                 if newPop != id:
-                    migrations += 1
+                    #print("Male: ", male.genotype, id, "->", newPop)
+                    mMigrations += 1
                     male.migrate += random.randint(1,5)
                     """
                     Depending on distance and speed migration may take a variable amount of time.
@@ -123,18 +125,19 @@ def migrate(pops, migrationMatrix):
             if female.migrate == 0:
                 migChance = random.random()
                 for i in range(len(mChance)):
-                    if migOut <= mChance[i]:
+                    if migChance <= mChance[i]:
                         newPop = i
                         break
                 if newPop != id:
-                    migrations += 1
+                    #print("Female: ", female.genotype, id, "->", newPop)
+                    fMigrations += 1
                     female.migrate += random.randint(1,5)
                     if len(female.mates) > 0:
                         fertMigrations += 1
-                newPops[newPop][0].append(female)
+                newPops[newPop][1].append(female)
             else:
                 female.migrate -= 1
-                newPops[id][0].append(female)
-        migrationList.append([migrations, fertMigrations])
+                newPops[id][1].append(female)
+        migrationList.append([mMigrations, fMigrations, fertMigrations])
     pops = newPops
-    return migrationList
+    return [pops, migrationList]

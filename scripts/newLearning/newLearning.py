@@ -14,6 +14,7 @@ import sampleMating
 def runSim():
     paramDict = readParams()
     params = readPopInfo()
+    migMatrix = readMigration()
     pops = []
     nPop = len(params)
     for i in range(nPop):
@@ -29,8 +30,8 @@ def runSim():
         for pop in pops:
             popSizes.append(len(pop[0])+len(pop[1]))
         for i in range(int(paramDict["genLength"])):
-            for pop in pops:
-                id = pops.index(pop)
+            for id in range(len(pops)):
+                pop=pops[id]
                 pres = [phen for phen in freqs[id].keys() if freqs[id][phen]!=0]
                 results = sampleMating.matingSearch(pop, paramDict, params[id], pres)
                 matings[id] += results[0]
@@ -41,6 +42,7 @@ def runSim():
                         fem.taken -= 1
                 for male in pop[0]:
                     male.calcmSucc()
+            #pops = migrate(pops, migMatrix)[0]
         newPops = []
         totalLen = 0
         postRecord(freqTable, pops, matings, contacts, deaths, gen, freqs)
@@ -55,9 +57,9 @@ def runSim():
             #print(len(pop[1]))
             #print(unMated)
             size = newPopSize(newPop, params[id]["K"])
-            if gen%24==0:
-                size = size/4
-            newPop = popControl(newPop, size)
+            #if gen%24==0:
+            #    size = size/4
+            newPop = newPopControl(newPop, size, params[id])
             popSize = len(newPop[0]) + len(newPop[1])
             if popSize > 0 and popSizes[id] ==0:
                 print("New Population formed at {} in generation {}".format(id+1, gen))

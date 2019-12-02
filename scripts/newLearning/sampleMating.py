@@ -28,57 +28,58 @@ def matingSearch(pop, params, popDict, pres):
     if len(pop[1])!=0:
         for male in pop[0]:
             if male.taken == 0:
-                attempts += 1
                 prefSum = sum(male.prefs.values())+nPhens
-                sample = random.sample(nonMating, sampleSize)
-                while len(sample) < 10:
-                    sample.append(None)
-                hitChance = []
-                for ind in sample:
-                    if type(ind)==Male:
-                        hitChance.append(max(params["maleRec"]*((1+male.prefs["A"])/prefSum*(1-0.1*nPhens)+0.1*("A" in pres)), 0))
-                    elif type(ind)==Female:
-                        hitChance.append(max((1+male.prefs[ind.phenotype])/prefSum*(1-0.1*nPhens)+0.1*(ind.phenotype in pres),0))
-                    else:
-                        hitChance.append(0)
-                totalW = sum(hitChance)
-                mSucc = totalW/len(hitChance)
-                if totalW != 0:
-                    for i in range(len(hitChance)):
-                        hitChance[i] = hitChance[i]/totalW
-                    if random.random() < mSucc:
-                        mate = choice(sample, p=hitChance)
-                    else:
-                        mate=None
-                    if type(mate)==Female:
-                        contacts += 1
-                        """
-                        Female mating success incorporates both the chance of contact leading to mating and the chance of mating leading to fertilisation.
-                        While biologically very different processes, the end result is very similar. Without fertilisation the female is harassed,
-                        but no offspring is produced.
-                        """
-                        if random.random() <= mate.mSucc:
-                            matings += 1
-                            mate.mate(male, params)
-                            mate.mSucc = popDict["{}MSucc".format(mate.phenotype)]
-                            male.fertility *= params["mateMFertEff"]
-                            mate.surv *= params["mateSurvEff"]
-                            male.surv *= params["mateSurvEff"]
-                            male.prefs[mate.phenotype] *= params["matePrefEff"]
+                if prefSum !=0:
+                    attempts += 1
+                    sample = random.sample(nonMating, sampleSize)
+                    while len(sample) < 10:
+                        sample.append(None)
+                    hitChance = []
+                    for ind in sample:
+                        if type(ind)==Male:
+                            hitChance.append(max(params["maleRec"]*((1+male.prefs["A"])/prefSum*(1-0.1*nPhens)+0.1*("A" in pres)), 0))
+                        elif type(ind)==Female:
+                            hitChance.append(max((1+male.prefs[ind.phenotype])/prefSum*(1-0.1*nPhens)+0.1*(ind.phenotype in pres),0))
                         else:
-                            mate.fecundity *= params["failFecEff"]
+                            hitChance.append(0)
+                    totalW = sum(hitChance)
+                    mSucc = totalW/len(hitChance)
+                    if totalW != 0:
+                        for i in range(len(hitChance)):
+                            hitChance[i] = hitChance[i]/totalW
+                        if random.random() < mSucc:
+                            mate = choice(sample, p=hitChance)
+                        else:
+                            mate=None
+                        if type(mate)==Female:
+                            contacts += 1
+                            """
+                            Female mating success incorporates both the chance of contact leading to mating and the chance of mating leading to fertilisation.
+                            While biologically very different processes, the end result is very similar. Without fertilisation the female is harassed,
+                            but no offspring is produced.
+                            """
+                            if random.random() <= mate.mSucc:
+                                matings += 1
+                                mate.mate(male, params)
+                                mate.mSucc = popDict["{}MSucc".format(mate.phenotype)]
+                                male.fertility *= params["mateMFertEff"]
+                                mate.surv *= params["mateSurvEff"]
+                                male.surv *= params["mateSurvEff"]
+                                male.prefs[mate.phenotype] *= params["matePrefEff"]
+                            else:
+                                mate.fecundity *= params["failFecEff"]
+                                mate.surv *= params["failSurvEff"]
+                                male.prefs[mate.phenotype] *= params["failPrefEff"]
+                        elif type(mate) == Male:
+                            MMcontacts += 1
+                            mate.fertility *= params["failFertEff"]
                             mate.surv *= params["failSurvEff"]
-                            male.prefs[mate.phenotype] *= params["failPrefEff"]
-                    elif type(mate) == Male:
-                        MMcontacts += 1
-                        mate.fertility *= params["failFertEff"]
-                        mate.surv *= params["failSurvEff"]
-                        male.prefs["A"] *=params["failPrefEff"]
+                            male.prefs["A"] *=params["failPrefEff"]
             else:
                 male.taken -= 1
         #Individuals that die will be removed from the population
-        pop[0] = [i for i in pop[0] if i.surv > random.random()]
-        pop[1] = [i for i in pop[1] if i.surv > random.random()]
+        #pop[0] = [i for i in pop[0] if i.surv > random.random()]
+        #pop[1] = [i for i in pop[1] if i.surv > random.random()]
         for fem in pop[1]:
             if fem.taken==0:
                 fem.mSucc *= 1.1

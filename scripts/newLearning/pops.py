@@ -252,3 +252,22 @@ def popControl(pop, size):
             print("error, individual of type: ", type(ind))
     newPop = [malePop, femalePop]
     return(newPop)
+
+def newPopControl(pop, size, params):
+    weights = []
+    for ind in pop:
+        weights.append(params["{}GrowthRate".format(ind.phenotype)])
+    weightSum = sum(weights)
+    weights = [i/weightSum for i in weights]
+    newPop = np.random.choice(pop, size=size, p=weights)
+    malePop = []
+    femalePop = []
+    for ind in newPop:
+        if type(ind)==Male:
+            malePop.append(ind)
+        elif type(ind)==Female:
+            femalePop.append(ind)
+        else:
+            print("error, individual of type: ", type(ind))
+    newPop = [malePop, femalePop]
+    return(newPop)
