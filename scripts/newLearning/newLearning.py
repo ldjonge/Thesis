@@ -42,7 +42,7 @@ def runSim():
                         fem.taken -= 1
                 for male in pop[0]:
                     male.calcmSucc()
-            #pops = migrate(pops, migMatrix)[0]
+            pops = migrate(pops, migMatrix)[0]
         newPops = []
         totalLen = 0
         postRecord(freqTable, pops, matings, contacts, deaths, gen, freqs)
@@ -57,9 +57,8 @@ def runSim():
             #print(len(pop[1]))
             #print(unMated)
             size = newPopSize(newPop, params[id]["K"])
-            #if gen%24==0:
-            #    size = size/4
-            newPop = newPopControl(newPop, size, params[id])
+
+            newPop = popControl(newPop, size, params[id])
             popSize = len(newPop[0]) + len(newPop[1])
             if popSize > 0 and popSizes[id] ==0:
                 print("New Population formed at {} in generation {}".format(id+1, gen))
