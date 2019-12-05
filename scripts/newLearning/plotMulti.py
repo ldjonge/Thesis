@@ -11,7 +11,7 @@ from readFiles import *
 
 if len(sys.argv) > 1:
     table = pandas.read_csv(sys.argv[1], sep="\t")
-    newFile= str(196)
+    newFile= str(255)
 
 else:
     newFile = str(len(os.listdir("multiOutput/raw"))+1)
@@ -119,8 +119,8 @@ for pop in table.Pop.unique():
     plot.savefig("multiOutput/mSucc/sim{}pop{}.png".format(newFile, pop), bbox_inches="tight")
     plt.close()
 
-    """
-    plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["Migrations"], palette = ["green"], data=table[table["Pop"]==pop], legend="brief")
+
+    plot = sns.relplot(x="Gen", y="Value", kind="line", hue="Pheno", hue_order = ["Male Migrations", "Female Migrations"], palette = ["blue", "red"], data=table[table["Pop"]==pop], legend="brief")
     sns.despine()
     plot.fig.suptitle("Migration", y=1)
     plot.set(xlabel="Generation")
@@ -133,4 +133,3 @@ for pop in table.Pop.unique():
     plot.set(xlabel="Generation")
     plot.savefig("multiOutput/fertmigrations/sim{}pop{}.png".format(newFile, pop), bbox_inches="tight")
     plt.close()
-    """

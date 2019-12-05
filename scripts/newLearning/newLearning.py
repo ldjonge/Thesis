@@ -25,6 +25,9 @@ def runSim():
         matings = [0 for i in range(nPop)]
         contacts = [0 for i in range(nPop)]
         deaths = [0 for i in range(nPop)]
+        mMigrations = [0 for i in range(nPop)]
+        fMigrations = [0 for i in range(nPop)]
+        fertMigrations = [0 for i in  range(nPop)]
         popSizes = []
         freqs = preRecord(freqTable, pops, gen)
         for pop in pops:
@@ -42,10 +45,15 @@ def runSim():
                         fem.taken -= 1
                 for male in pop[0]:
                     male.calcmSucc()
-            pops = migrate(pops, migMatrix)[0]
+            mig = migrate(pops, migMatrix)
+            pops = mig[0]
+            for id in range(len(pops)):
+                mMigrations[id] += mig[1][id][0]
+                fMigrations[id] += mig[1][id][1]
+                fertMigrations[id] += mig[1][id][2]
         newPops = []
         totalLen = 0
-        postRecord(freqTable, pops, matings, contacts, deaths, gen, freqs)
+        postRecord(freqTable, pops, matings, contacts, deaths, gen, freqs, mMigrations, fMigrations, fertMigrations)
         for pop in pops:
             id = pops.index(pop)
             newPop = []
@@ -57,17 +65,16 @@ def runSim():
             #print(len(pop[1]))
             #print(unMated)
             size = newPopSize(newPop, params[id]["K"])
-
-            newPop = popControl(newPop, size, params[id])
+            if size > 0:
+                newPop = newPopControl(newPop, size, params[id])
+            else:
+                newPop = [[],[]]
             popSize = len(newPop[0]) + len(newPop[1])
             if popSize > 0 and popSizes[id] ==0:
                 print("New Population formed at {} in generation {}".format(id+1, gen))
             elif popSize == 0 and popSizes[id] > 0:
                 print("Population {} extinct in generation {}".format(id+1, gen))
             totalLen += popSize
-            #if gen == 50:
-            #    for i in range(5):
-            #        newPop[1].append(Female("r", "r"))
             phenFreq = calcPhenoFreq(newPop, male=True)
             for ind in newPop[1]:
                 ind.calcFec(popInfo=params[id])
