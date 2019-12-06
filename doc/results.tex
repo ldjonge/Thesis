@@ -1,0 +1,35 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[backend=biber, style=nature, citestyle=nature, maxnames=7, minnames=7, maxcitenames=2, mincitenames=1]{biblatex}
+\usepackage[colorlinks=true,  urlcolor=blue]{hyperref}
+
+\addbibresource{thesis.bib}
+\title{Introduction}
+\date{\vspace{-5ex}}
+
+\begin{document}
+\maketitle
+
+\section{Model Validation}
+Trimorphic populations can be maintained without any genetic preference, or any learning before the first mating attempts. Simply having males and females interact, with males adjusting their preference based on the success of previous attempts, will lead to a (weakly) sigmoid, but clearly positive, relationship between morph frequency and the preference of males for that morph.
+
+The fecundity of each morph is negatively correlated with the frequency at which the morph is present, as well as with the male preference for this morph. Female fecundity is reduced as a result of male harassment, which is a direct consequence of the way the model is set up.
+
+\subsection{Female fecundity}
+As female fecundity was affected both by the baseline fecundity of the morph and the harassment suffered from males, fecundity was recorded per morph. As expected with all morphs present at equal frequencies androchrome females had a lower fecundity than either gynochrome morph. Both gynochrome morphs, when present at the same frequency, had similar fecundity levels. As expected if one gynochrome morph was present at a higher frequency than the other, this morph had a lower fecundity as a result of increased mating harassment. Notably when populations were near equilibrium frequencies, all three morphs had similar fecundity. This indicates that when no abiotic selection occurs, negative frequency dependent selection will lead to the morph with a lower baseline fitness to have the frequency reduced until the point where the harassment on the other morphs is high enough to counteract this so all morphs are equally fit.
+
+\section{Population Size}
+It was found that when the same carrying capacity is assumed, polymorphisms increase the overall fecundity levels of females. Trimorphic populations were found to be significantly larger than dimorphic populations of any morph combination ($p<10^{-10}$), which were in turn significantly larger than any monomorphic population($p<10^{-10}$). Due to the reduced baseline fecundity of the androchrome morph, dimorphic populations with A present were significantly smaller than gynochrome dimorphic populations ($p<10^{-10}$), and monomorphic A populations were significantly smaller than monomorphic gynochrome populations ($p<10^{-10}$), between which no significant difference was found.
+
+\section{Migration}
+The introduction of a single individual morph into an existing population where this morph is not present can be enough for this morph to be maintained in the population in the long term. Due to the way NFDS interacts with phenotype rather than genotype directly, phenotypes coded by dominant alleles are more likely to be maintained directly as they are more likely to be expressed in subsequent generations and as such the effects of selection are stronger. This is the case even if a phenotype has a reduced baseline fitness, as the effects of NFDS can overcome this.
+
+Nevertheless, even phenotypes coded by recessive alleles have a probability of being introduced successfully into populations, and relatively low migration rates are enough for monomorphic populations to become dimorphic or even trimorphic if these populations are connected with existing trimorphic populations.
+
+\subsection{New populations}
+Relatively high migration rates are needed for new populations to form, as it appears the migration of a single individual, even if this is a fertilised female, is rarely if ever enough to form a new population. In addition, the simulations showed that any newly formed population that persisted more than a few generations was polymorphic within 3 generations. As the migration rates required for a new population to form are much higher than those required to introduce a new morph into a population, newly formed populations are highly likely to be polymorphic. It is also possible that due to the reduced fitness of females in monomorphic populations any newly formed monomorphic populations have a much lower probability of being maintained, but this needs to be tested further.
+
+\section{Abiotic factors}
+
+%\printbibliography%
+\end{document}
