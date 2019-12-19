@@ -51,14 +51,14 @@ class testFem:
     def __init__(self, phen):
         self.phenotype = phen
         if phen == "A":
-            self.mSucc = 0.8
+            self.mSucc = 0.6
         else:
-            self.mSucc = 0.8
+            self.mSucc = 0.6
 
     def __str__(self):
         return self.phenotype
 
-params = {"MprefA": 1, "MprefI": 1, "MprefO": 1, "succEff": 3, "failEff": 0.9}
+params = {"MprefA": 1, "MprefI": 1, "MprefO": 1, "succEff": 5, "failEff": 0.8}
 
 A = range(51)
 options = [v for v in itertools.product(A, repeat=3) if sum(v)==50]
@@ -71,7 +71,7 @@ def testPref(malePop, testPop, params):
         male.learning(testPop, params)
         avg = sum(male.prefs.values())
         for i in totalPref.keys():
-            totalPref[i] += (male.prefs[i]/avg)
+            totalPref[i] += 0.7*(male.prefs[i]/avg)+0.1
     return totalPref
 
 outTable = {"A": [], "I": [], "O": [], "Apref": [], "Ipref": [], "Opref": []}
@@ -88,12 +88,12 @@ for i in options:
     outTable["Opref"].append(pref["O"])
 
 out = pd.DataFrame.from_dict(outTable)
-fig, axarr = plt.subplots(1,1, sharex =False, sharey=False, figsize=(10,8))
+fig, axarr = plt.subplots(figsize=(10,8))
 plot1 = sns.scatterplot("A", "Apref", data=out, ax=axarr)
 fig.savefig("nprefTestA.png")
-fig, axarr = plt.subplots(1,1, sharex =False, sharey=False, figsize=(10,8))
+fig, axarr = plt.subplots(figsize=(10,8))
 plot3 = sns.scatterplot("O", "Opref", data=out, ax=axarr)
 fig.savefig("nprefTestO.png")
-fig, axarr = plt.subplots(1,1, sharex =False, sharey=False, figsize=(10,8))
+fig, axarr = plt.subplots(figsize=(10,8))
 plot2 = sns.scatterplot("I", "Ipref", data=out, ax=axarr)
 fig.savefig("nprefTestI.png")

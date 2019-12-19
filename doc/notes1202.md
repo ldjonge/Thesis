@@ -1,6 +1,6 @@
 # Findings
 ## Introducing a new Morph
-While repeated simulations do confirm earlier suspicions that it is much easier for a phenotype coded by a dominant allele to infiltrate a population, they also show that resistant alleles do have a potential to arise in populations, and then be maintained through NFDS. The probability of this happening is noticeably lower, and this is particularly notable when introducing O into a mono-I population, where the rare phenotype does not have an inherent fitness advantage.  
+While repeated simulations do confirm earlier suspicions that it is much easier for a phenotype coded by a dominant allele to infiltrate a population, they also show that recessive alleles do have a potential to arise in populations, and then be maintained through NFDS. The probability of this happening is noticeably lower, and this is particularly notable when introducing O into a mono-I population, where the rare phenotype does not have an inherent fitness advantage.  
 The simulations also show that introducing a second/third morph into a population does improve female fecundity, even if the newly introduced morph has a lower baseline fitness (A).
 
 ### General conclusions

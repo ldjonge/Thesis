@@ -13,9 +13,16 @@ sep="\t",
 dtype={'Pop':'str', 'Run':'int', 'Gen':'int', 'preAPref':'float', 'preIPref':'float', 'preOPref':'float', 'Matings':'float','Contacts':'float', 'MMContacts':'float', 'MalF':'float', 'FemF':'float', 'APref':'float', 'IPref':'float', 'OPref':'float','migrations':'float', 'A':'float', 'I':'float', 'O':'float', 'M':'float', 'F':'float', 'T':'float', 'matingSuccess':'float', 'misIdent':'float'})
 data =pd.concat([data1, data2, data3])
 """
-data = pd.read_csv("multiOutput/summary/newData1202.tsv",
+data1 = pd.read_csv("multiOutput/summary/newData1212.tsv",
 sep="\t",
 dtype={'Pop':'str', 'Run':'int', 'Gen':'int', 'preAPref':'float', 'preIPref':'float', 'preOPref':'float', 'Matings':'float','Contacts':'float', 'MMContacts':'float', 'MalF':'float', 'FemF':'float', 'APref':'float', 'IPref':'float', 'OPref':'float','migrations':'float', 'A':'float', 'I':'float', 'O':'float', 'M':'float', 'F':'float', 'T':'float', 'matingSuccess':'float', 'misIdent':'float'})
+data2 = pd.read_csv("multiOutput/summary/newData1209.tsv",
+sep="\t",
+dtype={'Pop':'str', 'Run':'int', 'Gen':'int', 'preAPref':'float', 'preIPref':'float', 'preOPref':'float', 'Matings':'float','Contacts':'float', 'MMContacts':'float', 'MalF':'float', 'FemF':'float', 'APref':'float', 'IPref':'float', 'OPref':'float','migrations':'float', 'A':'float', 'I':'float', 'O':'float', 'M':'float', 'F':'float', 'T':'float', 'matingSuccess':'float', 'misIdent':'float'})
+
+data =pd.concat([data1, data2])
+data = data[pd.notnull(data["FFec"])]
+data = data[data["Run"]%100 > 80]
 
 data["tMorphs"] = data["A"]+data["I"]+data["O"]
 data = data[data["tMorphs"]==1]

@@ -6,3 +6,6 @@ newData1129.tsv,Bottleneck Testing
 newData1202.tsv,Single Larger population
 newData1203.tsv,Multiple Larger populations
 newData1205.tsv,Migration
+newData1209.tsv,Variable Maturation
+newData1210.tsv,Migration+Var maturation
+newData1212.tsv,Var Maturation inverse

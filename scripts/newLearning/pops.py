@@ -3,7 +3,7 @@ from baseFunctions import *
 
 
 # Create a dictionary for all possible genotypes to refer to a phenotype
-phenoDict = {"pp":"A", "pq":"A", "pr":"A", "qp":"A", "rp":"A", "qq":"I", "qr":"I", "rq":"I", "rr":"O"}
+phenoDict = {"pp":"O", "pq":"O", "pr":"O", "qp":"O", "rp":"O", "qq":"I", "qr":"I", "rq":"I", "rr":"A"}
 
 class Male:
     def __init__(self, pAll, mAll, params):
