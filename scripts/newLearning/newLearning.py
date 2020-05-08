@@ -45,12 +45,12 @@ def runSim():
                         fem.taken -= 1
                 for male in pop[0]:
                     male.calcmSucc()
-            #mig = migrate(pops, migMatrix)
-            #pops = mig[0]
-            #for id in range(len(pops)):
-            #    mMigrations[id] += mig[1][id][0]
-            #    fMigrations[id] += mig[1][id][1]
-            #    fertMigrations[id] += mig[1][id][2]
+            mig = migrate(pops, migMatrix)
+            pops = mig[0]
+            for id in range(len(pops)):
+                mMigrations[id] += mig[1][id][0]
+                fMigrations[id] += mig[1][id][1]
+                fertMigrations[id] += mig[1][id][2]
         newPops = []
         totalLen = 0
         postRecord(freqTable, pops, matings, contacts, deaths, gen, freqs, mMigrations, fMigrations, fertMigrations)
@@ -92,7 +92,7 @@ def runSim():
 if __name__ == "__main__":
     freqTable = pd.DataFrame(runSim())
     if len(sys.argv) > 1:
-        freqTable.to_csv(sys.argv[1], header=None, index=None)
+        freqTable.to_csv(sys.argv[1], sep="\t", header=None, index=None)
     else:
         pass
         # print(freqTable)
